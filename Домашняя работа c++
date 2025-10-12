@@ -1,0 +1,99 @@
+#include <iostream>  
+
+using namespace std; 
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    // 1 Задание
+    int ch_code;     // переменную для хранения числового кода символа (целое число)
+    char ch;         // переменную для хранения самого символа
+
+    cout << "Введите что-нибудь: \n";
+    cin >> ch;
+
+    ch_code = (int)ch;
+
+    if (((ch_code >= 65) && (ch_code <= 90)) ||
+        ((ch_code >= 97) && (ch_code <= 122)))
+    {
+        cout << "Вы ввели строчную букву";
+    }
+    else if ((ch_code >= 48) && (ch_code <= 57))  // Цифры 0-9 (коды 48-57)
+    {
+        cout << "Вы ввели число";
+    }
+    else if ((ch_code == 33) ||      
+        ((ch_code >= 44) && (ch_code <= 46)) ||  
+        (ch_code == 58) ||     
+        (ch_code == 59) ||        
+        (ch_code == 63))         
+    {
+        cout << "Вы ввели знак препинания";
+    }
+
+    else
+    {
+        cout << "Вы ввели неизвестный символ";
+    }
+
+    //2 Задание
+    int minutes;
+    double cost;
+
+    cout << " ПОДСЧЕТ СТОИМОСТИ РАЗГОВОРА " << endl;
+    cout << "Введите длительность разговора (мин): ";
+    cin >> minutes;
+
+    cout << "\nВыберите тип звонка:" << endl;
+    cout << "1 - внутри сети (бесплатно)" << endl;
+    cout << "2 - на другой оператор в городе (3 руб/мин)" << endl;
+    cout << "3 - в другой город (5 руб/мин)" << endl;
+    cout << "Ваш выбор: ";
+
+    int choice;
+    cin >> choice;
+
+    // Расчет стоимости
+    if (choice == 1) {
+        cost = 0;
+    }
+    else if (choice == 2) {
+        cost = minutes * 3.0;
+    }
+    else if (choice == 3) {
+        cost = minutes * 5.0;
+    }
+    else {
+        cout << "Неверный выбор!" << endl;
+        return 1;
+    }
+
+    cout << "\nСтоимость разговора: " << cost << " рублей" << endl;
+
+    // 3 Задание
+    int code_lines, late_count;
+
+    cout << "Введите строки кода: ";
+    cin >> code_lines;
+    cout << "Введите опоздания: ";
+    cin >> late_count;
+
+    // Расчет
+    double salary = (code_lines / 100) * 50;  // 50$ за 100 строк
+    double fines = (late_count / 3) * 20;     // 20$ за каждые 3 опоздания
+    double total = salary - fines;
+
+    cout << "Зарплата: $" << salary << endl;
+    cout << "Штраф: $" << fines << endl;
+    cout << "Итого: $" << total << endl;
+
+    if (total > 0) {
+        cout << "Заплатят!" << endl;
+    }
+    else {
+        cout << "Не заплатят!" << endl;
+    }
+
+    return 0;
+}
