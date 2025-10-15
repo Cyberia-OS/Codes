@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Задание 1: Проверка допуска к экзамену
+    cout << "Задание 1: Проверка допуска к экзамену" << endl;
+    int grade1, grade2, grade3, grade4, grade5;
+
+    cout << "Введите 5 оценок студента: ";
+    cin >> grade1 >> grade2 >> grade3 >> grade4 >> grade5;
+
+    double average = (grade1 + grade2 + grade3 + grade4 + grade5) / 5.0;
+
+    if (average >= 4.0) {
+        cout << "Студент допущен к экзамену. Средний балл: " << average << endl;
+    }
+    else {
+        cout << "Студент не допущен к экзамену. Средний балл: " << average << endl;
+    }
+
+    cout << endl;
+
+    // Задание 2: Обработка числа
+    cout << "Задание 2: Обработка числа" << endl;
+    int num;
+
+    cout << "Введите число: ";
+    cin >> num;
+
+    if (num % 2 == 0) {
+        cout << "Число четное. Результат: " << num * 3 << endl;
+    }
+    else {
+        cout << "Число нечетное. Результат: " << num / 2.0 << endl;
+    }
+
+    cout << endl;
+
+    // Задание 3: Калькулятор
+    cout << "Задание 3: Калькулятор" << endl;
+    double num1, num2;
+    char oper;
+
+    cout << "Введите первое число: ";
+    cin >> num1;
+
+    cout << "Введите второе число: ";
+    cin >> num2;
+
+    cout << "Выберите операцию (+, -, *, /): ";
+    cin >> oper;
+
+    switch (oper) {
+    case '+':
+        cout << "Результат: " << num1 + num2 << endl;
+        break;
+    case '-':
+        cout << "Результат: " << num1 - num2 << endl;
+        break;
+    case '*':
+        cout << "Результат: " << num1 * num2 << endl;
+        break;
+    case '/':
+        if (num2 != 0) {
+            cout << "Результат: " << num1 / num2 << endl;
+        }
+        else {
+            cout << "Ошибка: деление на ноль!" << endl;
+        }
+        break;
+    default:
+        cout << "Ошибка: неверная операция!" << endl;
+        break;
+    }
+
+    return 0;
+}
