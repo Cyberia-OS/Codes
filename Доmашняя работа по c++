@@ -1,0 +1,83 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian"); 
+
+    // Задача 1
+    int num1;
+    cout << "Введите число: ";
+    cin >> num1;
+
+    cout << "Перевернутое число: ";
+    while (num1 > 0) {
+        cout << num1 % 10; //Получаем последнюю цифру
+        num1 /= 10;        //Убираем последнюю цифру
+    }
+    cout << endl << endl;
+
+    // Задача 2
+    int num2, sum = 0;
+    cout << "Введите число: ";
+    cin >> num2;
+
+    int temp = num2;
+    while (temp > 0) {
+        sum += temp % 10;
+        temp /= 10;
+    }
+    cout << "Сумма цифр: " << sum << endl << endl;
+
+    //Задача 3
+    int days;
+    cout << "Введите количество дней: ";
+    cin >> days;
+
+    int distance = 0;
+    int daily = 15;
+    for (int i = 0; i < days; i++) {
+        distance += daily;
+        daily += 2;
+    }
+    cout << "Суммарный путь: " << distance << " см" << endl << endl;
+
+    // Задача 4
+    int moneta, heads = 0;
+    cout << "Вводите 9 раз 1 (орел) или 0 (решка):" << endl;
+
+    for (int i = 0; i < 9; i++) {
+        cin >> moneta;
+        if (moneta == 1) heads++;
+    }
+
+    if (heads % 2 == 0)
+        cout << "Положительное решение" << endl << endl;
+    else
+        cout << "Отрицательное решение" << endl << endl;
+
+    // Задача 5
+    int daymonth, startday;
+    cout << "Введите количество дней в месяце: ";
+    cin >> daymonth;
+    cout << "Введите номер дня недели для 1 числа (1-Пн, 7-Вс): ";
+    cin >> startday;
+
+    cout << "\nПн Вт Ср Чт Пт Сб Вс" << endl;
+
+    //Первый цикл для пустых клеток
+    for (int i = 1; i < startday; i++) {
+        cout << "   ";
+    }
+    //Упрощенный второй цикл для дней месяца
+    int c_day = 1;
+    for (int day = 1; day <= daymonth; day++) {
+        cout << day;
+        if (day < 10) cout << "  ";  //доп пробел
+        else cout << " ";
+        if ((startday - 1 + day) % 7 == 0) { //переход на новую строку в воскресенье
+            cout << endl;
+        }
+    }
+    cout << endl;
+    return 0;
+}
