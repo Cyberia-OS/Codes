@@ -4,19 +4,18 @@ using namespace std;
 int main() {
     setlocale(LC_ALL, "Russian"); 
 
-    // Задача 1
+    //Задача 1
     int num1;
-    cout << "Введите число: ";
+    cout << "Введите число (задача 1): ";
     cin >> num1;
 
     cout << "Перевернутое число: ";
-    while (num1 > 0) {
-        cout << num1 % 10; //Получаем последнюю цифру
-        num1 /= 10;        //Убираем последнюю цифру
+    for (; num1 > 0; num1 /= 10) {
+        cout << num1 % 10;  // Получаем последнюю цифру
     }
     cout << endl << endl;
 
-    // Задача 2
+    //Задача 2
     int num2, sum = 0;
     cout << "Введите число: ";
     cin >> num2;
