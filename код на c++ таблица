@@ -1,0 +1,85 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    int correct = 0;
+    cout << "Проверка таблицы умножения!\n";
+    cout << "Ответь на 3 вопроса:\n\n";
+    
+    cout << "2 * 3 = "; //1 Вопрос
+    int answer1;
+    cin >> answer1;
+    if (answer1 == 6) {
+        cout << "Правильно!\n";
+        correct++;
+    }
+    else {
+        cout << "Неправильно. 2 × 3 = 6\n";
+    }
+    
+    cout << "4 * 5 = "; //2 Вопрос
+    int answer2;
+    cin >> answer2;
+    if (answer2 == 20) {
+        cout << "Правильно!\n";
+        correct++;
+    }
+    else {
+        cout << "Неправильно. 4 × 5 = 20\n";
+    }
+
+    cout << "3 * 7 = "; //3 Вопрос
+    int answer3;
+    cin >> answer3;
+    if (answer3 == 21) {
+        cout << "Правильно!\n";
+        correct++;
+    }
+    else {
+        cout << "Неправильно. 3 × 7 = 21\n";
+    }
+    cout << "\nТвой результат: " << correct << " из 3\n"; //Результат
+
+    if (correct == 3) {
+        cout << "Отлично! Ты знаешь таблицу умножения!\n";
+    }
+    else if (correct == 2) {
+        cout << "Хорошо, но можно лучше!\n";
+    }
+    else {
+        cout << "Потренируйся еще!\n";
+    }
+  
+
+    //2 Задание. ромб
+    int n;
+    cout << "Введите размер ромба: ";
+    cin >> n;
+
+    // Верхняя часть ромба
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n - i; j++) { // пробелы
+            cout << " ";
+        }
+        for (int j = 1; j <= 2 * i - 1; j++) {
+            cout << "*";
+        }
+        cout << "\n";
+    }
+
+    for (int i = n - 1; i >= 1; i--) {
+
+        for (int j = 1; j <= n - i; j++) { //пробелы
+            cout << " ";
+        }
+        // Звезды
+        for (int j = 1; j <= 2 * i - 1; j++) {
+            cout << "*";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
