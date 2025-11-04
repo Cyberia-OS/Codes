@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    setlocale(LC_ALL, "Russian");
+
+    int answer, correct = 0;
+    int level;
+
+    cout << "Выберите уровень (1 - простой, 2 - сложный): ";
+    cin >> level;
+
+    if (level == 1) {
+        
+        cout << "2 * 2 = "; cin >> answer; //простой
+        if (answer == 4) correct++;
+
+        cout << "3 * 4 = "; cin >> answer;
+        if (answer == 12) correct++;
+
+        cout << "5 * 6 = "; cin >> answer;
+        if (answer == 30) correct++;
+
+        cout << "7 * 8 = "; cin >> answer;
+        if (answer == 56) correct++;
+
+        cout << "9 * 9 = "; cin >> answer;
+        if (answer == 81) correct++;
+    }
+    else {
+        
+        cout << "12 * 13 = "; cin >> answer; //сложный
+        if (answer == 156) correct++;
+
+        cout << "14 * 15 = "; cin >> answer;
+        if (answer == 210) correct++;
+
+        cout << "16 * 17 = "; cin >> answer;
+        if (answer == 272) correct++;
+
+        cout << "18 * 19 = "; cin >> answer;
+        if (answer == 342) correct++;
+
+        cout << "25 * 25 = "; cin >> answer;
+        if (answer == 625) correct++;
+    }
+
+    cout << "Правильных ответов: " << correct << " из 5\n\n";
+
+
+    int n;
+    cout << "Введите размер ромба: "; //ромб
+    cin >> n;
+
+ 
+    for (int i = 1; i <= n; i++) {
+        for (int j = i; j < n; j++) cout << " ";
+        for (int j = 1; j <= 2 * i - 1; j++) cout << "*";
+        cout << "\n";
+    }
+
+
+    for (int i = n - 1; i >= 1; i--) {
+        for (int j = i; j < n; j++) cout << " ";
+        for (int j = 1; j <= 2 * i - 1; j++) cout << "*";
+        cout << "\n";
+    }
+
+    return 0;
+}
