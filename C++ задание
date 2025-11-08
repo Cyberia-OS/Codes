@@ -1,0 +1,201 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    //задание 1
+    cout << "жильцы дома" << endl;
+    int kvartiri[40] = {
+        3, 2, 4, 1, 5,  // 1 подъезд, 1 этаж
+        2, 3, 6, 2, 4,  // 1 подъезд, 2 этаж
+        1, 3, 7, 2, 4,  // 1 подъезд, 3 этаж
+        1, 2, 5, 3, 2,  // 1 подъезд, 4 этаж
+        4, 6, 1, 3, 2,  // 1 подъезд, 5 этаж
+        4, 5, 2, 3, 1,  // 2 подъезд, 1 этаж
+        2, 4, 6, 3, 2,  // 2 подъезд, 2 этаж
+        5, 4, 1, 2, 3   // 2 подъезд, 3 этаж
+    };
+    
+    int kv;
+    cout << "введите номер квартиры (1-40): "; //поиск квартиры
+    cin >> kv;
+    if (kv >= 1 && kv <= 40) {
+        cout << "в квартире " << kv << " живет " << kvartiri[kv - 1] << " человек" << endl;
+        //соседи
+        if (kv % 2 == 0) {
+            cout << "сосед в квартире " << kv - 1 << ": " << kvartiri[kv - 2] << " человек" << endl;
+        }
+        else {
+            cout << "сосед в квартире " << kv + 1 << ": " << kvartiri[kv] << " человек" << endl;
+        }
+    }
+    else {
+        cout << "такой кв нет" << endl;
+    }
+    //подъезды
+    cout << endl << "жильцы по подъездам:" << endl;
+    int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
+    
+    for (int i = 0; i < 10; i++) { //подъезд 1
+        sum1 = sum1 + kvartiri[i];
+    }
+    cout << "подъезд 1: " << sum1 << " человек" << endl;
+
+    for (int i = 10; i < 20; i++) { //подъезд 2
+        sum2 = sum2 + kvartiri[i];
+    }
+    cout << "подъезд 2: " << sum2 << " человек" << endl;
+
+    for (int i = 20; i < 30; i++) { //3
+        sum3 = sum3 + kvartiri[i];
+    }
+    cout << "подъезд 3: " << sum3 << " человек" << endl;
+
+    for (int i = 30; i < 40; i++) { //4
+        sum4 = sum4 + kvartiri[i];
+    }
+    cout << "подъезд 4: " << sum4 << " человек" << endl;
+
+    //семьи многодетные
+    cout << endl << "многодетные семьи:" << endl;
+    int est = 0;
+    for (int i = 0; i < 40; i++) {
+        if (kvartiri[i] > 5) {
+            cout << "кв " << i + 1 << endl;
+            est = 1;
+        }
+    }
+    if (est == 0) {
+        cout << "нет многодетных семей" << endl;
+    }
+
+    // Задание 2
+    cout << endl << "температура в январе" << endl;
+
+    int temp[31] = {
+        -5, -3,  0,  2,  1, -1, -4,  // 1 неделя
+        -2,  3,  4,  2,  0, -1, -3,  // 2 неделя
+        -4, -2,  1,  2,  3,  0, -1,  // 3 неделя
+        -2, -3, -4, -5,  0,  1,  2,  // 4 неделя
+         3,  4,  5                    // остаток
+    };
+
+    //ср температура
+    int sum_temp = 0;
+    for (int i = 0; i < 31; i++) {
+        sum_temp = sum_temp + temp[i];
+    }
+    double sredn = sum_temp / 31.0;
+    cout << "средняя температура: " << sredn << " градусов" << endl;
+
+    //с низкой
+    int porog;
+    cout << "введите порог температуры: ";
+    cin >> porog;
+
+    int nizkih = 0;
+    for (int i = 0; i < 31; i++) {
+        if (temp[i] < porog) {
+            nizkih = nizkih + 1;
+        }
+    }
+    cout << "дней ниже " << porog << " градусов: " << nizkih << endl;
+    //задание 3
+    cout << endl << "3. авто" << endl;
+
+    int cena[10] = {
+        50000,   
+        80000,   
+        120000,  
+        80000,   
+        150000,  
+        90000,   
+        150000,  
+        70000,   
+        150000,  
+        110000   
+    };
+
+    //самая дорогая машина
+    int max_cena = cena[0];
+    for (int i = 1; i < 10; i++) {
+        if (cena[i] > max_cena) {
+            max_cena = cena[i];
+        }
+    }
+    cout << "самая дорогая машина: " << max_cena << " руб" << endl;
+
+    //первая дорогая
+    int pervii;
+    for (int i = 0; i < 10; i++) {
+        if (cena[i] == max_cena) {
+            pervii = i + 1;
+            break;
+        }
+    }
+    cout << "первая дорогая машина: №" << pervii << endl;
+
+    //последняя
+    int poslednii;
+    for (int i = 9; i >= 0; i--) {
+        if (cena[i] == max_cena) {
+            poslednii = i + 1;
+            break;
+        }
+    }
+    cout << "последняя дорогая машина: №" << poslednii << endl;
+
+    // Все дорогие
+    cout << "Все дорогие машины: ";
+    for (int i = 0; i < 10; i++) {
+        if (cena[i] == max_cena) {
+            cout << "№" << i + 1 << " ";
+        }
+    }
+    cout << endl;
+    // Задание 4 повторяющиеся
+    cout << endl << "задание 4" << endl;
+    int chisla[15] = { 2, 5, 8, 2, 7, 5, 8, 3, 1, 5, 9, 2, 6, 4, 7 };
+    cout << "Массив: ";
+    for (int i = 0; i < 15; i++) {
+        cout << chisla[i] << " ";
+    }
+    cout << endl;
+
+    cout << "повторяются: ";
+    int net_povtorov = 1;
+
+    for (int i = 0; i < 15; i++) {
+       
+        int provereno = 0; 
+        for (int j = 0; j < i; j++) {
+            if (chisla[j] == chisla[i]) {
+                provereno = 1;
+                break;
+            }
+        }
+
+        if (provereno == 1) {
+            continue; 
+        }
+
+        //сколько раз встречается
+        int raz = 0;
+        for (int k = 0; k < 15; k++) {
+            if (chisla[k] == chisla[i]) {
+                raz = raz + 1;
+            }
+        }
+
+        if (raz >= 2) {
+            cout << chisla[i] << "(" << raz << " раза) ";
+            net_povtorov = 0;
+        }
+    }
+
+    if (net_povtorov == 1) {
+        cout << "нет повторяющихся чисел";
+    }
+    cout << endl;
+    return 0;
+}
