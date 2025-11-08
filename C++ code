@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    //задача 1 таблица умножения
+    cout << "1.таблица умножения" << endl;
+    for (int i = 1; i <= 10; i++) { //взял первое число от 1 до 10
+        for (int j = 1; j <= 10; j++) { //воторое от 1 до 10
+            cout << i << " * " << j << " = " << i * j << "\t"; //умножение числа 
+        }
+        cout << endl;
+    }
+
+    //задача 2
+    cout << "2.простые число от 1 до 30: " << endl;
+    for (int num = 2; num <= 30; num++) { //проверка каждоого числа от 2 до 30
+        bool prostoe = true;
+        for (int i = 2; i * i <= num; i++) { //
+            if (num % i == 0) { //если делится без остатка
+                prostoe = false; //тогда оно не простое
+                break;
+            }
+        }
+        if (prostoe) cout << num << " ";
+    }
+    cout << endl;
+
+    //задача 3 
+    cout << "\n3. матрица 3x4" << endl;
+    int matrix[3][4];
+    int counter = 1;
+
+    for (int i = 0; i < 3; i++) { //все столбцы
+        for (int j = 0; j < 4; j++) {
+            matrix[i][j] = counter++;
+            cout << matrix[i][j] << "\t"; //вывод числа с отступом
+        }
+        cout << endl;
+    }
+
+    //задача 4
+    cout << "\nПерестановки 1 2 3:" << endl;
+    for (int first = 1; first <= 3; first++) { //перебирал 123
+        for (int second = 1; second <= 3; second++) {
+            for (int third = 1; third <= 3; third++) {
+                //проверка чтобы все были разные
+                if (first != second && first != third && second != third) {
+                    cout << first << " " << second << " " << third << endl;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
