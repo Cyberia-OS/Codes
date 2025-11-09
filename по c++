@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian"); 
+
+    //задание 1
+    int num1; 
+    cout << "Введите число: "; 
+    cin >> num1;  
+
+    int arr1[3][4]; //массив 3 на 4
+    int current1 = num1; 
+    for (int i = 0; i < 3; i++) { //перебирание строки от 0 до 2
+        for (int j = 0; j < 4; j++) { //столбцы от 0 до 3
+            arr1[i][j] = current1; 
+            current1 *= 2; 
+            cout << arr1[i][j] << "\t";//вывод числа с отступом
+        }
+        cout << endl; 
+    }
+
+    //2 задание
+    int num2;  
+    cout << "Введите число: "; 
+    cin >> num2; 
+
+    int arr2[3][4]; // массив на 3 на 4
+    int current2 = num2;  
+    for (int i = 0; i < 3; i++) { //перебирание строки
+        for (int j = 0; j < 4; j++) { //столбцы
+            arr2[i][j] = current2;
+            current2 += 1; 
+            cout << arr2[i][j] << "\t"; 
+        }
+        cout << endl; 
+    }
+
+    //3 задание
+    int arr3[2][6] = { {1,2,0,4,5,3}, {4,5,3,9,0,1} }; 
+
+    cout << "сдвиг на 2 вправо:" << endl; 
+    for (int i = 0; i < 2; i++) { 
+        for (int j = 0; j < 6; j++) {  
+            cout << arr3[i][(j - 2 + 6) % 6] << " ";  
+        }
+        cout << endl;  
+    }
+
+    return 0;  
+}
