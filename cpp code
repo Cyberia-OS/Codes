@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    double pizza1 = 8.50, pizza2 = 10.00, pizza3 = 9.50, pizza4 = 11.00; // цены на продукты
+    double drink1 = 2.00, drink2 = 1.50, drink3 = 1.00;
+
+    double total = 0; 
+    int pizzaCount = 0;
+    char choice;
+
+    do {
+        cout << "\nМЕНЮ:" << endl; //меню
+        cout << "1. Маргарита - $" << pizza1 << endl;
+        cout << "2. Пепперони - $" << pizza2 << endl;
+        cout << "3. Гавайская - $" << pizza3 << endl;
+        cout << "4. Четыре сыра - $" << pizza4 << endl;
+        cout << "5. Кола - $" << drink1 << endl;
+        cout << "6. Сок - $" << drink2 << endl;
+        cout << "7. Вода - $" << drink3 << endl;
+
+
+        int product, kolvo; //заказ
+        cout << "\nВыберите продукт (1-7): ";
+        cin >> product;
+        cout << "Введите количество: ";
+        cin >> kolvo;
+
+        // Расчет стоимости
+        if (product == 1) {
+            total += pizza1 * kolvo;
+            pizzaCount += kolvo;
+        }
+        else if (product == 2) {
+            total += pizza2 * kolvo;
+            pizzaCount += kolvo;
+        }
+        else if (product == 3) {
+            total += pizza3 * kolvo;
+            pizzaCount += kolvo;
+        }
+        else if (product == 4) {
+            total += pizza4 * kolvo;
+            pizzaCount += kolvo;
+        }
+        else if (product == 5) {
+            total += drink1 * kolvo;
+        }
+        else if (product == 6) {
+            total += drink2 * kolvo;
+        }
+        else if (product == 7) {
+            total += drink3 * kolvo;
+        }
+        else {
+            cout << "Неверный код продукта!" << endl;
+        }
+
+        cout << "Продолжить заказ? (y/n): ";
+        cin >> choice;
+
+    } while (choice == 'y' || choice == 'Y');
+
+  
+    double discount = 0; //скидки
+
+    
+    int freepizza = pizzaCount / 5; //скидка на каждую 5 пииццу
+    if (freepizza > 0) {
+        discount += freepizza * 8.0; //средняя цена пиццы
+    }
+
+   
+    if (total > 50) { //общая скидка 20 процентов
+        discount += total * 0.2;
+    }
+
+    double finaltotal = total - discount;
+
+    cout << "\n=== ЧЕК ===" << endl; //чек
+    cout << "Сумма заказа: $" << total << endl;
+    if (discount > 0) {
+        cout << "Скидка: $" << discount << endl;
+    }
+    cout << "К ОПЛАТЕ: $" << finaltotal << endl;
+
+    return 0;
+}
