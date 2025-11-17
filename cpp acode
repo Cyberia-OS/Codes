@@ -1,0 +1,53 @@
+#include <iostream>
+#include <windows.h>
+#include <cmath>
+
+using namespace std;
+
+int main() {
+    //Задание 1
+    setlocale(LC_ALL, "RU");
+    int textColor, Color;
+    double number;
+    int power;
+
+    cout << "смена цвета" << endl;
+    cout << "цвет текста (0-7): ";
+    cin >> textColor;
+    cout << "цвет фона (0-7): ";
+    cin >> Color;
+
+    if (textColor < 0 || textColor > 7) {
+        cout << "ошибка цвета текста" << endl;
+        return 1;
+    }
+    if (Color < 0 || Color > 7) {
+        cout << "ошибка цвета фона" << endl;
+        return 1;
+    }
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, Color * 16 + textColor);
+    cout << "Цвет изменен" << endl;
+
+    //Задание 2
+    cout << "возведение в степень" << endl;
+
+
+    SetConsoleTextAttribute(hConsole, 7); //сброс цвета
+
+    cout << "число: ";
+    cin >> number;
+    cout << "степень (0-7): ";
+    cin >> power;
+  
+    if (power >= 0 && power <= 7) { //проверка степени
+        double result = pow(number, power);
+        cout << "результат: " << result << endl;
+    }
+    else {
+        cout << "ошибка степени" << endl;
+    }
+
+    return 0;
+}
