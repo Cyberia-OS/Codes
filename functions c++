@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+
+//задание 1
+void rect(int N, int K) {
+    for (int i = 0; i < N; i++) { //цикл по строкам
+        for (int j = 0; j < K; j++) { //цикл по столбцам
+            cout << "*";               
+        }
+        cout << endl;    
+    }
+}
+
+//функция вычисления факториала
+int factorial(int n) {
+    int result = 1; 
+    for (int i = 1; i <= n; i++) { //цикл от 1 до n
+        result = result * i;//умножение результата на текущее число
+    }
+    return result;                   
+}
+
+//функция для проверки простого числа
+bool prostoe(int n) {
+    if (n < 2)
+        return false; //числа меньше 2 не являются простыми
+    for (int i = 2; i < n; i++) {//проверка чисел от 2 до n-1
+        if (n % i == 0)
+            return false;  
+    }
+    return true;       
+}
+
+//возведение в куб
+int cube(int n) {
+    return n * n * n;             
+}
+
+//нахождение наибольшего числа
+int maxnum(int a, int b) {
+    if (a > b) return a; 
+    return b;  
+}
+
+//проверка положительного числа
+bool pluss(int n) {
+    return n > 0;    
+}
+
+int main() {
+
+    cout << "1. Прямоугольник 3x5:" << endl;
+    rect(3, 5);        
+    cout << endl;
+
+    cout << "2. Факториал числа 5: " << factorial(5) << endl; 
+    cout << endl;
+
+    cout << "3. Проверка простых чисел:" << endl;
+    cout << "7 - " << (prostoe(7) ? "простое" : "не простое") << endl; 
+    cout << "9 - " << (prostoe(9) ? "простое" : "не простое") << endl;  
+    cout << endl;
+
+    cout << "4. Куб числа 3: " << cube(3) << endl;     
+    cout << endl;
+
+    cout << "5. Наибольшее из 10 и 15: " << maxnum(10, 15) << endl;  
+    cout << endl;
+
+    cout << "6. Проверка положительных чисел:" << endl;
+    cout << "5 - " << (pluss(5) ? "положительное" : "отрицательное") << endl;   
+    cout << "-3 - " << (pluss(-3) ? "положительное" : "отрицательное") << endl;  
+
+    return 0;
+}
