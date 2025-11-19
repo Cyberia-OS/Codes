@@ -1,0 +1,106 @@
+import timeit
+
+#1 задание - рекурсивный метод вычисления факториала
+def recursive(n):
+    if n <= 1:
+        return 1
+    return n * recursive(n - 1)
+
+#2 задание - итерационный метод вычисления факториала
+def iterative(n):
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+
+#функция для тестирования рекурсивного мтода
+def test_recursive():
+    print("профилирование рекурсивного метода")
+    print("=" * 50)
+    print("| Вход | Время выполнения |")
+    print("|------|------------------|")
+
+    test_values = [10, 20, 30]
+
+    for n in test_values:
+        #измерение времени для выполнения 1000 запусков
+        execution_time = timeit.timeit(lambda: recursive(n), number=1000)
+        print(f"| {n:4} | {execution_time:8.6f} сек  |")
+    print()
+
+#функция для сравнения обоих методов
+def compare_methods():
+    print("ЗАДАНИЕ №2: СРАВНЕНИЕ МЕТОДОВ")
+    print("=" * 65)
+    print("| Метод     | Вход | Время выполнения |")
+    print("|-----------|------|------------------|")
+
+    test_values = [10, 20, 30]
+    for n in test_values:
+
+        time_recursive = timeit.timeit(lambda: recursive(n), number=1000) #тест рекурсивного метода
+        time_iterative = timeit.timeit(lambda: iterative(n), number=1000) #тест итерационого метода
+
+        print(f"| Рекурсия | {n:4} | {time_recursive:8.6f} сек  |")
+        print(f"| Итерация | {n:4} | {time_iterative:8.6f} сек  |")
+        print("|-----------|------|------------------|")
+
+    print()
+
+
+#функция для анализа результатов
+def analyze_results():
+    print("анализ результатов и рекомендации")
+    print("=" * 50)
+
+    print("\n1. сравнение производительности:")
+    print("   - Итерационный метод работает быстрее рекурсивного")
+    print("   - Разница становится более заметной с увеличением n")
+    print("   - Рекурсивный метод потребляет больше памяти из-за стека вызовов")
+
+    print("\n2. проблемы рекурсивного метода:")
+    print("   - Ограничение глубины рекурсии в Python")
+    print("   - Большие накладные расходы на вызовы функций")
+    print("   - Риск переполнения стека при больших значениях n")
+
+    print("\n3. рекомендации по оптимизации:")
+    print("   - Для вычисления факториала использовать итерационный метод")
+    print("   - Для часто вычисляемых значений использовать кэширование")
+
+    print("\n4. выводы:")
+    print("   - Итерационный метод более эффективен по времени и памяти")
+    print("   - Рекурсивный метод проще для понимания, но менее практичен")
+    print("   - Выбор метода зависит от конкретной задачи и ограничений")
+
+def verify_calculations(): #проверка
+    print("првоерка корректности")
+    print("=" * 40)
+
+    test_values = [5, 10, 15]
+
+    for n in test_values:
+        result_recursive = recursive(n)
+        result_iterative = iterative(n)
+
+        print(f"n={n}: рекурсивный={result_recursive}, итерационный={result_iterative}")
+
+        if result_recursive == result_iterative:
+            print(f" Результаты совпадают")
+        else:
+            print(f" ошибка: результаты не совпадают!")
+
+    print()
+
+def main():
+    print("тестирование производительности")
+    print("вычисление факториала разными мтодами")
+    print("=" * 60)
+    print()
+
+    verify_calculations()
+    test_recursive()
+    compare_methods()
+    analyze_results()
+    
+if __name__ == "__main__":
+    main()
