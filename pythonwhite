@@ -1,0 +1,97 @@
+import math
+
+def triangle(a, b, c):
+    if a <= 0 or b <= 0 or c <= 0:
+        return "стороны должны быть > 0"
+
+    if a + b <= c or a + c <= b or b + c <= a:
+        return "не треугольник"
+
+    if a == b == c: #определени типа
+        tip = "равносторонний"
+    elif a == b or a == c or b == c:
+        tip = "равнобедренный"
+    else:
+        tip = "разносторонний"
+
+    p = (a + b + c) / 2 #площадь
+    S = math.sqrt(p * (p - a) * (p - b) * (p - c))
+
+    return f"{tip}, Площадь: {S:.2f}"
+
+def triangle_ugol(a, b, c):
+    if a <= 0 or b <= 0 or c <= 0:
+        return "стороны должны быть > 0"
+
+    if a + b <= c or a + c <= b or b + c <= a:
+        return "не треугольник"
+
+    big = max(a, b, c) #поиск самой большой стороны
+    a2 = a * a #квадраты сторон
+    b2 = b * b
+    c2 = c * c
+    big2 = big * big
+
+    if big == a: #сумма квадратов меньших сторон
+        sum_other = b2 + c2
+    elif big == b:
+        sum_other = a2 + c2
+    else:
+        sum_other = a2 + b2
+
+    if abs(big2 - sum_other) < 0.0001: #определение типа по углам
+        tip = "прямоугольный"
+    elif big2 > sum_other:
+        tip = "тупоугольный"
+    else:
+        tip = "остроугольный"
+
+    #площадь
+    p = (a + b + c) / 2
+    S = math.sqrt(p * (p - a) * (p - b) * (p - c))
+
+    return f"{tip}, площадь: {S:.2f}"
+
+#тесты
+print("тест по сторонам")
+tests = [
+    (3, 4, 5),
+    (5, 5, 5),
+    (5, 5, 8),
+    (0, 4, 5),
+    (-2, 3, 4),
+    (1, 1, 3)
+]
+
+for a, b, c in tests:
+    print(f"{a},{b},{c} -> {triangle(a, b, c)}")
+
+print("\nтест по углам")
+for a, b, c in tests:
+    print(f"{a},{b},{c} -> {triangle_ugol(a, b, c)}")
+
+#таблицы тестов
+print("\nтаблица тестов по сторонам")
+test_cases = [
+    (3, 4, 5, "разносторонний, Площадь: 6.00"),
+    (5, 5, 5, "равносторонний, Площадь: 10.83"),
+    (5, 5, 8, "равнобедренный, Площадь: 12.00"),
+    (0, 4, 5, "стороны должны быть > 0"),
+    (1, 1, 3, "не треугольник")
+]
+
+for a, b, c, expected in test_cases:
+    result = triangle(a, b, c)
+    print(f"{a} {b} {c} -> {result}")
+
+#тест режим
+print("\nтест")
+try:
+    x = float(input("Введите a: "))
+    y = float(input("Введите b: "))
+    z = float(input("Введите c: "))
+
+    print(f"По сторонам: {triangle(x, y, z)}")
+    print(f"По углам: {triangle_ugol(x, y, z)}")
+except:
+    print("Ошибка ввода")
