@@ -1,0 +1,160 @@
+import time
+import random
+
+
+def puzir(arr):
+    n = len(arr)
+    arr = arr.copy() #копия списка
+    perestanovki = 0
+    for i in range(n):
+        for j in range(n - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                perestanovki += 1 #увеличение счетчика перестановок
+    return arr, perestanovki
+
+
+def vibor(arr):
+    arr = arr.copy()
+    perestanovki = 0
+    n = len(arr)
+    for i in range(n):
+        min_index = i #минимальный элемент на позиции i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j #новый минимальный элемент
+        if min_index != i:
+            #перестановка минимального элемент на правильное место
+            arr[i], arr[min_index] = arr[min_index], arr[i]
+            perestanovki += 1
+    return arr, perestanovki
+
+
+def vstavka(arr):
+    arr = arr.copy()
+    perestanovki = 0
+    for i in range(1, len(arr)):
+        klych = arr[i] #элемент который вставляем
+        j = i - 1
+        #сдвиг элементов больше ключа вправо
+        while j >= 0 and klych < arr[j]:
+            arr[j + 1] = arr[j]
+            perestanovki += 1
+            j -= 1
+        arr[j + 1] = klych #вставка ключа в правильное место
+        perestanovki += 1
+    return arr, perestanovki
+
+
+def bistraya(arr):
+    if len(arr) <= 1:
+        return arr, 0
+    opora = arr[len(arr) // 2] #опорный элемент
+    levaya = [x for x in arr if x < opora]
+    srednyaya = [x for x in arr if x == opora]
+    pravaya = [x for x in arr if x > opora]
+    #сортировка левой и правой части
+    l_sort, l_perest = bistraya(levaya)
+    r_sort, r_perest = bistraya(pravaya)
+    return l_sort + srednyaya + r_sort, l_perest + r_perest + len(arr)
+
+
+def sliyanie(arr):
+    if len(arr) <= 1:
+        return arr, 0
+    seredina = len(arr) // 2 #список пополам
+    #сортировка двух половин
+    levaya, l_perest = sliyanie(arr[:seredina])
+    pravaya, r_perest = sliyanie(arr[seredina:])
+    resultat, m_perest = obyedinenie(levaya, pravaya)
+    return resultat, l_perest + r_perest + m_perest
+
+
+def obyedinenie(levaya, pravaya):
+    resultat = []
+    i = j = 0
+    perestanovki = 0
+    while i < len(levaya) and j < len(pravaya):
+        if levaya[i] <= pravaya[j]:
+            resultat.append(levaya[i])
+            i += 1
+        else:
+            resultat.append(pravaya[j])
+            j += 1
+        perestanovki += 1
+    resultat.extend(levaya[i:])
+    resultat.extend(pravaya[j:])
+    return resultat, perestanovki
+
+
+def sheiker(arr):
+    arr = arr.copy()
+    n = len(arr)
+    perestanovki = 0
+    obmen = True
+    start = 0
+    konec = n - 1
+    while obmen:
+        obmen = False
+                         #проход слева направо как в пузырьковой
+        for i in range(start, konec):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                perestanovki += 1
+                obmen = True #если был обмен то продолжаю
+        if not obmen:
+            break #если не был то отстортирован
+        konec -= 1
+        for i in range(konec - 1, start - 1, -1):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                perestanovki += 1
+                obmen = True
+        start += 1
+    return arr, perestanovki
+
+
+def testirovanie(algo_funkciya, dannye, popytki=3):
+    luchshee_vremya = float('inf') #начальное значение для поиска минимума
+    luchshie_perestanovki = 0
+    for _ in range(popytki):
+        test_dannye = dannye.copy()
+        nachalo = time.time()
+        resultat, perestanovki = algo_funkciya(test_dannye)
+        konec = time.time()
+        if konec - nachalo < luchshee_vremya:
+            luchshee_vremya = konec - nachalo
+            luchshie_perestanovki = perestanovki
+    return luchshee_vremya, luchshie_perestanovki
+
+
+def main():
+    razmery = [1000, 5000, 10000] #рзмеры массивов для тестирования
+    algoritmy = {
+        'пузырь': puzir,
+        'выбор': vibor,
+        'вставка': vstavka,
+        'быстрая': bistraya,
+        'слияние': sliyanie,
+        'шейкер': sheiker
+    }
+
+    print("размер | алгоритм   | время    | перестановки")
+    print("------|------------|-----------|-------------")
+
+    for razmer in razmery:
+        #генерация случайного массива
+        massiv = [random.randint(1, 10000) for _ in range(razmer)]
+
+        for nazvanie, algoritm in algoritmy.items():
+            if razmer > 5000 and nazvanie in ['пузырь', 'выбор', 'вставка']:
+                continue
+
+            vremya, perest = testirovanie(algoritm, massiv)
+            print(f"{razmer:6} | {nazvanie:10} | {vremya:8.4f}s | {perest:11}")
+
+        print("------|------------|-----------|-------------")
+
+
+if __name__ == "__main__":
+    main()
