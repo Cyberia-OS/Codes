@@ -1,0 +1,171 @@
+#include <iostream>
+
+using namespace std;
+
+//фуункция рисования прямоугольника
+void rect(int height, int width) {
+    for (int i = 0; i < height; i++) { //цикл отвечает за строки 
+        for (int j = 0; j < width; j++) { //цикл отвечает за столбцы 
+            cout << "* "; 
+        }
+        cout << endl;
+    }
+}
+
+//функция вычисления факториала
+long long factorial(int n) {
+    if (n < 0)
+        return -1; //обработка ошибки для отрицательных чисел
+    long long result = 1; 
+    for (int i = 2; i <= n; i++) { //цикл от 2 до n для умножения всех чисел
+        result *= i; //умножение результата на текущее число
+    }
+    return result;  
+}
+
+//функция проверки на простое число
+bool prostoe(int n) {
+    if (n <= 1)
+        return false; //числа <= 1 не являются простыми
+    if (n == 2)
+        return true;//2 единственное четное простое число
+    if (n % 2 == 0)
+        return false; //все остальные четные числа не простые
+
+    //првоерка нечетных делителелей от 3 до корня из n
+    for (int i = 3; i * i <= n; i += 2) {
+        if (n % i == 0)
+            return false; //найден делитель - число не простое
+    }
+    return true; //делителей не найдено число простое
+}
+
+//функция поиска минимума и максимума
+void minmax(int arr[], int size, int& minVal, int& maxVal) {
+    if (size <= 0)
+        return; 
+    minVal = maxVal = arr[0];
+
+    for (int i = 1; i < size; i++) { //проход по всем элементам массива
+        if (arr[i] < minVal) minVal = arr[i];  // Обновляем минимум
+        if (arr[i] > maxVal) maxVal = arr[i];  // Обновляем максимум
+    }
+}
+
+//функция разворота массива
+void masiv(int arr[], int size) {
+
+    for (int i = 0; i < size / 2; i++) { //смена местами элементы от краев к центру
+        int temp = arr[i];
+        arr[i] = arr[size - 1 - i]; //левый элемент = правому
+        arr[size - 1 - i] = temp; //правый элемент = левому
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");  
+    int choice;  
+
+
+    do {
+        cout << "1. рисование прямоугольника" << endl;
+        cout << "2. вычисление факториала" << endl;
+        cout << "3. проверка на простое число" << endl;
+        cout << "4. поиск min/max в массиве" << endl;
+        cout << "5. разворот массива" << endl;
+        cout << "0. выход" << endl;
+        cout << "ваш выбор: ";
+        cin >> choice;  
+
+      
+        switch (choice) {
+
+        case 1: { 
+            int h, w;
+            cout << "введите высоту: ";
+            cin >> h;
+            cout << "введите ширину: ";
+            cin >> w;
+            rect(h, w);
+            break;
+        }
+
+        case 2: { 
+            int n;
+            cout << "введите число: ";
+            cin >> n;
+            long long fact = factorial(n);  
+            if (fact == -1) cout << "Ошибка: отрицательное число!" << endl;
+            else cout << n << "! = " << fact << endl;
+            break;
+        }
+
+        case 3: { 
+            int n;
+            cout << "введите число: ";
+            cin >> n;
+            cout << n << (prostoe(n) ? " - простое" : " - составное") << endl;
+            break;
+        }
+
+        case 4: { 
+            int size;
+            cout << "введите размер массива: ";
+            cin >> size;
+            int* arr = new int[size];  
+            cout << "введите элементы массива: ";
+            for (int i = 0; i < size; i++) {
+                cin >> arr[i];
+            }
+
+            int minVal, maxVal;
+            minmax(arr, size, minVal, maxVal);
+
+            cout << "минимум: " << minVal << endl;
+            cout << "максимум: " << maxVal << endl;
+
+            delete[] arr; 
+            break;
+        }
+
+        case 5: {  
+            int size;
+            cout << "введите размер массива: ";
+            cin >> size;
+            int* arr = new int[size];  
+            cout << "введите элементы массива: ";
+            for (int i = 0; i < size; i++) {
+                cin >> arr[i];
+            }
+
+         
+            cout << "исходный массив: ";
+            for (int i = 0; i < size; i++) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+
+            masiv(arr, size); 
+
+            cout << "перевернутый массив: ";
+            for (int i = 0; i < size; i++) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+
+            delete[] arr; 
+            break;
+        }
+
+        case 0: 
+            cout << "выход" << endl;
+            break;
+
+        default: 
+            cout << "неверный выбор" << endl;
+        }
+
+    } while (choice != 0);  
+
+    return 0; 
+}
