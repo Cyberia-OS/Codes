@@ -1,0 +1,327 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+
+int LinearSearch(int array[], int size, int key)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (array[i] == key)
+            return i;  
+    }
+    return -1; 
+}
+
+template <class T>
+void selectSort(T a[], long size)
+{
+    long i, j, k;
+    T x;
+    for (int i = 0; i < size; i++)
+    {
+        k = i;
+        x = a[i];
+        for (j = i + 1; j < size; j++) 
+        {
+            if (a[j] < x) {
+                k = j;
+                x = a[j];
+            }
+        }
+        if (k != i) 
+        {
+            a[k] = a[i];
+            a[i] = x;
+        }
+    }
+}
+
+//задание 1 пузырьковая сортировка
+template <class T>
+void bubbleSort(T a[], long size)
+{
+    long i, j;
+    T x;
+    for (i = 0; i < size; i++)  
+    {
+        for (j = size - 1; j > i; j--)
+        {
+            if (a[j - 1] > a[j]) { //если предыдущий больше текущего
+                x = a[j - 1];
+                a[j - 1] = a[j];
+                a[j] = x; //меняется местами
+            }
+        }
+    }
+}
+
+//шейкерная сортировка улучшенная пузырьковая сортировка
+template <class T>
+void shakerSort(T a[], long size) {
+    long j, k = size - 1;
+    long lb = 1, ub = size - 1; //границы неотсортированной части
+    T x;
+    do {
+        for (j = ub; j > 0; j--) {
+            if (a[j - 1] > a[j]) {
+                x = a[j - 1];
+                a[j - 1] = a[j];
+                a[j] = x;
+                k = j;  
+            }
+        }
+        lb = k + 1;  
+
+        for (j = 1; j <= ub; j++) {
+            if (a[j - 1] > a[j]) {
+                x = a[j - 1];
+                a[j - 1] = a[j];
+                a[j] = x;
+                k = j;  
+            }
+        }
+        ub = k - 1; //сдвиг правой границы
+    } while (lb < ub);
+}
+
+//задание 2 вставляет элемент в отсортированную часть
+template <class T>
+void insertSort(T a[], long size)
+{
+    long i, j;
+    T x;
+    for (i = 0; i < size; i++) //i номер текущего элемента для вставки
+    {
+        x = a[i]; //элемент для вставки
+        for (j = i - 1; j >= 0 && a[j] > x; j--) //сдвигаем элементы больше x вправо
+        {
+            a[j + 1] = a[j]; //сдвиг элемента
+        }
+        a[j + 1] = x; //вставляем элемент на правильное место
+    }
+}
+
+//задание4 быстрая сортировка
+template <class T>
+int sortirovka(T a[], int low, int high) {
+    T pivot = a[high]; //опорный элемент (последний)
+    int i = low - 1; //индекс для элементов меньше опорного
+
+    for (int j = low; j < high; j++) {
+        if (a[j] <= pivot) {
+            i++;
+            T temp = a[i]; //меняем местами
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+    //опорный элемент на правильное место
+    T temp = a[i + 1];
+    a[i + 1] = a[high];
+    a[high] = temp;
+    return i + 1; //возвращаем индекс опорного элемента
+}
+
+template <class T>
+void quickSort(T a[], int low, int high) {
+    if (low < high) {
+        // pi - индекс опорного элемента
+        int pi = sortirovka(a, low, high);
+        // Рекурсивно сортируем левую и правую части
+        quickSort(a, low, pi - 1);
+        quickSort(a, pi + 1, high);
+    }
+}
+
+template <class T>
+void printArray(T a[], long size) {
+    for (int i = 0; i < size; i++) {
+        cout << a[i] << "\t";  // Выводим элементы через табуляцию
+    }
+    cout << "\n\n";  // Две пустые строки после вывода
+}
+
+//задание 3 
+void grades() {
+    const int SIZE = 10;
+    int grades[SIZE]; // массив для хранения оценок
+
+    cout << "введите 10 оценок студента: ";
+    for (int i = 0; i < SIZE; i++) {
+        cin >> grades[i];
+    }
+
+    int choice;
+    do {
+        cout << "1 вывод оценок" << endl;
+        cout << "2 пересдача экзамена" << endl;
+        cout << "3 проверка стипендии" << endl;
+        cout << "0 выход" << endl;
+        cout << "Выбор: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: { //вывод всех оценок
+            cout << "оценки студента: ";
+            printArray(grades, SIZE);
+            break;
+        }
+        case 2: { //изменение оценки
+            int index, newGrade;
+            cout << "введите номер оценки (1-10): ";
+            cin >> index;
+            cout << "введите новую оценку: ";
+            cin >> newGrade;
+
+            if (index >= 1 && index <= 10) {
+                grades[index - 1] = newGrade; //обновление оценки
+                cout << "оценка обновлена!" << endl;
+            }
+            else {
+                cout << "неверный номер оценки!" << endl;
+            }
+            break;
+        }
+        case 3: { //стипендия
+            double sum = 0;
+            for (int i = 0; i < SIZE; i++) { //сумма всех оценок
+                sum += grades[i];
+            }
+            double average = sum / SIZE; //средний балл
+            cout << "средний балл: " << average << endl;
+            if (average >= 10.7) {
+                cout << "стипендия выходит" << endl;
+            }
+            else {
+                cout << "стипендия не выходит" << endl;
+            }
+            break;
+        }
+        }
+    } while (choice != 0); 
+}
+
+//задание 5 условная сортировка
+template <class T>
+void uslovnaya(T a[], long size) {
+    double sum = 0; // среднее арифметическое всех элементов
+    for (int i = 0; i < size; i++) {
+        sum += a[i];
+    }
+    double average = sum / size;
+
+    cout << "Среднее арифметическое: " << average << endl;
+
+    if (average > 0) {
+        int endIndex = (size * 2) / 3; // Если среднее > 0 то сортируем первые 2/3 массива
+        cout << "Сортируем первые " << endIndex << " элементов" << endl;
+        quickSort(a, 0, endIndex - 1); //быстрая сортировка
+        for (int i = endIndex; i < (endIndex + size) / 2; i++) { //остльную часть располагаем в обратном порядке
+            T temp = a[i];
+            a[i] = a[size - 1 - i + endIndex];
+            a[size - 1 - i + endIndex] = temp;
+        }
+    }
+    else {
+        //Если среднее меньше или равно 0 сортируем только первую треть
+        int endIndex = size / 3;
+        cout << "Сортируем первые " << endIndex << " элементов" << endl;
+        quickSort(a, 0, endIndex - 1);
+
+        //оставшуюся часть в обратном порядке
+        for (int i = endIndex; i < (endIndex + size) / 2; i++) {
+            T temp = a[i];
+            a[i] = a[size - 1 - i + endIndex];
+            a[size - 1 - i + endIndex] = temp;
+        }
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    srand(time(NULL)); 
+    int choice;  
+
+    do {
+        cout << "1.пузырьковая сортировка" << endl;
+        cout << "2.сортировка вставками" << endl;
+        cout << "3.успеваемость студента" << endl;
+        cout << "4.быстрая сортировка" << endl;
+        cout << "5.условная сортировка" << endl;
+        cout << "0.выход" << endl;
+        cout << "Выбор: ";
+        cin >> choice;
+
+        const long SIZE = 10;
+        int ar[SIZE]; 
+
+        switch (choice) {
+        case 1: {  
+            cout << "пузырьковая сортировка" << endl;
+            for (int i = 0; i < SIZE; i++) {
+                ar[i] = rand() % 100;
+            }
+
+            cout << "исходный массив: ";
+            printArray(ar, SIZE);
+            bubbleSort(ar, SIZE); //сортировка
+
+            cout << "отсортированный массив: ";
+            printArray(ar, SIZE);
+            break;
+        }
+        case 2: {  
+            cout << "сортировка вставками" << endl;
+            for (int i = 0; i < SIZE; i++) {
+                ar[i] = rand() % 100;
+            }
+
+            cout << "исходный массив: ";
+            printArray(ar, SIZE);
+            insertSort(ar, SIZE);  
+            cout << "отсортированный массив: ";
+            printArray(ar, SIZE);
+            break;
+        }
+        case 3: { 
+            cout << "успеваемость" << endl;
+            grades();
+            break;
+        }
+        case 4: {  
+            cout << "быстрая сортировка" << endl; //быстрая сортировка
+            for (int i = 0; i < SIZE; i++) {
+                ar[i] = rand() % 100;
+            }
+
+            cout << "исходный массив: ";
+            printArray(ar, SIZE);
+            quickSort(ar, 0, SIZE - 1); //сортировка
+            cout << "отсортированный массив: ";
+            printArray(ar, SIZE);
+            break;
+        }
+        case 5: {  //условная сортировка
+            cout << "условная сортировка" << endl; 
+            const long BIG_SIZE = 12; //большой массив 
+            int bigArr[BIG_SIZE];
+
+            //случайные числа
+            for (int i = 0; i < BIG_SIZE; i++) {
+                bigArr[i] = rand() % 100 - 25; //от - 25 до 75
+            }
+
+            cout << "исходный массив: ";
+            printArray(bigArr, BIG_SIZE);
+            uslovnaya(bigArr, BIG_SIZE); 
+            cout << "Результат: ";
+            printArray(bigArr, BIG_SIZE);
+            break;
+        }
+        }
+    } while (choice != 0);  
+
+    return 0;
+}
