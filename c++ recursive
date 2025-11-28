@@ -1,0 +1,185 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+double power(double base, int exponent) {
+    if (exponent == 0) 
+        return 1; //любое число в степени 0 = 1
+    if (exponent > 0)
+        return base * power(base, exponent - 1); //рекурсия для положительных степен
+    return 1 / power(base, -exponent); // для отрицательных степеней
+}
+
+void stars(int n) { //Задание 2 звезды
+    if (n <= 0) 
+        return; //остановка рекурсии
+    cout << "*"; // печать одной звезды
+    stars(n - 1); //вызов для оставшихся звезд
+}
+
+int sumrang(int a, int b) { //Задание 3 функция вычисления суммы чисел в диапазоне
+    if (a > b) // если диапазон пустой
+        return 0; 
+    if (a == b)
+        return a;
+    return a + sumrang(a + 1, b); //текущий элемент + сумма остальных
+}
+
+int findmaxmin(int arr[], int size, int currentIndex = 0, int minSumIndex = 0) {
+    if (currentIndex > size - 10)
+        return minSumIndex;
+
+    int currentSum = 0;
+    for (int i = currentIndex; i < currentIndex + 10; i++) {
+        currentSum += arr[i];
+    }
+
+    int minSum = 0;
+    for (int i = minSumIndex; i < minSumIndex + 10; i++) {
+        minSum += arr[i];
+    }
+
+    if (currentSum < minSum) {
+        minSumIndex = currentIndex;
+    }
+
+    return findmaxmin(arr, size, currentIndex + 1, minSumIndex);
+}
+
+int findMax(int arr[], int size) { //задание 5 перегруженные функции для нахождения максимального значения
+    int maxVal = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+//для двумерного массива
+int findMax(int arr[][10], int rows, int cols) {
+    int maxVal = arr[0][0];
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (arr[i][j] > maxVal) {
+                maxVal = arr[i][j];
+            }
+        }
+    }
+    return maxVal;
+}
+
+//для трехмерного массива
+int findMax(int arr[][5][5], int dim1, int dim2, int dim3) {
+    int maxVal = arr[0][0][0];
+    for (int i = 0; i < dim1; i++) {
+        for (int j = 0; j < dim2; j++) {
+            for (int k = 0; k < dim3; k++) {
+                if (arr[i][j][k] > maxVal) {
+                    maxVal = arr[i][j][k];
+                }
+            }
+        }
+    }
+    return maxVal;
+}
+
+//для двух целых чисел
+int findMax(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+//для трех целых чисел
+int findMax(int a, int b, int c) {
+    return findMax(a, findMax(b, c));
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    srand(time(0)); 
+
+    cout << "задание 1" << endl;
+    double base = 2.5;
+    int exponent = 3;
+    cout << base << " в степени " << exponent << " = " << power(base, exponent) << endl;
+
+    cout << "\nзадание 2" << endl;
+    int starCount;
+    cout << "Введите количество звезд: ";
+    cin >> starCount;
+    cout << "Результат: ";
+    stars(starCount);
+    cout << endl;
+
+    cout << "\nЗадание 3" << endl;
+    int a, b;
+    cout << "Введите начало диапазона (a): ";
+    cin >> a;
+    cout << "Введите конец диапазона (b): ";
+    cin >> b;
+    cout << "Сумма чисел от " << a << " до " << b << " = " << sumrang(a, b) << endl;
+
+    cout << "\nзадание 4" << endl;
+    const int ARRAY_SIZE = 100;
+    int arr[ARRAY_SIZE];
+
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        arr[i] = rand() % 100;
+    }
+
+    int startIndex = findmaxmin(arr, ARRAY_SIZE);
+
+    cout << "массив из 100 случайных чисел:" << endl;
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        cout << arr[i] << " ";
+        if ((i + 1) % 10 == 0) cout << endl;
+    }
+
+    cout << "\nпоследовательность из 10 чисел с минимальной суммой начинается с индекса: " << startIndex << endl;
+    cout << "Элементы: ";
+    int minSum = 0;
+    for (int i = startIndex; i < startIndex + 10; i++) {
+        cout << arr[i] << " ";
+        minSum += arr[i];
+    }
+    cout << "\nСумма: " << minSum << endl;
+
+    cout << "\nЗадание 5 перегруженные функции максимума" << endl;
+
+    int arr1D[5] = { 3, 7, 2, 9, 1 };
+    cout << "Максимум в одномерном массиве: " << findMax(arr1D, 5) << endl;
+
+    int arr2D[3][10] = {
+        {1, 5, 3, 8, 2, 9, 4, 6, 7, 0},
+        {10, 15, 12, 18, 11, 19, 14, 16, 17, 13},
+        {20, 25, 22, 28, 21, 29, 24, 26, 27, 23}
+    };
+    cout << "Максимум в двумерном массиве: " << findMax(arr2D, 3, 10) << endl;
+
+    int arr3D[2][5][5] = {
+        {
+            {1, 2, 3, 4, 5},
+            {6, 7, 8, 9, 10},
+            {11, 12, 13, 14, 15},
+            {16, 17, 18, 19, 20},
+            {21, 22, 23, 24, 25}
+        },
+        {
+            {26, 27, 28, 29, 30},
+            {31, 32, 33, 34, 35},
+            {36, 37, 38, 39, 40},
+            {41, 42, 43, 44, 45},
+            {46, 47, 48, 49, 50}
+        }
+    };
+    cout << "Максимум в трехмерном массиве: " << findMax(arr3D, 2, 5, 5) << endl;
+    int x = 15, y = 8;
+    cout << "Максимум из " << x << " и " << y << ": " << findMax(x, y) << endl;
+
+    int p = 12, q = 25, r = 18;
+    cout << "Максимум из " << p << ", " << q << " и " << r << ": " << findMax(p, q, r) << endl;
+
+    return 0;
+}
