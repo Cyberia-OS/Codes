@@ -1,0 +1,128 @@
+import math
+
+class solver1:
+    def __init__(self):
+        self.equations = {
+            'а': {
+                'name': '2*lg(x+7) - 5*sin(x) = 0',
+                'func': lambda x: 2 * math.log10(x + 7) - 5 * math.sin(x), #уравнение
+                'derivative': lambda x: 2 / ((x + 7) * math.log(10)) - 5 * math.cos(x),  #роизводная уравнения
+                'interval': (2.7, 2.8) #Интервалгде ищем корень
+            },
+            'б': {
+                'name': '4*cos(x) + 0.3*x = 0',
+                'func': lambda x: 4 * math.cos(x) + 0.3 * x,
+                'derivative': lambda x: -4 * math.sin(x) + 0.3,
+                'interval': (1.6, 1.7)
+            },
+            'в': {
+                'name': '5*sin(2*x) = sqrt(1-x)',
+                'func': lambda x: 5 * math.sin(2 * x) - math.sqrt(1 - x),
+                'derivative': lambda x: 10 * math.cos(2 * x) + 1 / (2 * math.sqrt(1 - x)),
+                'interval': (-3.0, -2.9)
+            }
+        }
+
+    def newton_method(self, f, df, x0, epsilon=1e-6, max_iter=100):
+        x = x0 #начальное приближение
+        for i in range(max_iter):
+            fx = f(x) #Значение функции в текущей точке
+            dfx = df(x) #Значение производной в текущей точке
+
+            #защита от деления на ноль
+            if abs(dfx) < 1e-12:
+                return None, i + 1
+
+            #основная формула метода Ньютона: x_new = x - f(x)/f'(x)
+            x_new = x - fx / dfx
+
+            #проверка достижения точности
+            if abs(x_new - x) < epsilon:
+                return x_new, i + 1
+            x = x_new  #переход к следующей итерации
+
+        return x, max_iter  # Возвращаем результат даже если не достигли точности
+
+    def chord_method(self, f, a, b, epsilon=1e-6, max_iter=100):
+        #проверка что наконцах интервала функция имеет разные знаки
+        if f(a) * f(b) > 0:
+            print("Ошибка: функция должна иметь разные знаки на концах интервала!")
+            return None, 0
+
+        for i in range(max_iter):
+            #формула метода хорд
+            x = a - f(a) * (b - a) / (f(b) - f(a))
+            fx = f(x)
+
+            #проверка достижения точности
+            if abs(fx) < epsilon:
+                return x, i + 1
+
+            if f(a) * fx < 0:
+                b = x  #корень между a и x
+            else:
+                a = x  #корень между x и b
+
+        return x, max_iter
+
+    def solve_proverka(self, eq_key):
+        if eq_key not in self.equations: #Проверка уравнения
+            print("Уравнение не найдено!")
+            return
+
+        eq = self.equations[eq_key]
+        a, b = eq['interval']
+        f = eq['func']  #Функция уравнения
+        df = eq['derivative']  #Производная функции
+
+        print(f"\n{eq_key}) {eq['name']}")
+        print(f"Интервал: [{a}, {b}]")
+
+        # Метод Ньютона
+        x0 = (a + b) / 2
+        root1, iter1 = self.newton_method(f, df, x0)
+        #Метод хорд
+        root2, iter2 = self.chord_method(f, a, b)
+
+        print("Результаты:")
+        if root1 is not None:
+            print(f"  Метод Ньютона: x = {root1:.8f} (итераций: {iter1})")
+        if root2 is not None:
+            print(f"  Метод хорд:    x = {root2:.8f} (итераций: {iter2})")
+
+        return root1, root2
+
+    def solve_all(self):
+        print("РЕШЕНИЕ УРАВНЕНИЙ")
+        print("=" * 50)
+
+        #Перебираем все уравнения в словаре
+        for key in self.equations:
+            self.solve_proverka(key)
+            print("-" * 30)  #Разделитель между уравнениями
+
+def main():
+    solver = solver1()
+    while True:
+        print("\nВыберите действие:")
+        print("1. Решить все уравнения")
+        print("2. Решить конкретное уравнение")
+        print("3. Выход")
+        choice = input("Ваш выбор: ").strip()
+
+        if choice == '1':
+            solver.solve_all()
+        elif choice == '2':
+            print("Доступные уравнения:")
+            for key, eq in solver.equations.items():
+                print(f"  {key}. {eq['name']}")
+
+            eq_key = input("Введите букву уравнения: ").strip().lower()
+            solver.solve_proverka(eq_key)
+        elif choice == '3':
+            break
+        else:
+            print("Неверный выбор!")
+
+if __name__ == "__main__":
+    main()
