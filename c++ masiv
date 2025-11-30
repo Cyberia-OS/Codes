@@ -1,0 +1,195 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    srand(static_cast<unsigned>(time(NULL)));
+
+    //задание1 массив из 10 чисел среднее арифметическое
+    cout << "задание 1" << endl;
+    const int SIZE1 = 10;
+    int arr1[SIZE1];
+    int sum1 = 0;
+
+    cout << "массив 10 чисел: ";
+    for (int i = 0; i < SIZE1; ++i) {
+        arr1[i] = rand() % 100 + 1;//заполнение случайными числами от 1 до 100
+        cout << arr1[i] << " ";
+        sum1 += arr1[i]; //накопление суммы элементов
+    }
+    cout << "\nСреднее арифметическое: " << (double)sum1 / SIZE1 << endl;
+
+    //задание 2 массив из 15 символов частота
+    cout << "\nзадание 2" << endl;
+    const int SIZE2 = 15;
+    char arr2[SIZE2];
+    int countA = 0, countB = 0, countC = 0; //счетчики для каждого символа
+
+    cout << "Символы (15 штук): ";
+    for (int i = 0; i < SIZE2; ++i) {
+        char symbols[] = { 'A', 'B', 'C' }; //массив возможных символов
+        arr2[i] = symbols[rand() % 3];   //случайный выбор символа
+        cout << arr2[i] << " ";
+
+        if (arr2[i] == 'A') countA++; //подсчет символа А
+        else if (arr2[i] == 'B') countB++; // подсчет символа В
+        else countC++; //подсчет символа С
+    }
+    cout << "\nЧастота: A=" << countA << ", B=" << countB << ", C=" << countC << endl;
+
+    //Задание 3 массив из 20 вещественных чисел сортировка
+    cout << "\nЗадание 3" << endl;
+    const int SIZE3 = 20;
+    double arr3[SIZE3];
+
+    cout << "Исходный массив 20 чисел: ";
+    for (int i = 0; i < SIZE3; ++i) {
+        arr3[i] = (rand() % 2001 - 1000) / 1000.0;
+        cout << arr3[i] << " ";
+    }
+
+    // Сортировка по убыванию (пузырьковая сортировка)
+    for (int i = 0; i < SIZE3 - 1; ++i) {  //цикл проходы
+        for (int j = 0; j < SIZE3 - i - 1; ++j) { // цикл сравнения
+            if (arr3[j] < arr3[j + 1]) { //если текущий элемент меньше следующего
+                double temp = arr3[j]; //обмен элементов местами
+                arr3[j] = arr3[j + 1];
+                arr3[j + 1] = temp;
+            }
+        }
+    }
+
+    cout << "\nПосле сортировки: ";
+    for (int i = 0; i < SIZE3; ++i) {
+        cout << arr3[i] << " ";
+    }
+    cout << endl;
+
+    //задание 4 массив из 20 чисел удаление нечетных
+    cout << "Задание 4" << endl;
+    const int SIZE4 = 20;
+    int arr4[SIZE4];
+
+    cout << "Исходный массив (20 чисел): ";
+    for (int i = 0; i < SIZE4; ++i) {
+        arr4[i] = rand() % 50 + 1;
+        cout << arr4[i] << " ";
+    }
+
+    //массив для четных чисел
+    const int MAX_EVEN = 20; //максимально возможный размер
+    int evenArr[MAX_EVEN]; //массив для четных чисел
+    int evenCount = 0;
+
+    for (int i = 0; i < SIZE4; ++i) {
+        if (arr4[i] % 2 == 0) { //проверка на четность
+            evenArr[evenCount] = arr4[i]; //добавление четного числа
+            evenCount++;//увеличение счетчика
+        }
+    }
+
+    cout << "\nПосле удаления нечетных: ";
+    for (int i = 0; i < evenCount; ++i) {
+        cout << evenArr[i] << " "; //вывод только четных чисел
+    }
+    cout << "\nКоличество четных чисел: " << evenCount << endl;
+
+    //Задание 5 массив из 10 символов проверка палиндрома
+    cout << "\nЗадание 5 " << endl;
+    const int SIZE5 = 10;
+    char arr5[SIZE5];
+
+    cout << "Последовательность (10 букв): ";
+    for (int i = 0; i < SIZE5; ++i) {
+        arr5[i] = 'A' + rand() % 26;
+        cout << arr5[i] << " ";
+    }
+
+    //проверка на палиндром
+    bool Palindrom = true;
+    for (int i = 0; i < SIZE5 / 2; ++i) {   //проверка до середины массива
+        if (arr5[i] != arr5[SIZE5 - 1 - i]) {//сравнение симметричных элементов
+            Palindrom = false;  //если не равны не палиндром
+            break;
+        }
+    }
+
+    if (Palindrom) {
+        cout << "\nРезультат: Это палиндром!" << endl;
+    }
+    else {
+        cout << "\nРезультат: Это не палиндром!" << endl;
+    }
+
+    //задание 6 создание случайной матрицы 5×5
+    cout << "Задание 6" << endl;
+    const int ROWS6 = 5;
+    const int COLS6 = 5;
+    int matrix6[ROWS6][COLS6];
+
+    cout << "Матрица 5x5:" << endl;
+    for (int i = 0; i < ROWS6; ++i) { //цикл по строкам
+        for (int j = 0; j < COLS6; ++j) { //цикл по столбцам
+            matrix6[i][j] = rand() % 100 + 1; //заполнение элемента
+            cout << matrix6[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    //Задание 7 умма элементов каждой строки матрицы 4×4
+    cout << "\nЗадание 7" << endl;
+    const int ROWS7 = 4;
+    const int COLS7 = 4;
+    int matrix7[ROWS7][COLS7];
+
+    
+    cout << "Матрица 4×4:" << endl;
+    for (int i = 0; i < ROWS7; ++i) {
+        for (int j = 0; j < COLS7; ++j) { //заполнение матрицы
+            matrix7[i][j] = rand() % 100;
+            cout << matrix7[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    cout << "Суммы строк:" << endl;
+    for (int i = 0; i < ROWS7; ++i) { //Для каждой строки
+        int rowSum = 0;  //Сумма текущей строки
+        for (int j = 0; j < COLS7; ++j) {  //Для каждого элемента строки
+            rowSum += matrix7[i][j];  //Добавление к сумме
+        }
+        cout << "Строка " << i + 1 << ": " << rowSum << endl;
+    }
+
+    //Задание 9 поворот матрицы 4×4 на 90
+    cout << "Задание 9" << endl;
+    const int SIZE9 = 4;
+    int matrix9[SIZE9][SIZE9];
+    int rotated[SIZE9][SIZE9];
+
+    cout << "Исходная матрица 4x4:" << endl;
+    for (int i = 0; i < SIZE9; ++i) {
+        for (int j = 0; j < SIZE9; ++j) {
+            matrix9[i][j] = rand() % 100;
+            cout << matrix9[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    //поворот на 90 по часовой стрелке
+    for (int i = 0; i < SIZE9; ++i) { //для каждой строки исходной
+        for (int j = 0; j < SIZE9; ++j) { //для каждого столбца исходной
+            rotated[j][SIZE9 - 1 - i] = matrix9[i][j];
+        }
+    }
+
+    cout << "Матрица после поворота на 90:" << endl;
+    for (int i = 0; i < SIZE9; ++i) {
+        for (int j = 0; j < SIZE9; ++j) {
+            cout << rotated[i][j] << "\t";
+        }
+        cout << endl;
+    }
+    return 0;
+}
