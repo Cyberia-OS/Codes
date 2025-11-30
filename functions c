@@ -1,0 +1,138 @@
+#include <iostream>
+using namespace std;
+
+void showMenu() {
+    cout << "Меню" << endl;
+    cout << "1. Возведение в степень" << endl;
+    cout << "2. Сумма в диапазоне" << endl;
+    cout << "3. Совершенные числа" << endl;
+    cout << "4. Игральная карта" << endl;
+    cout << "5. Счастливое число" << endl;
+    cout << "0. Выход" << endl;
+    cout << "Выберите: ";
+}
+
+//Задание 1 простое возведение в степень 
+double power(double a, int b) {
+    double r = 1;
+    for (int i = 0; i < b; i++) r = r * a;
+    return r;
+}
+
+//Задание 2 сумма в диапазоне
+int sumInRange(int a, int b) {
+    int s = 0;
+    int min = (a < b) ? a : b; //определяем меньшую и большую границу
+    int max = (a > b) ? a : b;
+    for (int i = min; i <= max; i++) s += i; //суммируем все числа
+    return s;
+}
+
+//Задание 3 Поиск совершенных чисел
+void perfectNumbers(int from, int to) {
+    cout << "Совершенные числа: ";
+    if (from <= 6 && 6 <= to)
+        cout << "6 "; //проверяем только известные совершенные числа в диапазоне
+    if (from <= 28 && 28 <= to)
+        cout << "28 ";
+    if (from <= 496 && 496 <= to)
+        cout << "496 ";
+    if (from <= 8128 && 8128 <= to)
+        cout << "8128 ";
+    cout << endl;
+}
+
+//задание 4 вывод карт
+void printCard(int num, int type) {
+    if (num == 1) cout << "Туз";
+    else if (num >= 2 && num <= 10) cout << num;
+    else if (num == 11) cout << "Валет";
+    else if (num == 12) cout << "Дама";
+    else if (num == 13) cout << "Король";
+    else cout << "Неизвестная карта";
+
+    cout << " ";
+
+    //масть карты
+    if (type == 1) cout << "червей";
+    else if (type == 2) cout << "бубен";
+    else if (type == 3) cout << "треф";
+    else if (type == 4) cout << "пик";
+    else cout << "неизвестной масти";
+
+    cout << endl;
+}
+
+//Задание 5 проверка счастливого числа (упрощенная)
+bool isLucky(int n) {
+    if (n < 100000 || n > 999999) {
+        cout << "Число должно быть шестизначным!" << endl;
+        return false;
+    }
+
+    //извлекаем цифры простым способом
+    int d1 = n / 100000;         //Первая цифра и т.д
+    int d2 = (n / 10000) % 10;   
+    int d3 = (n / 1000) % 10;    
+    int d4 = (n / 100) % 10;     
+    int d5 = (n / 10) % 10;     
+    int d6 = n % 10;           
+
+    //сравниваем суммы
+    return (d1 + d2 + d3) == (d4 + d5 + d6);
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+
+    do {
+        showMenu();
+        cin >> choice;
+
+        if (choice == 1) {
+            //задание 1
+            double a; int b;
+            cout << "Основание: "; cin >> a;
+            cout << "Показатель: "; cin >> b;
+            cout << "Результат: " << power(a, b) << endl;
+        }
+        else if (choice == 2) {
+            //задание 2  
+            int a, b;
+            cout << "Начало: "; cin >> a;
+            cout << "Конец: "; cin >> b;
+            cout << "Сумма: " << sumInRange(a, b) << endl;
+        }
+        else if (choice == 3) {
+            //задание 3
+            int a, b;
+            cout << "От: "; cin >> a;
+            cout << "До: "; cin >> b;
+            perfectNumbers(a, b);
+        }
+        else if (choice == 4) {
+            //задание 4
+            int num, type;
+            cout << "Достоинство (1-13): "; cin >> num;
+            cout << "Масть (1-4): "; cin >> type;
+            printCard(num, type);
+        }
+        else if (choice == 5) {
+            //задание 5
+            int n;
+            cout << "Шестизначное число: "; cin >> n;
+            if (isLucky(n)) cout << "Счастливое!" << endl;
+            else cout << "Не счастливое!" << endl;
+        }
+        else if (choice == 0) {
+            cout << "Выход" << endl;
+        }
+        else {
+            cout << "Неверный выбор!" << endl;
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
