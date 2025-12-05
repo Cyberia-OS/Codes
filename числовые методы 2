@@ -1,0 +1,171 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "RU"); 
+
+    int max_iter = 1000;     
+    int choice;          
+
+    cout << "1. Система А (3 уравнения)" << endl;
+    cout << "2. Система Б (4 уравнения)" << endl;
+    cout << "Введите номер (1 или 2): ";
+
+    cin >> choice;  
+    cout << endl; 
+
+    if (choice == 1) {
+        cout << "вы выбрали систему А" << endl;
+        cout << "уравнения системы:" << endl;
+        cout << "22.52x1 - 4.62x2 - 1.41x3 = 0.53" << endl;
+        cout << "-5.10x1 - 28.37x2 + 4.58x3 = -8.78" << endl;
+        cout << "4.68x1 - 1.91x2 + 23.85x3 = 5.14" << endl;
+        cout << endl;
+
+        //метод простых итераций
+        cout << "1. метод простых итераций:" << endl;
+
+        double x1 = 0, x2 = 0, x3 = 0;  
+        int iter = 0;     
+
+        while (iter < max_iter) {
+            double old_x1 = x1, old_x2 = x2, old_x3 = x3;
+
+            x1 = (0.53 - (-4.62 * old_x2 - 1.41 * old_x3)) / 22.52; //формула для x1 из первого уравнения 
+            x2 = (-8.78 - (-5.10 * old_x1 + 4.58 * old_x3)) / -28.37;
+            x3 = (5.14 - (4.68 * old_x1 - 1.91 * old_x2)) / 23.85;
+
+            iter++;  
+
+            double d1 = fabs(x1 - old_x1); //изменение x1
+            double d2 = fabs(x2 - old_x2); //x2
+            double d3 = fabs(x3 - old_x3); //x3
+
+            //если изменения маленькие то остановка
+            if (d1 < 0.001 && d2 < 0.001 && d3 < 0.001) {
+                cout << "   решение найдено за " << iter << " итераций" << endl;
+                break;  
+            }
+        }
+
+        cout << "   x1 = " << x1 << endl;
+        cout << "   x2 = " << x2 << endl;
+        cout << "   x3 = " << x3 << endl;
+        cout << endl;
+
+        cout << "2. метод зейделя:" << endl;
+
+        x1 = 0; x2 = 0; x3 = 0;
+        iter = 0;
+
+        while (iter < max_iter) {
+            double old_x1 = x1, old_x2 = x2, old_x3 = x3;
+
+            //сначала обновляем x1 
+            x1 = (0.53 - (-4.62 * x2 - 1.41 * x3)) / 22.52;
+            //потом обновляем x2 использует x1 уже новое x3 - старое
+            x2 = (-8.78 - (-5.10 * x1 + 4.58 * x3)) / -28.37;
+            //х1 и х2 уже новые
+            x3 = (5.14 - (4.68 * x1 - 1.91 * x2)) / 23.85;
+
+            iter++;
+            double d1 = fabs(x1 - old_x1);
+            double d2 = fabs(x2 - old_x2);
+            double d3 = fabs(x3 - old_x3);
+
+            if (d1 < 0.001 && d2 < 0.001 && d3 < 0.001) {
+                cout << "   решение найдено за " << iter << " итераций" << endl;
+                break;
+            }
+        }
+
+        cout << "   x1 = " << x1 << endl;
+        cout << "   x2 = " << x2 << endl;
+        cout << "   x3 = " << x3 << endl;
+    }
+
+    else if (choice == 2) {
+        cout << "Вы выбрали: система Б" << endl;
+        cout << "Уравнения системы:" << endl;
+        cout << "-23.98x1 + 1.50x2 - 8.78x3 + 7.74x4 = -0.04" << endl;
+        cout << "-8.70x1 - 28.73x2 + 3.86x3 + 8.08x4 = 7.86" << endl;
+        cout << "1.62x1 + 3.88x2 - 18.17x3 - 8.68x4 = -0.44" << endl;
+        cout << "-6.97x1 + 1.96x2 + 1.55x3 - 29.54x4 = -2.02" << endl;
+        cout << endl;
+
+        cout << "1. метод простых итераций:" << endl;
+
+        double y1 = 0, y2 = 0, y3 = 0, y4 = 0;  
+        int iter = 0;
+
+        while (iter < max_iter) {
+            double old_y1 = y1, old_y2 = y2, old_y3 = y3, old_y4 = y4;
+
+            y1 = (-0.04 - (1.50 * old_y2 - 8.78 * old_y3 + 7.74 * old_y4)) / -23.98;
+            y2 = (7.86 - (-8.70 * old_y1 + 3.86 * old_y3 + 8.08 * old_y4)) / -28.73;
+            y3 = (-0.44 - (1.62 * old_y1 + 3.88 * old_y2 - 8.68 * old_y4)) / -18.17;
+            y4 = (-2.02 - (-6.97 * old_y1 + 1.96 * old_y2 + 1.55 * old_y3)) / -29.54;
+
+            iter++;
+
+            double d1 = fabs(y1 - old_y1);
+            double d2 = fabs(y2 - old_y2);
+            double d3 = fabs(y3 - old_y3);
+            double d4 = fabs(y4 - old_y4);
+
+            if (d1 < 0.001 && d2 < 0.001 && d3 < 0.001 && d4 < 0.001) {
+                cout << "   Решение найдено за " << iter << " итераций" << endl;
+                break;
+            }
+        }
+
+        cout << "   x1 = " << y1 << endl;
+        cout << "   x2 = " << y2 << endl;
+        cout << "   x3 = " << y3 << endl;
+        cout << "   x4 = " << y4 << endl;
+        cout << endl;
+
+        cout << "2. МЕТОД ЗЕЙДЕЛЯ:" << endl;
+
+        y1 = 0; y2 = 0; y3 = 0; y4 = 0;
+        iter = 0;
+
+        while (iter < max_iter) {
+            double old_y1 = y1, old_y2 = y2, old_y3 = y3, old_y4 = y4;
+
+            y1 = (-0.04 - (1.50 * y2 - 8.78 * y3 + 7.74 * y4)) / -23.98;
+            y2 = (7.86 - (-8.70 * y1 + 3.86 * y3 + 8.08 * y4)) / -28.73;
+            y3 = (-0.44 - (1.62 * y1 + 3.88 * y2 - 8.68 * y4)) / -18.17;
+            y4 = (-2.02 - (-6.97 * y1 + 1.96 * y2 + 1.55 * y3)) / -29.54;
+
+            iter++;
+
+            double d1 = fabs(y1 - old_y1);
+            double d2 = fabs(y2 - old_y2);
+            double d3 = fabs(y3 - old_y3);
+            double d4 = fabs(y4 - old_y4);
+
+            if (d1 < 0.001 && d2 < 0.001 && d3 < 0.001 && d4 < 0.001) {
+                cout << "   Решение найдено за " << iter << " итераций" << endl;
+                break;
+            }
+        }
+
+        cout << "   x1 = " << y1 << endl;
+        cout << "   x2 = " << y2 << endl;
+        cout << "   x3 = " << y3 << endl;
+        cout << "   x4 = " << y4 << endl;
+    }
+
+    else {
+        cout << "ОШИБКА: нужно ввести 1 или 2!" << endl;
+        cout << "программа завершена." << endl;
+    }
+
+    cout << endl;
+    cout << "        работа завершена" << endl;
+
+
+    return 0;
+}
