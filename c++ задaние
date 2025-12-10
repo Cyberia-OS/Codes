@@ -1,0 +1,316 @@
+#include <iostream>
+using namespace std;
+
+//задание 1 - телефонный справочник
+void zadanie1() {
+
+    const int n = 5; //количество пользователей
+    int mobTel[n], tel[n], temp; //массивы для хранения номеров и временная переменная
+    int userChoice; //выбор пользователя в меню
+    bool isDataEntered = false; //флаг для проверки ввода данных
+
+    do {
+        cout << "\nменю:";
+        cout << "1 - ввести данные\n";
+        cout << "2 - показать данные\n";
+        cout << "3 - сортировать по мобильным\n";
+        cout << "4 - сортировать по домашним\n";
+        cout << "5 - выход\n";
+        cout << "выберите: ";
+        cin >> userChoice; //чтение выбора пользователя
+
+        switch (userChoice) {
+        case 1:
+            cout << "введите данные для 5 клиентов:\n";
+            for (int i = 0; i < n; i++) {
+                cout << "клиент " << i + 1 << ":\n";
+                cout << "  мобильный: ";
+                cin >> mobTel[i]; //ввод мобильного номера
+                cout << "  домашний: ";
+                cin >> tel[i]; //ввод домашнего номера
+            }
+            isDataEntered = true; //устанавливаем флаг, что данные введены
+            break;
+
+        case 2:
+            if (isDataEntered) { //проверяем, введены ли данные
+                cout << "\nданные клиентов:\n";
+                for (int i = 0; i < n; i++) {
+                    cout << i + 1 << " " << mobTel[i] << " " << tel[i] << "\n"; //вывод данных
+                }
+            }
+            else {
+                cout << "нет данных!\n"; //сообщение если данные не введены
+            }
+            break;
+
+        case 3:
+            if (isDataEntered) {
+                cout << "сортировка по мобильным...\n";
+                //пузырьковая сортировка по убыванию для мобильных номеров
+                for (int i = 1; i < n; i++) {
+                    for (int r = 0; r < n - i; r++) {
+                        if (mobTel[r] < mobTel[r + 1]) { //сравниваем соседние элементы
+                            //меняем местами мобильные номера
+                            temp = mobTel[r];
+                            mobTel[r] = mobTel[r + 1];
+                            mobTel[r + 1] = temp;
+                            //также меняем местами домашние номера для соответствия
+                            temp = tel[r];
+                            tel[r] = tel[r + 1];
+                            tel[r + 1] = temp;
+                        }
+                    }
+                }
+            }
+            else {
+                cout << "нет данных!\n";
+            }
+            break;
+
+        case 4:
+            if (isDataEntered) {
+                cout << "сортировка по домашним\n";
+                //пузырьковая сортировка по убыванию для домашних номеров
+                for (int i = 1; i < n; i++) {
+                    for (int r = 0; r < n - i; r++) {
+                        if (tel[r] < tel[r + 1]) {
+                            //меняем местами домашние номера
+                            temp = tel[r];
+                            tel[r] = tel[r + 1];
+                            tel[r + 1] = temp;
+                            //также меняем местами мобильные номера для соответствия
+                            temp = mobTel[r];
+                            mobTel[r] = mobTel[r + 1];
+                            mobTel[r + 1] = temp;
+                        }
+                    }
+                }
+            }
+            else {
+                cout << "нет данных!\n";
+            }
+            break;
+
+        case 5:
+            cout << "выход\n";
+            break;
+
+        default:
+            cout << "неверный выбор!\n"; //обработка некорректного выбора
+        }
+    } while (userChoice != 5); //цикл продолжается пока пользователь не выберет выход
+}
+
+//задание 2 - улучшенная пузырьковая сортировка
+void zadanie2() {
+
+    const int n = 10;
+    int mass[n], temp, nShift; 
+
+    cout << "введите 10 чисел: ";
+    for (int i = 0; i < n; i++) {
+        cin >> mass[i]; 
+    }
+
+    for (int i = 1; i < n; i++) {
+        nShift = 0; 
+        //внутренний цикл для сравнения соседних элементов
+        for (int r = 0; r < n - i; r++) {
+            if (mass[r] > mass[r + 1]) { //если текущий больше следующего
+                //меняем элементы местами
+                temp = mass[r];
+                mass[r] = mass[r + 1];
+                mass[r + 1] = temp;
+                nShift++; //увеличиваем счетчик перестановок
+            }
+        }
+
+        //проверяем, были ли перестановки на этом проходе
+        if (nShift == 0) {
+            cout << "сортировка остановлена на шаге " << i << "\n";
+            break; //выходим из цикла если массив уже отсортирован
+        }
+    }
+
+    cout << "результат: ";
+    for (int i = 0; i < n; i++) {
+        cout << mass[i] << " "; //вывод отсортированного массива
+    }
+    cout << "\n";
+}
+
+//задание 3 блинная сортировка
+void zadanie3() {
+    cout << "\nзадание 3: блинная сортировка\n";
+
+    int n;
+    cout << "сколько оладий? ";
+    cin >> n; //ввод количества элементов
+
+    int* pancakes = new int[n]; //динамический массив для хранения радиусов оладий
+
+    cout << "введите радиусы оладий: ";
+    for (int i = 0; i < n; i++) {
+        cin >> pancakes[i]; //заполнение массива
+    }
+
+    cout << "\nпроцесс сортировки:\n";
+
+    //основной цикл блинной сортировки
+    for (int size = n; size > 1; size--) {
+        int maxIndex = 0; //индекс максимального элемента
+
+        //поиск максимального элемента в текущей части массива
+        for (int i = 1; i < size; i++) {
+            if (pancakes[i] > pancakes[maxIndex]) {
+                maxIndex = i; //обновляем индекс максимального
+            }
+        }
+
+        //если максимальный элемент не на своем месте
+        if (maxIndex != size - 1) {
+            //переворачиваем часть массива до максимального элемента
+            if (maxIndex != 0) {
+                int start = 0, end = maxIndex;
+                //цикл переворота
+                while (start < end) {
+                    int temp = pancakes[start];
+                    pancakes[start] = pancakes[end];
+                    pancakes[end] = temp;
+                    start++;
+                    end--;
+                }
+                cout << "перевернули до " << maxIndex + 1 << " оладий\n";
+            }
+
+            //переворачиваем весь текущий подмассив
+            int start = 0, end = size - 1;
+            while (start < end) {
+                int temp = pancakes[start];
+                pancakes[start] = pancakes[end];
+                pancakes[end] = temp;
+                start++;
+                end--;
+            }
+            cout << "перевернули " << size << " оладий\n";
+        }
+    }
+
+    cout << "\nотсортировано: ";
+    for (int i = 0; i < n; i++) {
+        cout << pancakes[i] << " "; //вывод отсортированного массива
+    }
+    cout << "\n";
+
+    delete[] pancakes; //освобождаем память динамического массива
+}
+
+//задание 4 - сравнение сортировок
+void zadanie4() {
+    cout << "\nзадание 4: сравнение сортировок\n";
+
+    const int SIZE = 1000; 
+    const int TESTS = 10; 
+
+    int seed = 12345;
+    int totalBubble = 0; 
+    int totalSelection = 0; 
+
+    cout << "тестируем " << TESTS << " раз по " << SIZE << " чисел...\n\n";
+
+    for (int test = 0; test < TESTS; test++) {
+        int arr1[SIZE], arr2[SIZE]; //два одинаковых массива для сравнения
+
+        //заполняем оба массива одинаковыми случайными числами
+        for (int i = 0; i < SIZE; i++) {
+            seed = seed * 1103515245 + 12345; //генерируем следующее псевдослучайное число
+            int num = (seed / 65536) % 10000; //ограничиваем диапазон
+            arr1[i] = arr2[i] = num; //записываем число в оба массива
+        }
+
+        //пузырьковая сортировка 
+        int bubbleSwaps = 0; //счетчик перестановок для пузырьковой сортировки
+        for (int i = 0; i < SIZE - 1; i++) {
+            bool swapped = false; 
+            for (int j = 0; j < SIZE - i - 1; j++) {
+                if (arr1[j] > arr1[j + 1]) {
+                    //перестановка элементов
+                    int temp = arr1[j];
+                    arr1[j] = arr1[j + 1];
+                    arr1[j + 1] = temp;
+                    swapped = true;
+                    bubbleSwaps++;
+                }
+            }
+            if (!swapped) break; //если не было перестановок выходим досрочно
+        }
+
+        //сортировка выбором
+        int selectionSwaps = 0; //счетчик перестановок для сортировки выбором
+        for (int i = 0; i < SIZE - 1; i++) {
+            int minIndex = i; //минимальный элемент на позиции i
+            //поиск минимального элемента в оставшейся части массива
+            for (int j = i + 1; j < SIZE; j++) {
+                if (arr2[j] < arr2[minIndex]) {
+                    minIndex = j; //находим новый минимальный элемент
+                }
+            }
+            //если минимальный элемент не на своей позиции - меняем местами
+            if (minIndex != i) {
+                int temp = arr2[i];
+                arr2[i] = arr2[minIndex];
+                arr2[minIndex] = temp;
+                selectionSwaps++;
+            }
+        }
+
+        totalBubble += bubbleSwaps;
+        totalSelection += selectionSwaps;
+
+        cout << "тест " << test + 1 << ": пузырьком=" << bubbleSwaps << " выбором=" << selectionSwaps << "\n";
+    }
+
+    cout << "\nсреднее число перестановок:\n";
+    cout << "пузырьковая: " << totalBubble / TESTS << "\n";
+    cout << "выбором: " << totalSelection / TESTS << "\n";
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+
+    do {
+        cout << "\nвыберите задание\n";
+        cout << "1. телефонный справочник\n";
+        cout << "2. улучшенная пузырьковая сортировка\n";
+        cout << "3. блинная сортировка\n";
+        cout << "4. сравнение сортировок\n";
+        cout << "5. выход\n";
+        cout << "ваш выбор: ";
+        cin >> choice; 
+
+        switch (choice) {
+        case 1:
+            zadanie1(); 
+            break;
+        case 2:
+            zadanie2(); 
+            break;
+        case 3:
+            zadanie3(); 
+            break;
+        case 4:
+            zadanie4(); 
+            break;
+        case 5:
+            cout << "выход из программы.\n";
+            break;
+        default:
+            cout << "неверный выбор!\n"; 
+        }
+
+    } while (choice != 5); 
+
+    return 0; 
+}
