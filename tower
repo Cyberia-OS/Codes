@@ -1,0 +1,45 @@
+#include <iostream>  
+#include <string>   
+
+using namespace std; 
+
+//количество дисков, начальный стержень, конечный стержень, вспомогательный стержень
+void tower(int disks, string start, string finish, string vsp) {
+    if (disks == 0) {
+        return;
+    }
+
+    tower(disks - 1, start, vsp, finish); //переместить все диски кроме нижнего на вспомогательный стержень
+    cout << "Переместить диск #" << disks //переместить самый большой диск на конечный стержень
+        << " со стержня '" << start
+        << "' на стержень '" << finish << "'" << endl;
+
+    tower(disks - 1, vsp, finish, start); //переместить все диски с вспомогательного стержня на конечный
+}
+
+int mainProgram() {
+    int diskCount;
+
+    cout << "введите количество дисков в башне: ";
+    cin >> diskCount;
+
+    if (diskCount <= 0) {
+        cout << "ошибка количество должно быть больше нуля" << endl;
+        return 1; 
+    }
+
+    cout << endl << "Последовательность действий для "
+        << diskCount << " дисков:" << endl;
+
+    //A - начальный стержень
+    //C - конечный стержень  
+    //B - вспомогательный стержень
+    tower(diskCount, "A", "C", "B");
+    cout << "количество операций: " << ((1 << diskCount) - 1) << endl;
+    return 0; 
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    mainProgram();
+}
