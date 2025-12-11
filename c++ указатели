@@ -1,0 +1,169 @@
+#include <iostream>
+
+using namespace std;
+
+//задание 1 наибольшее из двух чисел
+void task1() {
+    cout << "1. наибольшее из двух чисел" << endl;
+    int a, b;
+    cout << "введите два числа: ";
+    cin >> a >> b;
+
+    int* ptra = &a; //создаем указатель на переменную a
+    int* ptrb = &b; //создаем указатель на переменную b
+
+    cout << "адрес a: " << ptra << ", значение: " << *ptra << endl; //выводим адрес и значение через указатель
+    cout << "адрес b: " << ptrb << ", значение: " << *ptrb << endl; //выводим адрес и значение через указатель
+
+    if (*ptra > *ptrb) //сравниваем значения через разыменование указателей
+        cout << "наибольшее: " << *ptra << endl;
+    else if (*ptrb > *ptra)
+        cout << "наибольшее: " << *ptrb << endl;
+    else
+        cout << "числа равны" << endl;
+}
+
+//задание 2 определение знака числа
+void task2() {
+    cout << "2. определение знака числа" << endl;
+    int num;
+    cout << "введите число: ";
+    cin >> num;
+
+    int* ptr = &num; 
+
+    cout << "адрес числа: " << ptr << endl; 
+    cout << "значение: " << *ptr << endl; 
+
+    if (*ptr > 0) //проверяем знак числа через указатель
+        cout << "положительное" << endl;
+    else if (*ptr < 0)
+        cout << "отрицательное" << endl;
+    else
+        cout << "ноль" << endl;
+}
+
+//задание 3 обмен значений
+void task3() {
+    cout << "3. обмен значений" << endl;
+    int x, y;
+    cout << "введите x и y: ";
+    cin >> x >> y;
+
+    cout << "до: x = " << x << ", y = " << y << endl;
+
+    int* ptrx = &x; //указатель на переменную x
+    int* ptry = &y; //указатель на переменную y
+    int temp = *ptrx; //сохраняем значение x во временной переменной
+    *ptrx = *ptry; //присваиваем x значение y через указатели
+    *ptry = temp; //присваиваем y сохраненное значение x
+
+    cout << "после: x = " << x << ", y = " << y << endl;
+    cout << "*ptrx = " << *ptrx << ", *ptry = " << *ptry << endl; 
+}
+
+//задание 4 калькулятор
+void task4() {
+    cout << "4. калькулятор" << endl;
+    double a, b;
+    char op;
+
+    cout << "введите выражение (пример: 5 + 3): ";
+    cin >> a >> op >> b;
+
+    double* ptra = &a; //указатель на первое число
+    double* ptrb = &b; //указатель на второе число
+    char* ptrop = &op; //указатель на оператор
+    double result;
+    double* ptrres = &result; //указатель на результат
+
+    if (*ptrop == '+') //проверяем оператор через указатель
+        *ptrres = *ptra + *ptrb; //выполняем сложение через указатели
+    else if (*ptrop == '-')
+        *ptrres = *ptra - *ptrb;
+    else if (*ptrop == '*')
+        *ptrres = *ptra * *ptrb;
+    else if (*ptrop == '/') {
+        if (*ptrb != 0) //проверяем деление на ноль через указатель
+            *ptrres = *ptra / *ptrb;
+        else {
+            cout << "ошибка: деление на ноль!" << endl;
+            return;
+        }
+    }
+    else {
+        cout << "неизвестная операция!" << endl;
+        return;
+    }
+
+    cout << *ptra << " " << *ptrop << " " << *ptrb << " = " << *ptrres << endl;
+    cout << "адрес результата: " << ptrres << endl; 
+}
+
+//задание 5 сумма элементов массива
+void task5() {
+    cout << "5. сумма элементов массива" << endl;
+    int n;
+    cout << "введите размер массива: ";
+    cin >> n;
+
+    int* arr = new int[n]; //выделяем память для массива
+
+    cout << "введите " << n << " чисел: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i]; //заполняем массив значениями
+    }
+
+    int sum = 0;
+    int* ptr = arr; //указатель на начало массива
+    for (int i = 0; i < n; i++) {
+        sum += *(ptr + i); //доступ к элементам через арифметику указателей
+    }
+
+    cout << "массив: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\nсумма элементов массива: " << sum << endl;
+
+    delete[] arr; 
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+
+    do {
+        cout << "1. наибольшее из двух чисел" << endl;
+        cout << "2. определение знака числа" << endl;
+        cout << "3. обмен значений" << endl;
+        cout << "4. калькулятор" << endl;
+        cout << "5. сумма элементов массива" << endl;
+        cout << "6. все задания" << endl;
+        cout << "0. выход" << endl;
+        cout << "выберите: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: task1(); break;
+        case 2: task2(); break;
+        case 3: task3(); break;
+        case 4: task4(); break;
+        case 5: task5(); break;
+        case 6:
+            task1();
+            task2();
+            task3();
+            task4();
+            task5();
+            break;
+        case 0:
+            cout << "выход" << endl;
+            break;
+        default:
+            cout << "неверный выбор!" << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
