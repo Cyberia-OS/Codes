@@ -1,0 +1,426 @@
+#include <iostream>
+#include <string>
+
+int findgcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int findlcm(int a, int b) {
+    int gcd = findgcd(a, b);
+    return (a / gcd) * b;
+}
+
+void selectionsort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minindex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minindex]) {
+                minindex = j;
+            }
+        }
+
+        if (minindex != i) {
+            int temp = arr[i];
+            arr[i] = arr[minindex];
+            arr[minindex] = temp;
+        }
+    }
+}
+
+//задание 1
+void task1() {
+    std::cout << "задание 1: символ типа char" << std::endl;
+    char letter = 'a';//объявление переменной типа char
+    std::cout << "значение переменной типа char: " << letter << std::endl;
+    std::cout << "код ascii символа '" << letter << "': " << (int)letter << std::endl;//преобразование char в int для показа ascii кода
+}
+
+//задание 2
+void task2() {
+    std::cout << "задание 2: произведение двух чисел" << std::endl;
+    int num1, num2;
+
+    std::cout << "введите первое число: ";
+    std::cin >> num1;//ввод первого числа
+    std::cout << "введите второе число: ";
+    std::cin >> num2;//ввод второго числа
+
+    int product = num1 * num2;//вычисление произведения
+    std::cout << num1 << " * " << num2 << " = " << product << std::endl;
+}
+
+//задание 3
+void task3() {
+    std::cout << "задание 3 среднее арифметическое float и double" << std::endl;
+    float num1 = 3.14f;//объявление float с суффиксом f
+    float num2 = 2.71f;
+    double num3 = 1.618;//объявление double
+
+    std::cout << "число 1 (float): " << num1 << std::endl;
+    std::cout << "число 2 (float): " << num2 << std::endl;
+    std::cout << "число 3 (double): " << num3 << std::endl;
+
+    double average = (num1 + num2 + num3) / 3.0;//вычисление среднего
+    std::cout << "среднее арифметическое: " << average << std::endl;
+}
+
+//задание 4
+void task4() {
+    std::cout << "задание 4: проверка четности числа " << std::endl;
+    int number;
+
+    std::cout << "введите целое число: ";
+    std::cin >> number;
+
+    if (number % 2 == 0) {//проверка остатка от деления на 2
+        std::cout << number << " - чётное" << std::endl;
+    }
+    else {
+        std::cout << number << " - нечётное" << std::endl;
+    }
+}
+
+//задание 6
+void task6() {
+    std::cout << "задание 6: нок через нод" << std::endl;
+    int num1, num2;
+
+    std::cout << "введите первое число: ";
+    std::cin >> num1;
+    std::cout << "введите второе число: ";
+    std::cin >> num2;
+
+    int gcd = findgcd(num1, num2);//вызов функции для нахождения нод
+    int lcm = findlcm(num1, num2);//вызов функции для нахождения нок
+
+    std::cout << "наибольший общий делитель (нод) чисел " << num1 << " и " << num2 << ": " << gcd << std::endl;
+    std::cout << "наименьшее общее кратное (нок) чисел " << num1 << " и " << num2 << ": " << lcm << std::endl;
+}
+
+//задание 7
+void task7() {
+    std::cout << "задание 7: кубы первых 10 натуральных чисел" << std::endl;
+    std::cout << "число\tкуб" << std::endl;
+    std::cout << "-------------" << std::endl;
+
+    for (int i = 1; i <= 10; i++) {//цикл от 1 до 10
+        int cube = i * i * i;//вычисление куба
+        std::cout << i << "\t" << cube << std::endl;
+    }
+}
+
+//задание 8
+void task8() {
+    std::cout << "=== задание 8: факториал числа ===" << std::endl;
+    int n;
+    unsigned long long factorial = 1;//используем unsigned long long для больших чисел
+
+    std::cout << "введите положительное целое число: ";
+    std::cin >> n;
+
+    if (n < 0) {//проверка на отрицательное число
+        std::cout << "факториал отрицательного числа не определен!" << std::endl;
+        return;
+    }
+
+    int i = 1;
+    while (i <= n) {
+        factorial *= i;
+        i++;
+    }
+
+    std::cout << n << "! = " << factorial << std::endl;
+}
+
+//задание 9
+void task9() {
+    std::cout << "задание 9 минимальный и максимальный элемент в массиве" << std::endl;
+    int n;
+
+    std::cout << "введите длину массива: ";
+    std::cin >> n;
+
+    if (n <= 0) {//проверка корректности длины
+        std::cout << "длина массива должна быть положительной!" << std::endl;
+        return;
+    }
+
+    const int max_size = 100;//максимальный размер массива
+    if (n > max_size) {
+        std::cout << "максимальная длина массива: " << max_size << std::endl;
+        n = max_size;
+    }
+
+    int arr[max_size];//объявление массива фиксированного размера
+
+    std::cout << "введите " << n << " элементов массива: ";
+    for (int i = 0; i < n; i++) {
+        std::cin >> arr[i];
+    }
+
+    int minindex = 0, maxindex = 0;//индексы минимального и максимального элементов
+    for (int i = 1; i < n; i++) {//поиск min и max
+        if (arr[i] < arr[minindex]) {
+            minindex = i;
+        }
+        if (arr[i] > arr[maxindex]) {
+            maxindex = i;
+        }
+    }
+
+    std::cout << "минимальный элемент: " << arr[minindex]
+        << " (индекс " << minindex << ")" << std::endl;
+    std::cout << "максимальный элемент: " << arr[maxindex]
+        << " (индекс " << maxindex << ")" << std::endl;
+
+    if (minindex != maxindex) {//обмен элементов, если они разные
+        int temp = arr[minindex];
+        arr[minindex] = arr[maxindex];
+        arr[maxindex] = temp;
+
+        std::cout << "массив после замены: ";
+        for (int i = 0; i < n; i++) {
+            std::cout << arr[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+    else {
+        std::cout << "минимальный и максимальный элементы совпадают!" << std::endl;
+    }
+}
+
+//задание 10
+void task10() {
+    std::cout << "задание 10: сортировка выбором " << std::endl;
+    int n;
+
+    std::cout << "введите количество элементов массива: ";
+    std::cin >> n;
+
+    if (n <= 0) {
+        std::cout << "количество элементов должно быть положительным!" << std::endl;
+        return;
+    }
+
+    const int max_size = 100;
+    if (n > max_size) {
+        std::cout << "максимальное количество элементов: " << max_size << std::endl;
+        n = max_size;
+    }
+
+    int arr[max_size];
+
+    std::cout << "введите " << n << " элементов массива: ";
+    for (int i = 0; i < n; i++) {
+        std::cin >> arr[i];
+    }
+
+    std::cout << "исходный массив: ";
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+
+    selectionsort(arr, n);
+
+    std::cout << "отсортированный массив: ";
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+//задание 11
+void task11() {
+    std::cout << "задание 11: максимальный элемент в массиве " << std::endl;
+
+    const int size = 8;//размер массива
+    int arr[size];
+
+    std::cout << "массив из 8 элементов:" << std::endl;
+    for (int i = 0; i < size; i++) {//заполнение массива псевдослучайными числами
+        arr[i] = (i * 17 + 3) % 100 + 1;//формула для генерации чисел от 1 до 100
+        std::cout << "arr[" << i << "] = " << arr[i] << std::endl;
+    }
+
+    int maxelement = arr[0];
+    for (int i = 1; i < size; i++) {//поиск максимального элемента
+        if (arr[i] > maxelement) {
+            maxelement = arr[i];
+        }
+    }
+
+    std::cout << "максимальный элемент в массиве: " << maxelement << std::endl;
+}
+
+//задание 13
+void task13() {
+    std::cout << "задание 13 двумерный массив 3x3" << std::endl;
+
+    const int rows = 3;
+    const int cols = 3;
+    int matrix[rows][cols];//объявление двумерного массива
+
+    int counter = 1;
+    for (int i = 0; i < rows; i++) {//заполнение массива
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = counter++;
+        }
+    }
+
+    std::cout << "двумерный массив 3x3:" << std::endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            std::cout << matrix[i][j] << "\t";//табуляция для красивого вывода
+        }
+        std::cout << std::endl;//переход на новую строку после каждой строки массива
+    }
+}
+
+//задание 14
+void task14() {
+    std::cout << "задание 14: анализ массива 4x4" << std::endl;
+
+    const int size = 4;
+    int matrix[size][size];
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrix[i][j] = (i * size + j + 1) * 3 % 20 + 1;//генерация чисел от 1 до 20
+        }
+    }
+
+    std::cout << "массив 4x4:" << std::endl;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            std::cout << matrix[i][j] << "\t";
+        }
+        std::cout << std::endl;
+    }
+
+    int diagonalsum = 0;
+    for (int i = 0; i < size; i++) {//сумма элементов главной диагонали
+        diagonalsum += matrix[i][i];//элементы с одинаковыми индексами
+    }
+
+    int rowsum = 0;
+    for (int j = 0; j < size; j++) {//сумма элементов второй строки 
+        rowsum += matrix[1][j];
+    }
+
+    std::cout << "сумма элементов главной диагонали: " << diagonalsum << std::endl;
+    std::cout << "сумма элементов второй строки: " << rowsum << std::endl;
+}
+
+//задание 15
+void task15() {
+    std::cout << "задание 15: статистика двумерного массива" << std::endl;
+
+    const int rows = 5;
+    const int cols = 5;
+    int matrix[rows][cols];
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = (i * cols + j + 1) * 7 % 100 + 1;//генерация чисел от 1 до 100
+        }
+    }
+
+    std::cout << "массив " << rows << "x" << cols << ":" << std::endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            std::cout << matrix[i][j] << "\t";
+        }
+        std::cout << std::endl;
+    }
+
+    int sum = 0;
+    int minelement = matrix[0][0];//начальные значения для поиска min и max
+    int maxelement = matrix[0][0];
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int current = matrix[i][j];
+            sum += current;//накопление суммы
+
+            if (current < minelement) {//поиск минимального
+                minelement = current;
+            }
+            if (current > maxelement) {//поиск максимального
+                maxelement = current;
+            }
+        }
+    }
+
+    double average = (double)sum / (rows * cols);
+
+    std::cout << "статистика массива" << std::endl;
+    std::cout << "сумма всех элементов: " << sum << std::endl;
+    std::cout << "среднее арифметическое: " << average << std::endl;
+    std::cout << "минимальный элемент: " << minelement << std::endl;
+    std::cout << "максимальный элемент: " << maxelement << std::endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+    bool continueprogram = true;
+
+    while (continueprogram) {
+        std::cout << "тема: типы данных и ввод-вывод данных" << std::endl;
+        std::cout << "  1. символ типа char" << std::endl;
+        std::cout << "  2. произведение двух чисел" << std::endl;
+        std::cout << "  3. среднее арифметическое float и double" << std::endl;
+        std::cout << std::endl;
+        std::cout << "тема: операторы и условные конструкции" << std::endl;
+        std::cout << "  4. проверка четности числа" << std::endl;
+        std::cout << "  6. нок через нод" << std::endl;
+        std::cout << std::endl;
+        std::cout << "тема: циклы и последовательности" << std::endl;
+        std::cout << "  7. кубы первых 10 натуральных чисел" << std::endl;
+        std::cout << "  8. факториал числа" << std::endl;
+        std::cout << "  9. минимальный и максимальный элемент в массиве" << std::endl;
+        std::cout << std::endl;
+        std::cout << "тема: одномерные массивы" << std::endl;
+        std::cout << "  10. сортировка выбором" << std::endl;
+        std::cout << "  11. максимальный элемент в массиве" << std::endl;
+        std::cout << std::endl;
+        std::cout << "тема: двумерные массивы и вложенные циклы" << std::endl;
+        std::cout << "  13. двумерный массив 3x3" << std::endl;
+        std::cout << "  14. анализ массива 4x4" << std::endl;
+        std::cout << "  15. статистика двумерного массива" << std::endl;
+        std::cout << std::endl;
+        std::cout << "  0. выход" << std::endl;
+        std::cout << "выберите задание: ";
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1: task1(); break;
+        case 2: task2(); break;
+        case 3: task3(); break;
+        case 4: task4(); break;
+        case 6: task6(); break;
+        case 7: task7(); break;
+        case 8: task8(); break;
+        case 9: task9(); break;
+        case 10: task10(); break;
+        case 11: task11(); break;
+        case 13: task13(); break;
+        case 14: task14(); break;
+        case 15: task15(); break;
+        case 0:
+            continueprogram = false;
+            std::cout << "выход из программы." << std::endl;
+            break;
+        default:
+            std::cout << "неверный выбор. доступные задания: 1-4, 6-11, 13-15, 0" << std::endl;
+        }
+    }
+
+    return 0;
+}
