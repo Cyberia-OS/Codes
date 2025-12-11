@@ -1,0 +1,363 @@
+#include <iostream>
+#include <cstdlib>    
+using namespace std;
+
+void initRandom() {
+    srand(time(0));  
+}
+
+int myRand() {
+    return rand(); 
+}
+
+//перегруженные функции для инициализации матриц разных типов
+void initializeMatrix(int** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrix[i][j] = myRand() % 100;  //заполняем ячейку случайным числом от 0 до 99
+        }
+    }
+}
+
+void initializeMatrix(double** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrix[i][j] = (myRand() % 1000) / 10.0; 
+        }
+    }
+}
+
+void initializeMatrix(char** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrix[i][j] = 'A' + myRand() % 26;  //заполняем случайной буквой от A до Z
+        }
+    }
+}
+
+//перегруженные функции для вывода матриц разных типов
+void printMatrix(int** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            cout << matrix[i][j] << "\t"; //выводим элемент с табуляцией для читаемости
+        }
+        cout << endl;  //после каждой строки матрицы переходим на новую строку
+    }
+}
+
+void printMatrix(double** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            cout << matrix[i][j] << "\t";  //выводим элемент с табуляцией
+        }
+        cout << endl;  //переход на новую строку
+    }
+}
+
+void printMatrix(char** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            cout << matrix[i][j] << "\t"; 
+        }
+        cout << endl; 
+    }
+}
+
+//перегруженные функции для нахождения мин/макс на главной диагонали
+void findMinMaxDiagonal(int** matrix, int size, int& minVal, int& maxVal) {
+    minVal = matrix[0][0]; //первый элемент диагонали минимальный
+    maxVal = matrix[0][0]; //первый элемент диагонали максимальный
+    for (int i = 0; i < size; i++) {
+        if (matrix[i][i] < minVal) minVal = matrix[i][i];  //если нашли элемент меньше текущего минимума обновляем минимум
+        if (matrix[i][i] > maxVal) maxVal = matrix[i][i];  //если нашли элемент больше текущего максимума обновляем максимум
+    }
+}
+
+void findMinMaxDiagonal(double** matrix, int size, double& minVal, double& maxVal) {
+    minVal = matrix[0][0];  //начальное значение минимума
+    maxVal = matrix[0][0];  //начальное значение максимума
+    for (int i = 0; i < size; i++) {
+        if (matrix[i][i] < minVal) minVal = matrix[i][i];  //обновляем минимум
+        if (matrix[i][i] > maxVal) maxVal = matrix[i][i];  //обновляем максимум
+    }
+}
+
+void findMinMaxDiagonal(char** matrix, int size, char& minVal, char& maxVal) {
+    minVal = matrix[0][0];  //начальное значение минимума
+    maxVal = matrix[0][0];  //начальное значение максимума
+    for (int i = 0; i < size; i++) {
+        if (matrix[i][i] < minVal) minVal = matrix[i][i];  //обновляем минимум 
+        if (matrix[i][i] > maxVal) maxVal = matrix[i][i];  //обновляем максимум
+    }
+}
+
+//функции сортировки строк пузырьком для разных типов
+void sortRow(int* row, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (row[j] > row[j + 1]) {
+                swap(row[j], row[j + 1]);  //меняем элементы местами если текущий больше следующего
+            }
+        }
+    }
+}
+
+void sortRow(double* row, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (row[j] > row[j + 1]) {
+                swap(row[j], row[j + 1]);  //меняем элементы местами
+            }
+        }
+    }
+}
+
+void sortRow(char* row, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (row[j] > row[j + 1]) {
+                swap(row[j], row[j + 1]);  //меняем элементы местами
+            }
+        }
+    }
+}
+
+//перегруженные функции для сортировки всех строк матрицы
+void sortMatrixRows(int** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        sortRow(matrix[i], size);  //сортируем каждую строку матрицы отдельно
+    }
+}
+
+void sortMatrixRows(double** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        sortRow(matrix[i], size);  //сортируем каждую строку
+    }
+}
+
+void sortMatrixRows(char** matrix, int size) {
+    for (int i = 0; i < size; i++) {
+        sortRow(matrix[i], size);  //сортируем каждую строку
+    }
+}
+
+//задание 1 работа с матрицами 
+void task1() {
+    cout << "перегруженные функции для матриц" << endl;
+
+    int size;
+    cout << "введите размер квадратной матрицы: ";
+    cin >> size;
+
+    int** intMatrix = new int* [size];  //выделяем память под массив указателей на строки для int
+    double** doubleMatrix = new double* [size]; 
+    char** charMatrix = new char* [size]; 
+
+    for (int i = 0; i < size; i++) {
+        intMatrix[i] = new int[size];  
+        doubleMatrix[i] = new double[size];  
+        charMatrix[i] = new char[size]; 
+    }
+
+    //работа с матрицей int
+    cout << "матрица типа int" << endl;
+    initializeMatrix(intMatrix, size);  //заполняем матрицу случайными числами
+    cout << "исходная матрица:" << endl;
+    printMatrix(intMatrix, size); 
+
+    int minInt, maxInt;
+    findMinMaxDiagonal(intMatrix, size, minInt, maxInt);  //находим минимум и максимум на главной диагонали
+    cout << "минимальный элемент на главной диагонали: " << minInt << endl;
+    cout << "максимальный элемент на главной диагонали: " << maxInt << endl;
+
+    sortMatrixRows(intMatrix, size);  //сортируем строки матрицы
+    cout << "матрица после сортировки строк:" << endl;
+    printMatrix(intMatrix, size);  
+
+    //работа с матрицей double
+    cout << "матрица типа double" << endl;
+    initializeMatrix(doubleMatrix, size);  //заполняем double матрицу
+    cout << "исходная матрица:" << endl;
+    printMatrix(doubleMatrix, size);  
+
+    double minDouble, maxDouble;
+    findMinMaxDiagonal(doubleMatrix, size, minDouble, maxDouble);  //находим мин/макс на диагонали
+    cout << "минимальный элемент на главной диагонали: " << minDouble << endl;
+    cout << "максимальный элемент на главной диагонали: " << maxDouble << endl;
+
+    sortMatrixRows(doubleMatrix, size);  //сортируем строки
+    cout << "матрица после сортировки строк:" << endl;
+    printMatrix(doubleMatrix, size);  
+
+    //работа с матрицей char
+    cout << "матрица типа char" << endl;
+    initializeMatrix(charMatrix, size);  //заполняем char матрицу
+    cout << "исходная матрица:" << endl;
+    printMatrix(charMatrix, size);  
+
+    char minChar, maxChar;
+    findMinMaxDiagonal(charMatrix, size, minChar, maxChar);  //находим мин/макс на диагонали
+    cout << "минимальный элемент на главной диагонали: " << minChar << endl;
+    cout << "максимальный элемент на главной диагонали: " << maxChar << endl;
+
+    sortMatrixRows(charMatrix, size);  //сортируем строки
+    cout << "матрица после сортировки строк:" << endl;
+    printMatrix(charMatrix, size);  
+}
+
+//задание 2 рекурсивный НОД
+int gcd(int a, int b) {
+    if (b == 0) return a;  //базовый случай рекурсии: если второе число 0 то НОД первое число
+    return gcd(b, a % b);  //рекурсивный вызов с новыми аргументами
+}
+
+void task2() {
+    cout << "рекурсивное нахождение НОД" << endl;
+
+    int a, b;
+    cout << "введите первое число: ";
+    cin >> a;
+    cout << "введите второе число: ";
+    cin >> b;
+
+    if (a < 0) a = -a;  //берем абсолютное значение первого числа
+    if (b < 0) b = -b;  //берем абсолютное значение второго числа
+
+    int result = gcd(a, b);  //вызываем рекурсивную функцию для вычисления НОД
+    cout << "НОД(" << a << ", " << b << ") = " << result << endl;
+
+    cout << "примеры работы функции:" << endl;
+    cout << "НОД(48, 18) = " << gcd(48, 18) << endl;
+    cout << "НОД(17, 13) = " << gcd(17, 13) << endl;
+    cout << "НОД(0, 5) = " << gcd(0, 5) << endl;
+    cout << "НОД(100, 0) = " << gcd(100, 0) << endl;
+}
+
+//задание 3 игра быки и коровы
+int generateSecretNumber() {
+    int number = 0;
+    bool used[10] = { false };  //массив для отметки использованных цифр (0-9)
+
+    int digit;
+    do {
+        digit = myRand() % 9 + 1;  //генерируем первую цифру от 1 до 9 (чтобы число было четырехзначным)
+    } while (used[digit]);  //пока цифра уже использована, генерируем заново
+    used[digit] = true;  //отмечаем цифру как использованную
+    number = number * 10 + digit;  //добавляем цифру к числу
+
+    for (int i = 0; i < 3; i++) {
+        do {
+            digit = myRand() % 10;  //генерируем цифру от 0 до 9 для остальных трех позиций
+        } while (used[digit]);  //пока цифра уже использована
+        used[digit] = true;  //отмечаем как использованную
+        number = number * 10 + digit;  //добавляем к числу
+    }
+
+    return number; 
+}
+
+void bullsAndCows(int secret, int attempts = 1) {
+    if (attempts > 20) {
+        cout << "вы исчерпали 20 попыток. загаданное число: " << secret << endl;
+        return;  
+    }
+
+    cout << "попытка №" << attempts << endl;
+    cout << "введите четырехзначное число: ";
+
+    int guess;
+    cin >> guess;
+
+    if (guess < 1000 || guess > 9999) {
+        cout << "ошибка! введите четырехзначное число." << endl;
+        bullsAndCows(secret, attempts);  
+        return;
+    }
+
+    if (guess == secret) {
+        cout << "поздравляю! вы угадали число!" << endl;
+        cout << "количество попыток: " << attempts << endl;
+        return;  
+    }
+
+    int bulls = 0, cows = 0;
+    int secretDigits[4], guessDigits[4];
+    int tempSecret = secret, tempGuess = guess;
+
+    for (int i = 3; i >= 0; i--) {
+        secretDigits[i] = tempSecret % 10;  //получаем цифру секретного числа
+        guessDigits[i] = tempGuess % 10;    //получаем цифру предложенного числа
+        tempSecret /= 10; //убираем последнюю цифру
+        tempGuess /= 10;  //убираем последнюю цифру
+    }
+
+    int secretCopy[4];
+    for (int i = 0; i < 4; i++) {
+        secretCopy[i] = secretDigits[i];  //копируем массив цифр секретного числа
+    }
+
+    for (int i = 0; i < 4; i++) {
+        if (secretDigits[i] == guessDigits[i]) {
+            bulls++;  //если цифра на своем месте увеличиваем счетчик быков
+        }
+    }
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i != j && guessDigits[i] == secretCopy[j]) {
+                cows++;  //если цифра есть в числе но не на своем месте увеличиваем счетчик коров
+                secretCopy[j] = -1;  
+                break;
+            }
+        }
+    }
+
+    cout << "быки (цифра на своем месте): " << bulls << endl;
+    cout << "коровы (цифра есть, но не на своем месте): " << cows << endl;
+
+    bullsAndCows(secret, attempts + 1);  
+}
+
+void task3() {
+    cout << "игра 'быки и коровы'" << endl;
+    cout << "компьютер загадал четырехзначное число." << endl;
+    cout << "быки - цифра на своем месте." << endl;
+    cout << "коровы - цифра есть в числе, но не на своем месте." << endl;
+    cout << "у вас есть 20 попыток." << endl;
+
+    int secret = generateSecretNumber();  
+    bullsAndCows(secret);  
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");  
+    initRandom();  
+
+    int choice;
+
+    do {
+        cout << "меню домашнего задания" << endl;
+        cout << "1. перегруженные функции для матриц" << endl;
+        cout << "2. рекурсивное нахождение НОД" << endl;
+        cout << "3. игра 'быки и коровы'" << endl;
+        cout << "4. все задания по порядку" << endl;
+        cout << "0. выход" << endl;
+        cout << "выберите задание: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: task1(); break;  
+        case 2: task2(); break;  
+        case 3: task3(); break;  
+        case 4:
+            task1();  
+            task2();
+            task3();
+            break;
+        case 0: cout << "выход из программы." << endl; break;  
+        default: cout << "неверный выбор." << endl; 
+        }
+    } while (choice != 0);  
+
+    return 0;  
+}
