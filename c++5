@@ -1,0 +1,420 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+void task1() {
+    cout << "задание 1 элементы a, которых нет в b" << endl; 
+
+    int m, n;
+    cout << "размер массива a: ";
+    cin >> m;
+    cout << "размер массива b: ";
+    cin >> n;
+
+    int* a = new int[m]; 
+    int* b = new int[n]; 
+
+    cout << "элементы массива a: ";
+    for (int i = 0; i < m; i++) {
+        cin >> a[i]; //заполнение массива а элементами
+    }
+
+    cout << "элементы массива b: ";
+    for (int i = 0; i < n; i++) {
+        cin >> b[i]; //заполнение массива b элементами
+    }
+
+    int* temp = new int[m]; 
+    int count = 0; //счетчик найденных элементов
+
+    for (int i = 0; i < m; i++) {
+        bool inb = false; //флаг наличия элемента а[i] в массиве b
+        for (int j = 0; j < n; j++) {
+            if (a[i] == b[j]) {
+                inb = true; //элемент найден в массиве b
+                break; //выход из внутреннего цикла
+            }
+        }
+
+        bool duplicate = false;
+        if (!inb) { //если элемент не найден в b
+            for (int k = 0; k < count; k++) {
+                if (a[i] == temp[k]) {
+                    duplicate = true; //дубликат найден
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                temp[count] = a[i]; //добавление элемента во временный массив
+                count++; //увеличение счетчика найденных элементов
+            }
+        }
+    }
+
+    int* c = new int[count]; //создание финального массива минимального размера
+    for (int i = 0; i < count; i++) {
+        c[i] = temp[i]; //копирование элементов из временного массива в финальный
+    }
+
+    cout << "результат: ";
+    for (int i = 0; i < count; i++) {
+        cout << c[i] << " "; 
+    }
+    cout << endl << "размер: " << count << endl; 
+}
+
+void task2() {
+    cout << "задание 2 элементы не общие для a и b" << endl; 
+
+    int m, n;
+    cout << "размер массива a: ";
+    cin >> m;
+    cout << "размер массива b: ";
+    cin >> n;
+
+    int* a = new int[m]; 
+    int* b = new int[n]; 
+
+    cout << "элементы массива a: ";
+    for (int i = 0; i < m; i++) {
+        cin >> a[i]; //заполнение массива а элементами
+    }
+
+    cout << "элементы массива b: ";
+    for (int i = 0; i < n; i++) {
+        cin >> b[i]; //заполнение массива b элементами
+    }
+
+    int* temp = new int[m + n]; //временный массив максимального размера
+    int count = 0; //счетчик элементов
+
+    for (int i = 0; i < m; i++) {
+        bool found = false; //флаг наличия элемента a[i] в массиве b
+        for (int j = 0; j < n; j++) {
+            if (a[i] == b[j]) {
+                found = true; 
+                break; 
+            }
+        }
+
+        bool duplicate = false;
+        if (!found) { //если элемент не найден в b
+            for (int k = 0; k < count; k++) {
+                if (a[i] == temp[k]) {
+                    duplicate = true; //дубликат найден
+                    break;
+                }
+            }
+            if (!duplicate) {
+                temp[count] = a[i]; //добавление элемента во временный массив
+                count++; 
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        bool found = false; //флаг наличия элемента b[i] в массиве а
+        for (int j = 0; j < m; j++) {
+            if (b[i] == a[j]) {
+                found = true; //элемент найден в а
+                break; 
+            }
+        }
+
+        bool duplicate = false;
+        if (!found) { //если элемент не найден в а
+            for (int k = 0; k < count; k++) {
+                if (b[i] == temp[k]) {
+                    duplicate = true; //дубликат найден
+                    break;
+                }
+            }
+            if (!duplicate) {
+                temp[count] = b[i]; 
+                count++;
+            }
+        }
+    }
+
+    int* c = new int[count]; 
+    for (int i = 0; i < count; i++) {
+        c[i] = temp[i]; //копирование элементов из временного массива в финальный
+    }
+
+    cout << "результат: ";
+    for (int i = 0; i < count; i++) {
+        cout << c[i] << " "; //вывод элементов результирующего массива
+    }
+    cout << endl << "размер: " << count << endl; 
+}
+
+int* allocateMemory(int size) {
+    return new int[size]; 
+}
+
+void initializeArray(int* arr, int size) {
+    cout << "введите " << size << " элементов: ";
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i]; //инициализация динамического массива значениями
+    }
+}
+
+void printArray(int* arr, int size) {
+    cout << "массив: ";
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " "; //печать элементов динамического массива
+    }
+    cout << endl; 
+}
+
+void deleteArray(int* arr) {
+    cout << "функция удаления массива вызвана" << endl; 
+}
+
+int* addElement(int* arr, int& size, int value) {
+    int* newArr = new int[size + 1]; 
+    for (int i = 0; i < size; i++) {
+        newArr[i] = arr[i]; //копирование старых элементов
+    }
+    newArr[size] = value; //добавление нового элемента в конец
+    size++; //увеличение размера массива
+    return newArr; //возврат указателя на новый массив
+}
+
+int* insertElement(int* arr, int& size, int index, int value) {
+    if (index < 0 || index > size) {
+        cout << "неверный индекс" << endl; 
+        return arr;
+    }
+
+    int* newArr = new int[size + 1]; 
+    for (int i = 0; i < index; i++) {
+        newArr[i] = arr[i]; //копирование элементов до индекса
+    }
+    newArr[index] = value; //вставка нового элемента
+    for (int i = index; i < size; i++) {
+        newArr[i + 1] = arr[i]; //копирование оставшихся элементов
+    }
+    size++; //увеличение размера массива
+    return newArr; 
+}
+
+int* removeElement(int* arr, int& size, int index) {
+    if (index < 0 || index >= size) {
+        cout << "неверный индекс!" << endl; 
+        return arr;
+    }
+
+    int* newArr = new int[size - 1]; 
+    for (int i = 0; i < index; i++) {
+        newArr[i] = arr[i]; 
+    }
+    for (int i = index + 1; i < size; i++) {
+        newArr[i - 1] = arr[i]; //копирование элементов после индекса
+    }
+    size--; //уменьшение размера массива
+    return newArr; //возврат указателя на новый массив
+}
+
+void task3() {
+    cout << "задание 3: функции для динамического массива" << endl;
+
+    int size;
+    cout << "введите начальный размер массива: ";
+    cin >> size;
+
+    int* arr = allocateMemory(size); 
+    cout << "память распределена" << endl;
+
+    initializeArray(arr, size); 
+
+    cout << "исходный массив:" << endl;
+    printArray(arr, size); 
+
+    int newValue;
+    cout << "введите элемент для добавления в конец: ";
+    cin >> newValue;
+    arr = addElement(arr, size, newValue); 
+    printArray(arr, size); 
+
+    int insertIndex, insertValue;
+    cout << "введите индекс и значение для вставки: ";
+    cin >> insertIndex >> insertValue;
+    arr = insertElement(arr, size, insertIndex, insertValue); //вызов функции вставки элемента
+    printArray(arr, size); //печать массива после вставки
+
+    int removeIndex;
+    cout << "введите индекс для удаления: ";
+    cin >> removeIndex;
+    arr = removeElement(arr, size, removeIndex); 
+    printArray(arr, size); //печать массива после удаления
+
+    deleteArray(arr); 
+}
+
+bool isPrime(int n) {
+    if (n < 2) return false; //числа меньше 2 не являются простыми
+    for (int i = 2; i <= sqrt(n); i++) {
+        if (n % i == 0) return false; //если число делится нацело  не простое
+    }
+    return true; //если делителей не найдено  число простое
+}
+
+int* removePrimes(int* arr, int size, int& newSize) {
+    int nonPrimeCount = 0; 
+    for (int i = 0; i < size; i++) {
+        if (!isPrime(arr[i])) {
+            nonPrimeCount++; 
+        }
+    }
+
+    newSize = nonPrimeCount; 
+    int* newArr = new int[newSize]; //создание нового массива
+
+    int index = 0;
+    for (int i = 0; i < size; i++) {
+        if (!isPrime(arr[i])) {
+            newArr[index] = arr[i]; //копирование непростых чисел в новый массив
+            index++;
+        }
+    }
+
+    return newArr; 
+}
+
+void task4() {
+    cout << "задание 4 удаление простых чисел из массива" << endl; 
+
+    int size;
+    cout << "введите размер массива: ";
+    cin >> size;
+
+    int* arr = new int[size]; //создание массива
+
+    cout << "введите " << size << " элементов: ";
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i]; //инициализация массива значениями
+    }
+
+    cout << "исходный массив:" << endl; 
+    printArray(arr, size); //печать исходного массива
+
+    int newSize;
+    int* newArr = removePrimes(arr, size, newSize); //вызов функции удаления простых чисел
+
+    cout << "массив без простых чисел:" << endl; 
+    printArray(newArr, newSize); //печать нового массива
+    cout << "новый размер: " << newSize << endl; 
+}
+
+void distributeNumbers(int* staticArr, int size,
+    int*& positive, int& posCount,
+    int*& negative, int& negCount,
+    int*& zero, int& zeroCount) {
+
+    posCount = 0; //инициализация счетчика положительных чисел
+    negCount = 0; //инициализация счетчика отрицательных чисел
+    zeroCount = 0; //инициализация счетчика нулей
+
+    for (int i = 0; i < size; i++) {
+        if (staticArr[i] > 0) posCount++; //подсчет положительных чисел
+        else if (staticArr[i] < 0) negCount++; //подсчет отрицательных чисел
+        else zeroCount++; //подсчет нулей
+    }
+
+    positive = new int[posCount]; //создание динамического массива для положительных чисел
+    negative = new int[negCount]; //создание динамического массива для отрицательных чисел
+    zero = new int[zeroCount]; //создание динамического массива для нулей
+
+    int pIndex = 0, nIndex = 0, zIndex = 0; //индексы для заполнения массивов
+
+    for (int i = 0; i < size; i++) {
+        if (staticArr[i] > 0) {
+            positive[pIndex] = staticArr[i]; //заполнение массива положительных чисел
+            pIndex++;
+        }
+        else if (staticArr[i] < 0) {
+            negative[nIndex] = staticArr[i]; //заполнение массива отрицательных чисел
+            nIndex++;
+        }
+        else {
+            zero[zIndex] = staticArr[i]; //заполнение массива нулей
+            zIndex++;
+        }
+    }
+}
+
+void task5() {
+    cout << "задание 5 распределение элементов по знаку" << endl; 
+
+    const int MAX_STATIC_SIZE = 100; //максимальный размер статического массива
+    int staticArr[MAX_STATIC_SIZE]; //создание статического массива
+
+    int size;
+    cout << "введите размер массива (максимум " << MAX_STATIC_SIZE << "): ";
+    cin >> size;
+
+    if (size > MAX_STATIC_SIZE) {
+        cout << "размер слишком большой будет использовано " << MAX_STATIC_SIZE << " элементов" << endl; 
+        size = MAX_STATIC_SIZE;
+    }
+
+    cout << "введите " << size << " чисел: ";
+    for (int i = 0; i < size; i++) {
+        cin >> staticArr[i]; //заполнение статического массива
+    }
+
+    int* positive = nullptr; //указатель на массив положительных чисел
+    int* negative = nullptr; //указатель на массив отрицательных чисел
+    int* zero = nullptr; //указатель на массив нулей
+    int posCount = 0, negCount = 0, zeroCount = 0; //размеры массивов
+
+    distributeNumbers(staticArr, size, positive, posCount, negative, negCount, zero, zeroCount); 
+
+    cout << "положительные элементы (" << posCount << "): ";
+    for (int i = 0; i < posCount; i++) {
+        cout << positive[i] << " "; 
+    }
+    cout << endl;
+
+    cout << "отрицательные элементы (" << negCount << "): ";
+    for (int i = 0; i < negCount; i++) {
+        cout << negative[i] << " "; 
+    }
+    cout << endl; 
+
+    cout << "нулевые элементы (" << zeroCount << "): ";
+    for (int i = 0; i < zeroCount; i++) {
+        cout << zero[i] << " "; 
+    }
+    cout << endl; 
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian"); 
+    int choice;
+
+    do {
+        cout << "1. элементы a, которых нет в b" << endl; 
+        cout << "2. элементы не общие для a и b" << endl; 
+        cout << "3. функции для динамического массива" << endl; 
+        cout << "4. удаление простых чисел из массива" << endl; 
+        cout << "5. распределение элементов по знаку" << endl; 
+        cout << "0. выход" << endl;
+        cout << "выберите задание: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: task1(); break; 
+        case 2: task2(); break; 
+        case 3: task3(); break; 
+        case 4: task4(); break; 
+        case 5: task5(); break; 
+        case 0: cout << "выход из программы" << endl; break; 
+        default: cout << "неверный выбор" << endl; 
+        }
+    } while (choice != 0);
+
+    return 0; 
+}
