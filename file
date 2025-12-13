@@ -1,0 +1,154 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+using namespace std;
+
+//функция вычисления интерполяционного многочлена лагранжа
+double lagrange(double x[], double y[], int n, double target) {
+    double res = 0.0;//инициализация результата
+
+    for (int i = 0; i < n; i++) {//цикл по узлам интерполяции
+        double t = y[i];
+        for (int j = 0; j < n; j++) {
+            if (j != i) {//исключение случая i=j
+                t *= (target - x[j]) / (x[i] - x[j]);
+            }
+        }
+        res += t;
+    }
+    return res;
+}
+
+//функция вычисления конечных разностей
+void calcDiffs(double x[], double y[], int n, double d[][10]) {
+    for (int i = 0; i < n; i++) {//заполнение первого столбца
+        d[i][0] = y[i];//значения функции в узлах
+    }
+
+    for (int j = 1; j < n; j++) {//цикл по порядкам разностей
+        for (int i = 0; i < n - j; i++) {//цикл по строкам таблицы
+            d[i][j] = d[i + 1][j - 1] - d[i][j - 1];//вычисление разности
+        }
+    }
+}
+
+//функция вычисления интерполяционного многочлена ньютона
+double newton(double x[], double y[], int n, double target) {
+    double d[10][10] = { 0 };
+    calcDiffs(x, y, n, d);//вычисление разностей
+
+    double step = x[1] - x[0];//определение шага таблицы
+    for (int i = 2; i < n; i++) {//проверка равноотстояния узлов
+        if (fabs((x[i] - x[i - 1]) - step) > 1e-10) {//сравнение шагов
+            cout << "узлы не равноотстоящие используется метод лагранжа" << endl;
+            return lagrange(x, y, n, target);//переход к лагранжу
+        }
+    }
+
+    double p = (target - x[0]) / step;//вычисление параметра
+    double res = d[0][0];//начало суммирования
+    double mult = 1.0;//первый множитель
+
+    for (int j = 1; j < n; j++) {
+        mult *= (p - (j - 1)) / j;//обновление коэффициента
+        res += mult * d[0][j];
+    }
+
+    return res;
+}
+
+//функция печати таблицы конечных разностей
+void printDiffs(double x[], double y[], int n) {
+    double d[10][10] = { 0 };
+    calcDiffs(x, y, n, d);
+
+    cout << "таблица конечных разностей:" << endl;
+    cout << "i\tx\ty\t^1y\t^2y\t^3y" << endl;
+
+    for (int i = 0; i < n; i++) {//вывод строк таблицы
+        cout << i << "\t" << fixed << setprecision(5) << x[i] << "\t" << d[i][0];//вывод первой части строки
+
+        for (int j = 1; j <= 3 && j < n - i; j++) {//вывод разностей до 3 порядка
+            cout << "\t" << fixed << setprecision(5) << d[i][j];//вывод значения разности
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+    do {
+        cout << "выберите задание для выполнения:" << endl;
+        cout << "1. задание 5 (таблично заданная функция)" << endl;
+        cout << "2. задание 7 (натуральный логарифм)" << endl;
+        cout << "3. выход" << endl;
+        cout << "ваш выбор: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: { 
+            cout << "задание 5" << endl;
+            double x5[] = { 1.25, 1.30, 1.35, 1.40, 1.45, 1.50 };
+            double y5[] = { 1.60, 1.71, 1.81, 1.88, 1.94, 1.98 };
+            int n5 = 6;
+
+            printDiffs(x5, y5, n5);
+
+            cout << "\nконтрольные вычисления:" << endl;
+            cout << "p(1.30) = " << newton(x5, y5, n5, 1.30) << endl;
+            cout << "p(1.45) = " << newton(x5, y5, n5, 1.45) << endl;
+            break;
+        }
+
+        case 2: { 
+            cout << "задание 7" << endl;
+            double x7[] = { 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11 };
+            double y7[] = { 0.04879, 0.058269, 0.067659, 0.076961, 0.086178, 0.09531, 0.10436 };
+            int n7 = 7;
+
+            double d[10][10] = { 0 };
+            calcDiffs(x7, y7, n7, d);
+
+            cout << "таблица конечных разностей для ln(x):" << endl;
+            cout << "i\tx(i)\ty(i)";
+            for (int j = 1; j < n7; j++) {
+                cout << "\t^" << j << "y";
+            }
+            cout << endl;
+
+            for (int i = 0; i < n7; i++) {
+                cout << i << "\t" << fixed << setprecision(5) << x7[i] << "\t" << d[i][0];
+                for (int j = 1; j < n7 - i; j++) {
+                    cout << "\t" << fixed << setprecision(5) << d[i][j];
+                }
+                cout << endl;
+            }
+
+            cout << "интерполяция для ln(x):" << endl;
+
+            double points[] = { 1.065, 1.083 };
+            for (int i = 0; i < 2; i++) {
+                double val = points[i];
+                double r1 = lagrange(x7, y7, n7, val);
+                double r2 = newton(x7, y7, n7, val);
+
+                cout << "для x = " << val << ":" << endl;
+                cout << "лагранж: ln(" << val << ") = " << r1 << endl;
+                cout << "ньютон:  ln(" << val << ") = " << r2 << endl;
+            }
+            break;
+        }
+
+        case 3: 
+            cout << "программа завершена" << endl;
+            break;
+
+        default:
+            cout << "ошибкапопробуйте снова" << endl;
+        }
+    } while (choice != 3);
+
+    return 0;
+}
