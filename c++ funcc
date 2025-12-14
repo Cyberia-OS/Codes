@@ -1,0 +1,213 @@
+#include <iostream>
+using namespace std;
+
+//задание 1 шаблон функции для поиска среднего арифметического массива
+template <typename T>
+T average(T arr[], int size) {
+    T sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i]; //суммируем все элементы массива
+    }
+    return sum / size; //делим сумму на количество элементов
+}
+
+//задание 2 шаблон функции для решения линейного уравнения a*x + b = 0
+template <typename T>
+bool solveLinear(T a, T b, T& result) {
+    if (a == 0) { //если коэффициент a равен 0
+        return false; //уравнение не имеет решения или имеет бесконечно много
+    }
+    result = -b / a; //вычисляем корень линейного уравнения
+    return true;
+}
+
+//задание 3 функция для округления вещественного числа
+double roundToPrecision(double number, int decimals) {
+    double factor = 1; //начальное значение множителя
+    for (int i = 0; i < decimals; i++) {
+        factor *= 10; //умножаем на 10 нужное количество раз (получаем 10^decimals)
+    }
+    return
+        round(number * factor) / factor; 
+}
+
+//задание 4 шаблонные функции для поиска максимального значения
+template <typename T>
+T findMax1D(T arr[], int size) {
+    T maxVal = arr[0]; //первый элемент  максимальный
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) { //если текущий элемент больше максимального
+            maxVal = arr[i]; //обновляем значение максимального
+        }
+    }
+    return maxVal; 
+}
+
+//для двумерного массива
+template <typename T>
+T findMax2D(T arr[10][10], int rows, int cols) {
+    T maxVal = arr[0][0]; //первый элемент - максимальный
+    for (int i = 0; i < rows; i++) { //проходим по всем строкам
+        for (int j = 0; j < cols; j++) { //проходим по всем столбцам
+            if (arr[i][j] > maxVal) { //если элемент больше максимального
+                maxVal = arr[i][j]; //обновляем значение максимального
+            }
+        }
+    }
+    return maxVal; 
+}
+
+//задание 5 перегруженные функции для нахождения максимального значения
+//максимум из двух целых чисел
+int findMax(int a, int b) {
+    if (a > b)
+        return a; //если a больше b возвращаем a
+    return b; 
+}
+
+//максимум из трех целых чисел
+int findMax(int a, int b, int c) {
+    int maxAB = findMax(a, b); //находим максимум из первых двух чисел
+    return findMax(maxAB, c); //сравниваем результат с третьим числом
+}
+
+//шаблонные версии для любых типов
+template <typename T>
+T findMax(T a, T b) {
+    if (a > b) return a; //если a больше b возвращаем a
+    return b; 
+}
+
+template <typename T>
+T findMax(T a, T b, T c) {
+    T maxAB = findMax(a, b); //находим максимум из первых двух чисел
+    return findMax(maxAB, c); //сравниваем результат с третьим числом
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    {
+        int n;
+        cout << "введите количество элементов в массиве (целое число): ";
+        cin >> n;
+        if (n <= 0) {
+            cout << "неверное количество элементов" << endl;
+        }
+        else {
+            double* arr = new double[n];
+            cout << "введите " << n << " элементов массива :" << endl;
+            for (int i = 0; i < n; i++) {
+                cin >> arr[i];
+            }
+
+            cout << "среднее арифметическое: " << average(arr, n) << endl;
+        }
+    }
+
+    {
+        cout << "задание 2 решение линейного уравнения" << endl;
+        double a, b, result;
+        cout << "введите коэффициент a: ";
+        cin >> a;
+        cout << "введите коэффициент b: ";
+        cin >> b;
+
+        if (solveLinear(a, b, result)) {
+            cout << "линейное уравнение " << a << "*x + " << b << " = 0" << endl;
+            cout << "корень: x = " << result << endl;
+        }
+        else {
+            cout << "линейное уравнение не имеет единственного решения" << endl;
+        }
+    }
+
+    //тестирование задания 3 с вводом от пользователя
+    {
+        cout << "задание 3 округление числа" << endl;
+        double number;
+        int decimals;
+        cout << "введите число для округления: ";
+        cin >> number;
+        cout << "введите количество знаков после запятой: ";
+        cin >> decimals;
+
+        if (decimals > 0) {
+            cout << "исходное число: " << number << endl;
+            cout << "округление до " << decimals << " знаков: " << roundToPrecision(number, decimals) << endl;
+        }
+    }
+
+    //тестирование задания 4 с вводом от пользователя
+    {
+        cout << "задание 4: максимальное значение в одномерном массиве" << endl;
+
+        int n;
+        cout << "введите количество элементов в массиве: ";
+        cin >> n;
+
+        if (n <= 0) {
+            cout << "неверное количество элементов" << endl;
+        }
+        else {
+            int* arr = new int[n];
+            cout << "введите " << n << " целых чисел:" << endl;
+            for (int i = 0; i < n; i++) {
+                cin >> arr[i];
+            }
+            cout << "максимум в одномерном массиве: " << findMax1D(arr, n) << endl;
+        }
+    }
+
+    {
+        cout << "задание 4 максимальное значение в двумерном массиве" << endl;
+        int rows, cols;
+        cout << "введите количество строк (не более 10): ";
+        cin >> rows;
+        cout << "введите количество столбцов (не более 10): ";
+        cin >> cols;
+
+        if (rows <= 0 || cols <= 0 || rows > 10 || cols > 10) {
+            cout << "неверные размеры массива" << endl;
+        }
+        else {
+            int arr[10][10];
+            cout << "введите " << rows * cols << " целых чисел:" << endl;
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    cin >> arr[i][j];
+                }
+            }
+
+            cout << "максимум в двумерном массиве: " << findMax2D(arr, rows, cols) << endl;
+        }
+    }
+
+    {
+        int choice;
+        cout << "найти максимум из 2 или 3 чисел? (введите 2 или 3): ";
+        cin >> choice;
+
+        if (choice == 2) {
+            int a, b;
+            cout << "введите первое число: ";
+            cin >> a;
+            cout << "введите второе число: ";
+            cin >> b;
+            cout << "максимум из двух чисел: " << findMax(a, b) << endl;
+        }
+        else if (choice == 3) {
+            int a, b, c;
+            cout << "введите первое число: ";
+            cin >> a;
+            cout << "введите второе число: ";
+            cin >> b;
+            cout << "введите третье число: ";
+            cin >> c;
+            cout << "максимум из трех чисел: " << findMax(a, b, c) << endl;
+        }
+        else {
+            cout << "неверный выбор" << endl;
+        }
+    }
+    return 0;
+}
