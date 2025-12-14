@@ -1,0 +1,156 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+//игра угадай число
+void game() {
+    srand(time(0));
+
+    //генерация случайного числа от 1 до 500
+    int secretNumber = rand() % 500 + 1;
+    int userGuess;
+    int attempts = 0;
+    time_t startTime = time(0);
+
+    cout << "игра угадай число" << endl;
+    cout << "я загадал число от 1 до 500." << endl;
+    cout << "попробуйте угадать! (0 - выход)" << endl << endl;
+
+    while (true) {
+        cout << "ваша попытка: ";
+        cin >> userGuess;
+        attempts++;
+
+        //проверка на выход из игры 
+        if (userGuess == 0) {
+            cout << "выход из игры. загаданное число было: " << secretNumber << endl;
+            break;
+        }
+
+        //проверка угадал ли пользователь число
+        if (userGuess == secretNumber) {
+            //вычисление времени игры в секундах
+            time_t endTime = time(0);
+            int gameTime = static_cast<int>(endTime - startTime);
+
+            cout << "вы угадали число" << endl;
+            cout << "загаданное число: " << secretNumber << endl;
+            cout << "количество попыток: " << attempts << endl;
+            cout << "затраченное время: " << gameTime << " секунд" << endl;
+            break;
+        }
+
+        //подсказка для пользователя больше или меньше загаданное число
+        if (userGuess < secretNumber) {
+            cout << "мое число больше вашего" << endl;
+        }
+        else {
+            cout << "мое число меньше вашего" << endl;
+        }
+    }
+}
+
+//конвертер валют
+void converter() {
+    //курсы валют к рублю 
+    const double usdRate = 90.5;
+    const double eurRate = 98.2;
+
+    int choice;
+    double amount;
+    double result;
+
+    cout << "конвертер валют" << endl;
+
+    //цикл работы конвертера, выполняется пока пользователь не выберет выход
+    do {
+        cout << "выберите операцию:" << endl;
+        cout << "1. рубли - доллары (usd)" << endl;
+        cout << "2. рубли - евро (eur)" << endl;
+        cout << "3. доллары - рубли" << endl;
+        cout << "4. евро - рубли" << endl;
+        cout << "0. выход" << endl;
+        cout << "ваш выбор: ";
+        cin >> choice;
+
+        //выход из конвертера валют
+        if (choice == 0) {
+            cout << "выход из конвертера валют." << endl;
+            break;
+        }
+
+        //проверка правильности ввода номера операции
+        if (choice < 1 || choice > 4) {
+            cout << "неверный выбор! попробуйте снова." << endl;
+            continue; //переход к следующей итерации цикла
+        }
+
+        //ввод суммы для конвертации
+        cout << "введите сумму: ";
+        cin >> amount;
+
+        //проверка что сумма не отрицательная
+        if (amount < 0) {
+            cout << "сумма не может быть отрицательной!" << endl;
+            continue;
+        }
+
+        //выбор операции конвертации в зависимости от выбора пользователя
+        switch (choice) {
+        case 1: 
+            result = amount / usdRate;
+            cout << amount << " rub = " << result << " usd" << endl;
+            break;
+        case 2:
+            result = amount / eurRate;
+            cout << amount << " rub = " << result << " eur" << endl;
+            break;
+        case 3: 
+            result = amount * usdRate;
+            cout << amount << " usd = " << result << " rub" << endl;
+            break;
+        case 4: 
+            result = amount * eurRate;
+            cout << amount << " eur = " << result << " rub" << endl;
+            break;
+        }
+
+        //вывод текущих курсов валют для справки
+        cout << "текущие курсы к рублю:" << endl;
+        cout << "usd: " << usdRate << endl;
+        cout << "eur: " << eurRate << endl;
+
+    } while (choice != 0); 
+}
+
+//главная функция программы
+int main() {
+    setlocale(LC_ALL, "RU");
+    int mainChoice;
+
+    do {
+        cout << "главное меню" << endl;
+        cout << "1. игра 'угадай число'" << endl;
+        cout << "2. конвертер валют" << endl;
+        cout << "0. выход из программы" << endl;
+        cout << "выберите задание: ";
+        cin >> mainChoice;
+
+        switch (mainChoice) {
+        case 1:
+            game();
+            break;
+        case 2:
+            converter();
+            break;
+        case 0:
+            cout << "конец" << endl;
+            break;
+        default:
+            cout << "неверный выбор попробуйте снова" << endl;
+        }
+
+    } while (mainChoice != 0); 
+
+    return 0; 
+}
