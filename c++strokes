@@ -1,0 +1,160 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//функция удаления символа по указанному индексу
+string delChar(string s, int idx) {
+    if (idx < 0 || idx >= s.length()) return s; //проверка корректности индекса
+
+    string res = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (i != idx) res += s[i]; //копируем все символы кроме удаляемого
+    }
+    return res;
+}
+
+//функция удаления всех вхождений указанного символа
+string delAll(string s, char c) {
+    string res = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] != c) res += s[i]; //копируем только символы не равные которым задали
+    }
+    return res;
+}
+
+//функция вставки символа в указанную позицию
+string insChar(string s, int pos, char c) {
+    if (pos < 0) pos = 0; 
+    if (pos >= s.length()) return s + c; //если позиция за пределами строки добавляем в конец
+
+    string res = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (i == pos) res += c; //вставляем символ в нужную позицию
+        res += s[i]; 
+    }
+    return res;
+}
+
+//функция замены всех точек на восклицательные знаки
+string repDots(string s) {
+    string res = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] == '.') res += '!'; //заменяем точку на !
+        else res += s[i]; //копируем остальные символы без изменений
+    }
+    return res;
+}
+
+//функция подсчета количества вхождений символа в строку
+int countChar(string s, char c) {
+    int cnt = 0;
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] == c) cnt++; 
+    }
+    return cnt;
+}
+
+void countTypes(string s) {
+    int let = 0, dig = 0, oth = 0;
+
+    for (int i = 0; i < s.length(); i++) {
+        char ch = s[i];
+        if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) {
+            let++; 
+        }
+        else if (ch >= '0' && ch <= '9') {
+            dig++; 
+        }
+        else {
+            oth++; 
+        }
+    }
+
+    cout << "буквы: " << let << endl;
+    cout << "цифры: " << dig << endl;
+    cout << "другие символы: " << oth << endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "RU"); 
+    int opt;
+
+    do {
+        cout << "1. удалить символ по позиции" << endl;
+        cout << "2. удалить все вхождения символа" << endl;
+        cout << "3. вставить символ в позицию" << endl;
+        cout << "4. заменить точки на восклицательные знаки" << endl;
+        cout << "5. посчитать количество вхождений символа" << endl;
+        cout << "6. подсчитать типы символов" << endl;
+        cout << "0. выход" << endl;
+        cout << "выберите задание: ";
+        cin >> opt;
+        cin.ignore(); 
+
+        if (opt == 0) {
+            cout << "выход из программы..." << endl;
+            break; 
+        }
+
+        string s;
+        cout << "введите строку: " << endl;
+        getline(cin, s); 
+
+        switch (opt) {
+        case 1: {
+            int pos;
+            cout << "введите позицию для удаления (начиная с 0): ";
+            cin >> pos;
+            cin.ignore();
+            cout << "результат: " << delChar(s, pos) << endl;
+            break;
+        }
+        case 2: {
+            char c;
+            cout << "введите символ для удаления: ";
+            cin >> c;
+            cin.ignore();
+            cout << "результат: " << delAll(s, c) << endl;
+            break;
+        }
+        case 3: {
+            int pos; char c;
+            cout << "введите позицию для вставки: ";
+            cin >> pos;
+            cout << "введите символ для вставки: ";
+            cin >> c;
+            cin.ignore();
+            cout << "результат: " << insChar(s, pos, c) << endl;
+            break;
+        }
+        case 4: {
+            cout << "результат: " << repDots(s) << endl;
+            break;
+        }
+        case 5: {
+            char c;
+            cout << "введите символ для подсчета: ";
+            cin >> c;
+            cin.ignore();
+            cout << "символ '" << c << "' встречается " << countChar(s, c) << " раз" << endl;
+            break;
+        }
+        case 6: {
+            countTypes(s);
+            break;
+        }
+        default: {
+            cout << "неверный выбор! попробуйте снова" << endl;
+            break;
+        }
+        }
+
+        if (opt != 0) {
+            cout << "нажмите enter для продолжения" << endl;
+            cin.ignore(); 
+        }
+
+    } while (opt != 0); 
+
+    return 0;
+}
