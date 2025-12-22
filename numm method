@@ -1,0 +1,79 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+double f(double x) {
+    return x / (1 + x * x * x);
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    double a, b, eps;
+
+    cout << "вычисление интеграла методом Симпсона" << endl;
+    cout << "функция: f(x) = x / (1 + x^3)" << endl << endl;
+
+    // Ввод параметров
+    cout << "Введите нижний предел интегрирования a: ";
+    cin >> a;
+
+    cout << "Введите верхний предел интегрирования b: ";
+    cin >> b;
+
+    cout << "Введите требуемую точность eps: ";
+    cin >> eps;
+
+    if (eps <= 0) {
+        cout << "ошибка точность должна быть положительной" << endl;
+        return 1;
+    }
+
+    double fa = f(a);    // f' = f(a)
+    double fb = f(b);    // f' = f(b)
+    double S = fa + fb;  // S = f' + f'
+
+    //вчисление S по формуле Симпсона для одного отрезка
+    double S1 = (b - a) * (fa + fb + 4 * f((a + b) / 2)) / 6;
+
+    int n = 2;           
+    double d = eps + 1; 
+    double S2, h;
+
+    while (d >= eps) {
+        h = (b - a) / n;
+
+        // x1 - первая точка с коэффициентом 4
+        // x2 - первая точка с коэффициентом 2
+        double x1 = a + h / 2;
+        double x2 = a + h;
+
+        // Инициализация S2 значением f(a) + f(b)
+        S2 = fa + fb;
+
+        for (int i = 1; i <= n; i++) {
+            S2 = S2 + 4 * f(x1) + 2 * f(x2);
+            x1 = x1 + h;
+            x2 = x2 + h;
+        }
+
+        double S1_old = S1;
+
+        S1 = S2;
+
+        n = 2 * n;
+
+        S2 = S2 * h / 6;
+
+        d = fabs(S1_old - S2) / 15;
+
+        cout << "Шаг: n = " << n / 2 << ", S = " << S2 << ", d = " << d << endl;
+    }
+
+    cout << "Финальные результаты:" << endl;
+    cout << "Количество отрезков разбиения: n = " << n / 2 << endl;
+    cout << "Оценка погрешности: d = " << d << endl;
+    cout << "Приближенное значение интеграла S: " << S2 << endl;
+
+    return 0;
+}
