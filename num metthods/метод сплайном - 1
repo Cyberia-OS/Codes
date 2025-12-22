@@ -1,0 +1,82 @@
+#include <iostream>
+using namespace std;
+
+void solveSystem(int n, double* a, double* b, double* c, double* r, double* t) {
+    if (n < 4) {
+        cout << "ошибка: n должно быть >= 4" << endl;
+        return;
+    }
+    
+    double* cc = new double[n];
+    double* d = new double[n];
+    
+    for (int i = 0; i < n; i++) {
+        cc[i] = 0.0;
+        d[i] = 0.0;
+        t[i] = 0.0;
+    }
+    
+    cc[2] = -c[1] / b[1];
+    d[2] = r[1] / b[1];
+    
+    for (int i = 2; i <= n-3; i++) {
+        double denom = a[i] * cc[i] + b[i];
+        cc[i+1] = -c[i] / denom;
+        d[i+1] = (r[i] - a[i] * d[i]) / denom;
+    }
+    
+    t[n-2] = (r[n-2] - a[n-2] * d[n-2]) / (a[n-2] * cc[n-2] + b[n-2]);
+    t[n-1] = 0.0;
+    
+    for (int i = n-3; i >= 1; i--) {
+        t[i] = cc[i+1] * t[i+1] + d[i+1];
+    }
+    
+    delete[] cc;
+    delete[] d;
+}
+
+int main() {
+    int n;
+    cout << "введите размер системы n (>= 4): ";
+    cin >> n;
+    
+    double* a = new double[n];
+    double* b = new double[n];
+    double* c = new double[n];
+    double* r = new double[n];
+    double* t = new double[n];
+    
+    cout << "\nвведите коэффициенты системы (для i = 1.." << n-2 << "):" << endl;
+    cout << "формат для каждого i: a[i] b[i] c[i] r[i]" << endl;
+    
+    //инициализация нулями
+    for (int i = 0; i < n; i++) {
+        a[i] = b[i] = c[i] = r[i] = 0.0;
+    }
+    
+    //ввод основных коэффициентов
+    for (int i = 1; i <= n-2; i++) {
+        cout << "i=" << i << ": ";
+        cin >> a[i] >> b[i] >> c[i] >> r[i];
+    }
+    
+    //граничные условия
+    a[1] = 0.0;
+    c[n-2] = 0.0;
+    
+    solveSystem(n, a, b, c, r, t);
+    
+    cout << "\nрешение системы:" << endl;
+    for (int i = 1; i <= n-1; i++) {
+        cout << "t[" << i << ",3] = " << t[i] << endl;
+    }
+    
+    delete[] a;
+    delete[] b;
+    delete[] c;
+    delete[] r;
+    delete[] t;
+    
+    return 0;
+}
