@@ -1,0 +1,121 @@
+#include <iostream>
+#include <string>      
+#include <algorithm>   
+using namespace std;
+
+//функция переворота строки
+void reverseDemo() {
+    string str;
+    cout << "введите строку: ";
+    getline(cin, str);
+    reverse(str.begin(), str.end());
+    cout << "результат: " << str << endl;
+}
+
+//функция подсчёта символов
+void countChars() {
+    string text;
+    int letters = 0, digits = 0, spaces = 0, others = 0;
+
+    cout << "введите строку для анализа: ";
+    getline(cin, text);
+
+    for (char c : text) {
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) letters++;
+        else if (c >= '0' && c <= '9') digits++;
+        else if (c == ' ') spaces++;
+        else others++;
+    }
+
+    cout << "результат: " << endl;
+    cout << "буквы: " << letters << "\nцифры: " << digits
+        << "\nпробелы: " << spaces << "\nпрочие: " << others << endl;
+}
+
+//функция удаления дубликатов символов
+void removeDuplicates() {
+    string text, result = "";
+
+    cout << "введите строку: ";
+    getline(cin, text);
+    cout << "исходная: " << text;
+
+    for (char c : text) {
+        if (result.find(c) == string::npos) {
+            result += c;
+        }
+    }
+
+    cout << "\nбез повторов: " << result << endl;
+}
+
+//функция проверки префикса
+void checkAffixes() {
+    string text, prefix, suffix;
+
+    cout << "введите строку: ";
+    getline(cin, text);
+    cout << "введите префикс: ";
+    getline(cin, prefix);
+    cout << "введите суффикс: ";
+    getline(cin, suffix);
+
+    bool hasPrefix = text.compare(0, prefix.length(), prefix) == 0;
+    bool hasSuffix = text.compare(text.length() - suffix.length(),
+        suffix.length(), suffix) == 0;
+
+    cout << "префикс: " << (hasPrefix ? "да" : "нет") << endl;
+    cout << "суффикс: " << (hasSuffix ? "да" : "нет") << endl;
+}
+
+//функция анализа ФИО
+void processName() {
+    string fullName;
+    int spaceCount = 0;
+
+    cout << "введите ФИО: ";
+    getline(cin, fullName);
+
+    for (char c : fullName) {
+        if (c == ' ') spaceCount++;
+    }
+
+    cout << "количество пробелов: " << spaceCount << endl;
+}
+
+//главное меню
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+
+    do {
+        cout << "\nменю\n"
+            << "1. переворот строки\n"
+            << "2. подсчёт символов\n"
+            << "3. удаление дубликатов\n"
+            << "4. проверка префикса/суффикса\n"
+            << "5. анализ ФИО\n"
+            << "0. выход\n"
+            << "выбор: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+        case 1: reverseDemo();
+            break;
+        case 2: countChars();
+            break;
+        case 3: removeDuplicates();
+            break;
+        case 4: checkAffixes();
+            break;
+        case 5: processName();
+            break;
+        case 0: cout << "выход\n";
+            break;
+        default: cout << "неверный выбор\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
