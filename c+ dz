@@ -1,0 +1,108 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+//функция для замены пробелов на табуляции
+void task1() {
+    char text[] = "PROGRA MM";
+    cout << "исходная строка: " << text << endl;
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (text[i] == ' ') {
+            text[i] = '\t';
+        }
+    }
+
+    cout << "результат: " << text << endl;
+}
+
+//функция для подсчета букв и цифр
+void task2() {
+    char text[] = "prog123mma";
+    cout << "строка: " << text << endl;
+
+    int letters = 0, digits = 0;
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        char c = text[i];
+        if (c >= 'A' && c <= 'Z') letters++;
+        else if (c >= 'a' && c <= 'z') letters++;
+        else if (c >= '0' && c <= '9') digits++;
+    }
+
+    cout << "буквы: " << letters << endl;
+    cout << "цифры: " << digits << endl;
+}
+
+//функция для подсчета слов в строке
+void task3() {
+    char text[] = "proverka slov";
+    cout << "строка: " << text << endl;
+
+    int words = 1;
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (text[i] == ' ') {
+            words++;
+        }
+    }
+
+    cout << "слов в строке: " << words << endl;
+}
+
+//функция для проверки палиндрома
+void task4() {
+    char text[] = "шалаш";
+    cout << "строка: " << text << endl;
+
+    int length = strlen(text);
+    bool isPalindrome = true;
+
+    for (int i = 0; i < length / 2; i++) {
+        if (text[i] != text[length - 1 - i]) {
+            isPalindrome = false;
+            break;
+        }
+    }
+
+    if (isPalindrome) {
+        cout << "это палиндром" << endl;
+    }
+    else {
+        cout << "это не палиндром" << endl;
+    }
+}
+
+//главная функция
+int main() {
+    setlocale(LC_ALL, "ru");
+
+    int choice;
+
+    do {
+        cout << "\n=== работа со строками ===\n"
+            << "1. замена пробелов на табуляции\n"
+            << "2. подсчет букв и цифр\n"
+            << "3. подсчет слов в строке\n"
+            << "4. проверка на палиндром\n"
+            << "0. выход\n"
+            << "выберите задание: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: task1();
+            break;
+        case 2: task2();
+            break;
+        case 3: task3();
+            break;
+        case 4: task4();
+            break;
+        case 0: cout << "выход из программы\n";
+            break;
+        default: cout << "неверный выбор\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
