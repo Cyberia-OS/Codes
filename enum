@@ -1,0 +1,183 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+//задание 1 система кодов ошибок
+enum class errorcode {
+    success,
+    filenotfound,
+    accessdenied,
+    outofmemory
+};
+
+errorcode checkfilestatus(bool fileexists, bool hasaccess, bool memoryok) {
+    if (!fileexists) return errorcode::filenotfound;
+    if (!hasaccess) return errorcode::accessdenied;
+    if (!memoryok) return errorcode::outofmemory;
+    return errorcode::success;
+}
+
+void task1() {
+    cout << "задание 1 коды ошибок" << endl;
+    errorcode err = checkfilestatus(true, false, true);
+
+    switch (err) {
+    case errorcode::success: cout << "результат: успех" << endl; break;
+    case errorcode::filenotfound: cout << "результат: файл не найден" << endl; break;
+    case errorcode::accessdenied: cout << "результат: доступ запрещен" << endl; break;
+    case errorcode::outofmemory: cout << "результат: недостаточно памяти" << endl; break;
+    }
+}
+
+//задание 2 дни недели
+enum class day {
+    monday, tuesday, wednesday, thursday, friday, saturday, sunday
+};
+
+string daytorussian(day d) {
+    switch (d) {
+    case day::monday: return "понедельник";
+    case day::tuesday: return "вторник";
+    case day::wednesday: return "среда";
+    case day::thursday: return "четверг";
+    case day::friday: return "пятница";
+    case day::saturday: return "суббота";
+    case day::sunday: return "воскресенье";
+    default: return "неизвестно";
+    }
+}
+
+bool isweekend(day d) {
+    return d == day::saturday || d == day::sunday;
+}
+
+void task2() {
+    cout << "задание 2 дни недели" << endl;
+    day today = day::saturday;
+    cout << "сегодня: " << daytorussian(today) << endl;
+    cout << "выходной: " << (isweekend(today) ? "да" : "нет") << endl;
+}
+
+//задание 3: светофор
+enum class trafficlight {
+    red, green, yellow
+};
+
+trafficlight nextlight(trafficlight current) {
+    switch (current) {
+    case trafficlight::red: return trafficlight::green;
+    case trafficlight::green: return trafficlight::yellow;
+    case trafficlight::yellow: return trafficlight::red;
+    default: return trafficlight::red;
+    }
+}
+
+string lightcolor(trafficlight light) {
+    switch (light) {
+    case trafficlight::red: return "красный";
+    case trafficlight::green: return "зеленый";
+    case trafficlight::yellow: return "желтый";
+    default: return "неизвестно";
+    }
+}
+
+void task3() {
+    cout << "задание 3: светофор" << endl;
+    trafficlight light = trafficlight::red;
+    for (int i = 0; i < 6; i++) {
+        cout << "светофор: " << lightcolor(light) << endl;
+        light = nextlight(light);
+    }
+}
+
+//задание 5: логирование
+enum class loglevel {
+    info,
+    warning,
+    error
+};
+
+void logmessage(loglevel level, const string& message) {
+    time_t now = time(0);
+    char timestr[26];
+    ctime_s(timestr, sizeof(timestr), &now);
+
+    string timestring = timestr;
+    timestring = timestring.substr(0, timestring.length() - 1);
+
+    cout << "[" << timestring << "] ";
+    switch (level) {
+    case loglevel::info: cout << "[info] ";
+        break;
+    case loglevel::warning: cout << "[warning] ";
+        break;
+    case loglevel::error: cout << "[error] ";
+        break;
+    }
+    cout << message << endl;
+}
+
+void task5() {
+    cout << "задание 5 логирование" << endl;
+    logmessage(loglevel::info, "система запущена");
+    logmessage(loglevel::warning, "низкий уровень заряда");
+    logmessage(loglevel::error, "критическая ошибка приложения");
+}
+
+//задание 7: цвета консоли
+enum class consolecolor {
+    black = 30,
+    red = 31,
+    green = 32,
+    yellow = 33,
+    blue = 34,
+    magenta = 35,
+    cyan = 36,
+    white = 37
+};
+
+void printcolored(consolecolor color, const string& text) {
+    cout << "\033[1;" << static_cast<int>(color) << "m" << text << "\033[0m";
+}
+
+void task7() {
+    cout << "задание 7 цвета консоли" << endl;
+    printcolored(consolecolor::red, "красный текст\n");
+    printcolored(consolecolor::green, "зеленый текст\n");
+    printcolored(consolecolor::blue, "синий текст\n");
+    printcolored(consolecolor::yellow, "желтый текст\n");
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int choice;
+
+    do {
+        cout << "\n1. коды ошибок" << endl;
+        cout << "2. дни недели" << endl;
+        cout << "3. светофор" << endl;
+        cout << "5. логирование" << endl;
+        cout << "7. цвета консоли" << endl;
+        cout << "0. выход" << endl;
+        cout << "выберите: ";
+
+        while (!(cin >> choice)) {
+            cout << "ошибка введите число: ";
+            cin.clear();
+            while (cin.get() != '\n');
+        }
+
+        switch (choice) {
+        case 1: task1(); break;
+        case 2: task2(); break;
+        case 3: task3(); break;
+        case 5: task5(); break;
+        case 7: task7(); break;
+        case 0: cout << "выход" << endl; break;
+        default: cout << "неверно" << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
