@@ -1,0 +1,205 @@
+#include <iostream>
+using namespace std;
+
+//Задача 1.1: сложение двух чисел
+void zad1_1(){
+    int x, y;
+    cout << "введите два целых числа: ";
+    cin >> x >> y;
+    cout << x << " + " << y << " = " << x + y << endl;
+}
+
+//Задача 1.2: цельсий -> фаренгейт
+void zad1_2(){
+    double cel;
+    cout << "введите температуру в градусах цельсия: ";
+    cin >> cel;
+    double far = cel * 9.0 / 5.0 + 32;
+    cout << cel << "°c = " << far << "°f" << endl;
+}
+
+//Задача 2.1: четное/нечетное
+void zad2_1(){
+    int num;
+    cout << "введите число: ";
+    cin >> num;
+    if (num % 2 == 0){
+        cout << num << " число четное" << endl;
+    } else {
+        cout << num << " число нечетное" << endl;
+    }
+}
+
+//Задача 2.2: високосный год
+void zad2_2(){
+    int god;
+    cout << "введите год: ";
+    cin >> god;
+    if ((god % 4 == 0 && god % 100 != 0) || god % 400 == 0){
+        cout << god << " - високосный год" << endl;
+    } else {
+        cout << god << " - невисокосный год" << endl;
+    }
+}
+
+//Задача 3.1: сумма чисел от 1 до n
+void zad3_1(){
+    int n, summa = 0;
+    cout << "введите число n: ";
+    cin >> n;
+    for (int i = 1; i <= n; i++) summa += i;
+    cout << "сумма от 1 до " << n << " = " << summa << endl;
+}
+
+//Задача 3.2: таблица умножения
+void zad3_2(){
+    int tab;
+    cout << "введите число таблицы умножения: ";
+    cin >> tab;
+    for (int i = 1; i <= 10; i++) 
+        cout << tab << " x " << i << " = " << tab * i << endl;
+}
+
+//Задача 4.1: минимальный элемент в массиве
+void zad4_1() {
+    int mas[10];
+    cout << "введите 10 целых чисел: ";
+    for (int i = 0; i < 10; i++) cin >> mas[i];
+    int min_val = mas[0];
+    for (int i = 1; i < 10; i++) if (mas[i] < min_val) min_val = mas[i];
+    cout << "минимальный элемент: " << min_val << endl;
+}
+
+//Задача 4.2: сумма строк матрицы 3x3
+void zad4_2() {
+    int mat[3][3];
+    cout << "введите элементы матрицы 3x3:" << endl;
+    for (int i = 0; i < 3; i++) 
+        for (int j = 0; j < 3; j++) cin >> mat[i][j];
+    for (int i = 0; i < 3; i++) {
+        int stroka_sum = 0;
+        for (int j = 0; j < 3; j++) stroka_sum += mat[i][j];
+        cout << "сумма строки " << i+1 << ": " << stroka_sum << endl;
+    }
+}
+
+//Задача 5.1: функция максимум
+int maxx(int x1, int x2) { return x1 > x2 ? x1 : x2; }
+void zad5_1() {
+    int val1, val2;
+    cout << "введите два целых числа: ";
+    cin >> val1 >> val2;
+    cout << "наибольшее число: " << maxx(val1, val2) << endl;
+}
+
+//Задача 5.2: простое число
+bool prostoe(int chislo) {
+    if (chislo <= 1) return false;
+    for (int d = 2; d * d <= chislo; d++) if (chislo % d == 0) return false;
+    return true;
+}
+void zad5_2() {
+    int n;
+    cout << "введите число: ";
+    cin >> n;
+    if (prostoe(n)) cout << n << " - простое число." << endl;
+    else cout << n << " - не простое число." << endl;
+}
+
+//Задача 6.1: обмен через указатели
+void zad6_1() {
+    int aa = 10, bb = 20;
+    cout << "до: a = " << aa << ", b = " << bb << endl;
+    int *p1 = &aa, *p2 = &bb, temp = *p1;
+    *p1 = *p2; *p2 = temp;
+    cout << "после: a = " << aa << ", b = " << bb << endl;
+}
+
+//Задача 6.2: сумма через указатели
+void zad6_2() {
+    int arr5[5] = {1,2,3,4,5}, sum_arr = 0, *ptr_arr = arr5;
+    for (int i = 0; i < 5; i++) sum_arr += *(ptr_arr + i);
+    cout << "сумма элементов: " << sum_arr << endl;
+}
+
+//Задача 7.1: длина строки
+void zad7_1() {
+    char strinput[100];
+    cout << "введите строку: ";
+    cin.ignore(); cin.getline(strinput, 100);
+    int dlina = 0; while (strinput[dlina] != '\0') dlina++;
+    cout << "длина строки \"" << strinput << "\" = " << dlina << endl;
+}
+
+//Задача 7.2: подсчет гласных в строке
+void zad7_2() {
+    char txt[100];
+    cout << "введите строку: ";
+    cin.ignore(); 
+    cin.getline(txt, 100);
+    
+    int cnt = 0;
+    int i = 0;
+    
+    //гласные буквы
+    char gl[] = "aeiouAEIOU";
+    
+    while (txt[i] != '\0') {
+        char c = txt[i];
+        
+        //проверяем все гласные
+        for (int j = 0; gl[j] != '\0'; j++) {
+            if (c == gl[j]) {
+                cnt++;
+                break;
+            }
+        }
+        
+        i++;
+    }
+    
+    cout << "гласных букв: " << cnt << endl;
+}
+
+int main(){
+    cout << "\n=== меню задач ===\n";
+    cout << "1. сложение двух чисел (1.1)\n";
+    cout << "2. цельсий -> фаренгейт (1.2)\n";
+    cout << "3. четное/нечетное (2.1)\n";
+    cout << "4. високосный год (2.2)\n";
+    cout << "5. сумма чисел 1..n (3.1)\n";
+    cout << "6. таблица умножения (3.2)\n";
+    cout << "7. минимальный в массиве (4.1)\n";
+    cout << "8. сумма строк матрицы (4.2)\n";
+    cout << "9. максимум из двух (5.1)\n";
+    cout << "10. простое число (5.2)\n";
+    cout << "11. обмен через указатели (6.1)\n";
+    cout << "12. сумма через указатели (6.2)\n";
+    cout << "13. длина строки (7.1)\n";
+    cout << "14. гласные в строке (7.2)\n";
+    cout << "0. выход\n";
+    cout << "выберите номер: ";
+
+    int vybor;
+    cin >> vybor;
+
+    switch(vybor) {
+        case 1: zad1_1(); break;
+        case 2: zad1_2(); break;
+        case 3: zad2_1(); break;
+        case 4: zad2_2(); break;
+        case 5: zad3_1(); break;
+        case 6: zad3_2(); break;
+        case 7: zad4_1(); break;
+        case 8: zad4_2(); break;
+        case 9: zad5_1(); break;
+        case 10: zad5_2(); break;
+        case 11: zad6_1(); break;
+        case 12: zad6_2(); break;
+        case 13: zad7_1(); break;
+        case 14: zad7_2(); break;
+        case 0: cout << "выход\n"; break;
+        default: cout << "неверный выбор\n";
+    }
+    return 0;
+}
