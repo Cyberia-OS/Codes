@@ -1,0 +1,130 @@
+#класс студент
+class Student:
+    def __init__(self, name, age, course, average_score, student_id):
+        self.name = name
+        self.age = age
+        self.course = course
+        self.average_score = average_score
+        self.student_id = student_id
+    
+    def increase_course(self):
+        if self.course < 5:
+            self.course += 1
+        else:
+            print("максимальный курс - 5")
+    
+    def update_average(self, new_gpa):
+        if 0 <= new_gpa <= 5:
+            self.gpa = new_gpa
+        else:
+            print("средный балл должен быть от 0 до 5")
+    
+    def __str__(self):
+        return f"{self.name}, курс {self.course}, средний балл: {self.gpa}"
+
+#класс книга
+class Book:
+    def __init__(self, title, author, year, number, pages):
+        self.title = title
+        self.author = author
+        self.year = year
+        self.number = number
+        self.pages = pages
+        self.is_available = True
+    
+    def borrow_book(self):
+        if self.is_available:
+            self.is_available = False
+            print(f"книга '{self.title}' взята")
+        else:
+            print(f"книга '{self.title}' уже взята")
+    
+    def return_book(self):
+        if not self.is_available:
+            self.is_available = True
+            print(f"книга '{self.title}' возвращена")
+        else:
+            print(f"книга '{self.title}' уже в библиотеке")
+    
+    def __str__(self):
+        status = "доступна" if self.is_available else "взята"
+        return f"'{self.title}' ({self.author}), {status}"
+
+#класс автомобиль
+class Car:
+    def __init__(self, brand, model, year, color, price):
+        self.brand = brand
+        self.model = model
+        self.year = year
+        self.color = color
+        self.price = price
+        self.is_running = False
+    
+    def start_engine(self):
+        if not self.is_running:
+            self.is_running = True
+            print(f"{self.brand} {self.model} заведен")
+        else:
+            print(f"{self.brand} {self.model} уже заведен")
+    
+    def stop_engine(self):
+        if self.is_running:
+            self.is_running = False
+            print(f"{self.brand} {self.model} заглушен")
+        else:
+            print(f"{self.brand} {self.model} уже заглушен")
+    
+    def __str__(self):
+        status = "заведен" if self.is_running else "заглушен"
+        return f"{self.brand} {self.model} ({self.year}), {status}"
+
+#создание студентов
+student1 = Student("иван петров", 19, 1, 4.2, "st001")
+student2 = Student("мария сидорова", 20, 2, 4.7, "st002")
+
+#создание книг
+book1 = Book("преступление и наказание", "фёдор достоевский", 1866, "978-5-17-090879-1", 608)
+book2 = Book("мастер и маргарита", "михаил булгаков", 1967, "978-5-389-06204-3", 480)
+
+#тестирование метода студентов
+print("\tстуденты")
+print(f"до: {student1}")
+student1.increase_course()
+student1.update_average(4.5)
+print(f"после: {student1}")
+
+print(f"\nдо: {student2}")
+student2.update_average(4.9)
+student2.update_average(6.0)
+print(f"после: {student2}")
+
+#тестирование метода книг
+print("\n\tкниги")
+print(f"до: {book1}")
+book1.borrow_book()
+book1.return_book()
+print(f"после: {book1}")
+
+print(f"\nдо: {book2}")
+book2.borrow_book()
+book2.borrow_book() 
+book2.return_book()
+print(f"после: {book2}")
+
+#создание автомобилей
+car1 = Car("toyota", "camry", 2020, "серебристый", 25000)
+car2 = Car("bmw", "x5", 2022, "черный", 75000)
+
+#тестирование метода автомобилей
+print("\n\tавтомобили")
+print(f"до: {car1}")
+car1.start_engine()
+car1.start_engine()  
+car1.stop_engine()
+print(f"после: {car1}")
+
+print(f"\nдо: {car2}")
+car2.start_engine()
+car2.stop_engine()
+car2.stop_engine() 
+print(f"после: {car2}")
