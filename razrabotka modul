@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int maxDist, total, k;
+    cout << "введите maxDist: ";
+    cin >> maxDist;
+    cout << "введите total: ";
+    cin >> total;
+    cout << "введите k: ";
+    cin >> k;
+
+    int* road = new int[k];
+    cout << "введите road[i]: ";
+    for (int i = 0; i < k; i++) {
+        cin >> road[i];
+    }
+
+    //проверка возможности проезда каждого участка
+    for (int i = 0; i < k; i++) {
+        if (road[i] > maxDist) {
+            cout << "невозможно проехать участок " << i + 1 << endl;
+            delete[] road;
+            return 0;
+        }
+    }
+
+    int fuel = maxDist; //текущее топливо
+    int stops = 1; //количество остановок (стартовая)
+    int* stopList = new int[k + 1]; //список остановок
+    stopList[0] = 1; //первая остановка
+
+    for (int i = 0; i < k; i++) {
+        if (fuel >= road[i]) {
+            fuel -= road[i]; //ехать можно
+        }
+        else {
+            stopList[stops] = i + 1; //заправиться здесь
+            stops++;
+            fuel = maxDist - road[i]; //заправился и поехал
+        }
+    }
+
+    cout << "дополнительных заправок: " << stops - 1 << endl;
+    cout << "остановки: ";
+    for (int j = 0; j < stops; j++) {
+        cout << stopList[j] << " ";
+    }
+    cout << endl;
+
+    delete[] road;
+    delete[] stopList;
+    return 0;
+}
