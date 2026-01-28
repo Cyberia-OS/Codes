@@ -1,0 +1,303 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+//структура для комплексного числа
+struct complexnum {
+    double re;
+    double im;
+
+    complexnum(double r = 0.0, double i = 0.0) {
+        re = r;
+        im = i;
+    }
+
+    void show() {
+        cout << re;
+        if (im >= 0) cout << " + " << im << "j";
+        else cout << " - " << -im << "j";
+    }
+};
+
+//сумма двух комплексных чисел
+complexnum sum(complexnum a, complexnum b) {
+    return complexnum(a.re + b.re, a.im + b.im);
+}
+
+//разность двух комплексных чисел
+complexnum diff(complexnum a, complexnum b) {
+    return complexnum(a.re - b.re, a.im - b.im);
+}
+
+//умножение двух комплексных чисел
+complexnum mult(complexnum a, complexnum b) {
+    return complexnum(
+        a.re * b.re - a.im * b.im,
+        a.re * b.im + a.im * b.re
+    );
+}
+
+//деление двух комплексных чисел
+complexnum div(complexnum a, complexnum b) {
+    double denom = b.re * b.re + b.im * b.im;
+    return complexnum(
+        (a.re * b.re + a.im * b.im) / denom,
+        (a.im * b.re - a.re * b.im) / denom
+    );
+}
+
+//структура автомобиля
+enum gearbox { mechanical, automatic, robotic, cvt };
+
+struct vehicle {
+    double length_m;
+    double ground_clearance;
+    double engine_capacity;
+    double engine_hp;
+    double wheel_inches;
+    string color;
+    gearbox gearbox_type;
+
+    vehicle() {
+        length_m = 0.0;
+        ground_clearance = 0.0;
+        engine_capacity = 0.0;
+        engine_hp = 0.0;
+        wheel_inches = 0.0;
+        color = "не указан";
+        gearbox_type = mechanical;
+    }
+
+    //функция ввода данных
+    void inputdata() {
+        cout << "введите длину машины (метры): ";
+        cin >> length_m;
+        cout << "введите клиренс (метры): ";
+        cin >> ground_clearance;
+        cout << "введите объем мотора (литры): ";
+        cin >> engine_capacity;
+        cout << "введите мощность (лошадиные силы): ";
+        cin >> engine_hp;
+        cout << "введите размер колес (дюймы): ";
+        cin >> wheel_inches;
+        cout << "введите цвет кузова: ";
+        cin >> color;
+
+        int gtype;
+        cout << "коробка (0-механика, 1-автомат, 2-робот, 3-вариатор): ";
+        cin >> gtype;
+        gearbox_type = static_cast<gearbox>(gtype);
+    }
+
+    //функция вывода информации
+    void showinfo() {
+        cout << "длина: " << length_m << " м\n";
+        cout << "дорожный просвет: " << ground_clearance << " м\n";
+        cout << "объем двигателя: " << engine_capacity << " л\n";
+        cout << "сила двигателя: " << engine_hp << " л.с.\n";
+        cout << "размер колес: " << wheel_inches << "\"\n";
+        cout << "цвет: " << color << "\n";
+
+        string gearbox_name;
+        switch (gearbox_type) {
+        case mechanical: gearbox_name = "механическая"; break;
+        case automatic: gearbox_name = "автоматическая"; break;
+        case robotic: gearbox_name = "роботизированная"; break;
+        case cvt: gearbox_name = "вариатор"; break;
+        }
+        cout << "трансмиссия: " << gearbox_name << "\n";
+    }
+
+    //функция поиска информации
+    void findinfo() {
+        cout << "1 - узнать мощность\n";
+        cout << "2 - узнать объем двигателя\n";
+        cout << "3 - узнать цвет\n";
+        cout << "4 - узнать тип кпп\n";
+        cout << "5 - все параметры\n";
+        cout << "выберите опцию: ";
+
+        int option;
+        cin >> option;
+
+        switch (option) {
+        case 1:
+            cout << "мощность: " << engine_hp << " л.с.\n";
+            break;
+        case 2:
+            cout << "объем двигателя: " << engine_capacity << " л\n";
+            break;
+        case 3:
+            cout << "цвет: " << color << "\n";
+            break;
+        case 4: {
+            string gname;
+            switch (gearbox_type) {
+            case mechanical: gname = "механическая"; break;
+            case automatic: gname = "автоматическая"; break;
+            case robotic: gname = "роботизированная"; break;
+            case cvt: gname = "вариатор"; break;
+            }
+            cout << "коробка передач: " << gname << "\n";
+            break;
+        }
+        case 5:
+            showinfo();
+            break;
+        default:
+            cout << "некорректный выбор!\n";
+        }
+    }
+};
+
+//меню для комплексных чисел
+void complexmenu() {
+    complexnum num1, num2;
+
+    cout << "=== комплексные числа ===\n";
+    cout << "введите первое число:\n";
+    cout << "  действительная часть: ";
+    cin >> num1.re;
+    cout << "  мнимая часть: ";
+    cin >> num1.im;
+
+    cout << "введите второе число:\n";
+    cout << "  действительная часть: ";
+    cin >> num2.re;
+    cout << "  мнимая часть: ";
+    cin >> num2.im;
+
+    while (true) {
+        cout << "\n=== меню операций ===\n";
+        cout << "1 - сложение\n";
+        cout << "2 - вычитание\n";
+        cout << "3 - умножение\n";
+        cout << "4 - деление\n";
+        cout << "5 - показать введенные числа\n";
+        cout << "0 - вернуться в главное меню\n";
+        cout << "ваш выбор: ";
+
+        int select;
+        cin >> select;
+
+        if (select == 0) break;
+
+        complexnum res;
+        switch (select) {
+        case 1:
+            res = sum(num1, num2);
+            cout << "итог: ";
+            res.show();
+            cout << endl;
+            break;
+        case 2:
+            res = diff(num1, num2);
+            cout << "итог: ";
+            res.show();
+            cout << endl;
+            break;
+        case 3:
+            res = mult(num1, num2);
+            cout << "итог: ";
+            res.show();
+            cout << endl;
+            break;
+        case 4:
+            if (num2.re == 0 && num2.im == 0) {
+                cout << "ошибка: деление на 0 невозможно!\n";
+            }
+            else {
+                res = div(num1, num2);
+                cout << "итог: ";
+                res.show();
+                cout << endl;
+            }
+            break;
+        case 5:
+            cout << "первое: ";
+            num1.show();
+            cout << "\nвторое: ";
+            num2.show();
+            cout << endl;
+            break;
+        default:
+            cout << "недопустимая опция!\n";
+        }
+    }
+}
+
+//меню для автомобиля
+void vehiclemenu() {
+    vehicle mycar;
+    bool dataentered = false;
+
+    while (true) {
+        cout << "1 - ввести данные\n";
+        cout << "2 - показать все данные\n";
+        cout << "3 - найти конкретный параметр\n";
+        cout << "0 - назад\n";
+        cout << "выбор: ";
+
+        int select;
+        cin >> select;
+
+        if (select == 0) break;
+
+        switch (select) {
+        case 1:
+            mycar.inputdata();
+            dataentered = true;
+            cout << "данные успешно записаны!\n";
+            break;
+        case 2:
+            if (dataentered) {
+                mycar.showinfo();
+            }
+            else {
+                cout << "сначала введите данные об автомобиле!\n";
+            }
+            break;
+        case 3:
+            if (dataentered) {
+                mycar.findinfo();
+            }
+            else {
+                cout << "сначала введите данные об автомобиле!\n";
+            }
+            break;
+        default:
+            cout << "ошибка ввода!\n";
+        }
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    while (true) {
+        cout << "1 - работа с комплексными числами\n";
+        cout << "2 - работа с автомобилем\n";
+        cout << "0 - завершить программу\n";
+        cout << "введите номер: ";
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 0) {
+            cout << "до свидания!\n";
+            break;
+        }
+
+        switch (choice) {
+        case 1:
+            complexmenu();
+            break;
+        case 2:
+            vehiclemenu();
+            break;
+        default:
+            cout << "неверный номер операции!\n";
+        }
+    }
+
+    return 0;
+}
