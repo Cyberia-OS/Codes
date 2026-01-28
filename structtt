@@ -1,0 +1,238 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+//алгоритм евклида для нахождения нод
+int findgcd(int a, int b) {
+    a = abs(a);
+    b = abs(b);
+    while (a > 0 && b > 0) {
+        if (a > b) a %= b;
+        else b %= a;
+    }
+    return a + b; //остаток отличный от нуля это нод
+}
+
+//задание 1 структура прямоугольник
+struct rectangle {
+    double x, y, width, height;
+
+    //перемещение прямоугольника
+    void move() {
+        double dx, dy;
+        cout << "введите смещение по x: ";
+        cin >> dx;
+        cout << "введите смещение по y: ";
+        cin >> dy;
+        x += dx; y += dy;
+        cout << "прямоугольник перемещен" << endl;
+    }
+
+    //изменение размера прямоугольника
+    void resize() {
+        cout << "введите новую ширину: ";
+        cin >> width;
+        cout << "введите новую высоту: ";
+        cin >> height;
+        cout << "размер изменен" << endl;
+    }
+
+    //печать информации о прямоугольнике
+    void print() {
+        cout << "прямоугольник позиция: (" << x << ", " << y << ") размер: " << width << "x" << height << endl;
+    }
+};
+
+//задание 2 структура точка
+struct point {
+    double x, y;
+
+    //ввод координат точки
+    void input() {
+        cout << "введите координату x: ";
+        cin >> x;
+        cout << "введите координату y: ";
+        cin >> y;
+    }
+};
+
+//вычисление расстояния между двумя точками
+double getdistance(point a, point b) {
+    return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2)); //формула расстояния
+}
+
+//задание 3 структура дробь
+struct fraction {
+    int num, den; //числитель и знаменатель
+
+    //ввод дроби
+    void input() {
+        cout << "введите числитель: ";
+        cin >> num;
+        cout << "введите знаменатель: ";
+        cin >> den;
+        if (den == 0) {
+            cout << "ошибка знаменатель не может быть 0 установлено значение 1" << endl;
+            den = 1;
+        }
+    }
+
+    //упрощение дроби
+    void simplify() {
+        if (den == 0) return;
+        int common = findgcd(num, den); //находим нод
+        num /= common;
+        den /= common;
+        if (den < 0) { num = -num; den = -den; } //знаменатель всегда положительный
+    }
+
+    //вывод дроби с учетом смешанной формы
+    void print() {
+        if (den == 0) {
+            cout << "ошибка деление на 0";
+            return;
+        }
+        simplify(); //упрощаем перед выводом
+
+        //проверяем нужно ли преобразовывать в смешанное число
+        if (abs(num) >= den) {
+            int whole = num / den;
+            int remainder = abs(num % den);
+            if (remainder == 0)
+                cout << whole;
+            else
+                cout << whole << " " << remainder << "/" << den;
+        }
+        else {
+            cout << num << "/" << den;
+        }
+    }
+};
+
+//сложение дробей
+fraction add(fraction a, fraction b) {
+    return { a.num * b.den + b.num * a.den, a.den * b.den };
+}
+
+//вычитание дробей
+fraction sub(fraction a, fraction b) {
+    return { a.num * b.den - b.num * a.den, a.den * b.den };
+}
+
+//умножение дробей
+fraction mul(fraction a, fraction b) {
+    return { a.num * b.num, a.den * b.den };
+}
+
+//деление дробей с проверкой деления на ноль
+fraction divfrac(fraction a, fraction b) {
+    if (b.num == 0) {
+        cout << "ошибка деление на 0" << endl;
+        return { 0, 1 };
+    }
+    return { a.num * b.den, a.den * b.num };
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int choice;
+
+    do {
+        cout << "\nменю" << endl;
+        cout << "1 работа с прямоугольником" << endl;
+        cout << "2 расстояние между точками" << endl;
+        cout << "3 работа с дробями" << endl;
+        cout << "0 выход" << endl;
+        cout << "выберите задание: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            rectangle rect;
+            cout << "введите начальные данные прямоугольника:" << endl;
+            cout << "координата x: "; cin >> rect.x;
+            cout << "координата y: "; cin >> rect.y;
+            cout << "ширина: "; cin >> rect.width;
+            cout << "высота: "; cin >> rect.height;
+
+            int rectchoice;
+            do {
+                cout << "\n1 переместить" << endl;
+                cout << "2 изменить размер" << endl;
+                cout << "3 показать" << endl;
+                cout << "0 назад" << endl;
+                cout << "выберите действие: ";
+                cin >> rectchoice;
+
+                switch (rectchoice) {
+                case 1: rect.move(); break;
+                case 2: rect.resize(); break;
+                case 3: rect.print(); break;
+                }
+            } while (rectchoice != 0);
+            break;
+        }
+
+        case 2: {
+            point p1, p2;
+            cout << "введите координаты первой точки:" << endl;
+            p1.input();
+            cout << "введите координаты второй точки:" << endl;
+            p2.input();
+            cout << "расстояние между точками: " << getdistance(p1, p2) << endl;
+            break;
+        }
+
+        case 3: {
+            fraction f1, f2;
+            cout << "введите первую дробь:" << endl;
+            f1.input();
+            cout << "введите вторую дробь:" << endl;
+            f2.input();
+
+            int fracchoice;
+            do {
+                cout << "\n1 сложение" << endl;
+                cout << "2 вычитание" << endl;
+                cout << "3 умножение" << endl;
+                cout << "4 деление" << endl;
+                cout << "5 показать дроби" << endl;
+                cout << "0 назад" << endl;
+                cout << "выберите операцию: ";
+                cin >> fracchoice;
+
+                fraction result;
+                switch (fracchoice) {
+                case 1:
+                    result = add(f1, f2);
+                    cout << "результат: "; result.print(); cout << endl;
+                    break;
+                case 2:
+                    result = sub(f1, f2);
+                    cout << "результат: "; result.print(); cout << endl;
+                    break;
+                case 3:
+                    result = mul(f1, f2);
+                    cout << "результат: "; result.print(); cout << endl;
+                    break;
+                case 4:
+                    result = divfrac(f1, f2);
+                    if (f2.num != 0) {
+                        cout << "результат: "; result.print(); cout << endl;
+                    }
+                    break;
+                case 5:
+                    cout << "первая дробь: "; f1.print(); cout << endl;
+                    cout << "вторая дробь: "; f2.print(); cout << endl;
+                    break;
+                }
+            } while (fracchoice != 0);
+            break;
+        }
+        }
+    } while (choice != 0);
+
+    cout << "программа завершена" << endl;
+    return 0;
+}
