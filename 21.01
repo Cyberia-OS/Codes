@@ -1,0 +1,176 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+//арифметические операции 
+int addition(int a, int b) { return a + b; }
+int subtraction(int a, int b) { return a - b; }
+int multiplication(int a, int b) { return a * b; }
+int division(int a, int b) { return b != 0 ? a / b : 0; }
+
+//функция сравнения строк
+int stringComparator(const char* str1, const char* str2) {
+    while (*str1 && *str1 == *str2) { str1++; str2++; } //пока символы совпадают и не достигнут конец
+    return *(unsigned char*)str1 - *(unsigned char*)str2; //возвращаем разность кодов символов
+}
+
+//компараторы для сортировки 
+bool sortAscending(int a, int b) { return a > b; } //для пузырьковой сортировки по возрастанию
+bool sortDescending(int a, int b) { return a < b; } //для сортировки по убыванию
+
+//сортировка с использованием указателя на функцию-компаратор - переименована с bubblesort
+void customSort(int arr[], int size, bool (*comparator)(int, int)) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (comparator(arr[j], arr[j + 1])) { //используем переданную функцию для сравнения
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+//интегрирование функции методом прямоугольников - переименовано с integrate
+double calculateIntegral(double start, double end, int intervals, double (*function)(double)) {
+    double step = (end - start) / intervals; //ширина прямоугольника
+    double result = 0.0;
+    for (int i = 0; i < intervals; i++) {
+        double x = start + (i + 0.5) * step; //середина интервала
+        result += function(x); //значение функции в точке
+    }
+    return result * step; //умножаем сумму на ширину
+}
+
+//функции меню
+void fileOpen() { cout << "файл открыт" << endl; }
+void fileSave() { cout << "файл сохранен" << endl; }
+void programExit() { cout << "программа завершена" << endl; }
+
+//шаблонная функция сложения 
+template <typename t1, typename t2>
+auto combine(t1 a, t2 b) -> decltype(a + b) { 
+    return a + b;
+}
+
+double sampleFunction(int x) { return x * 1.5; }
+double (*traditionalFuncReturn())(int) { return sampleFunction; } //традиционный синтаксис
+auto alternativeFuncReturn() -> double (*)(int) { return sampleFunction; } //альтернативный с auto
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int selection;
+    do {
+        cout << "\n1. простые вычисления";
+        cout << "\n2. сравнение текстовых строк";
+        cout << "\n3. сортировка по возрастанию";
+        cout << "\n4. сортировка по убыванию";
+        cout << "\n5. интеграл sin(x)";
+        cout << "\n6. интеграл квадратичной функции";
+        cout << "\n7. файловые операции";
+        cout << "\n8. использование auto для итераторов";
+        cout << "\n9. использование decltype и auto";
+        cout << "\n10. сложение разных типов";
+        cout << "\n11. указатели на функции";
+        cout << "\n0. завершение работы";
+        cout << "\nвыберите пункт: ";
+        cin >> selection;
+
+        switch (selection) {
+        case 1: {
+            char operation;
+            int value1, value2;
+            cout << "введите два целых числа: ";
+            cin >> value1 >> value2;
+            cout << "введите операцию (+, -, *, /): ";
+            cin >> operation;
+            int (*arithmeticOp)(int, int) = nullptr;
+            if (operation == '+') arithmeticOp = addition;
+            else if (operation == '-') arithmeticOp = subtraction;
+            else if (operation == '*') arithmeticOp = multiplication;
+            else if (operation == '/') arithmeticOp = division;
+            if (arithmeticOp) cout << "итог: " << arithmeticOp(value1, value2) << endl;
+            break;
+        }
+        case 2: {
+            char text1[100], text2[100];
+            cout << "введите первую строку: ";
+            cin >> text1;
+            cout << "введите вторую строку: ";
+            cin >> text2;
+            int (*compare)(const char*, const char*) = stringComparator;
+            int comparisonResult = compare(text1, text2);
+            if (comparisonResult > 0) cout << "строка 1 больше строки 2" << endl;
+            else if (comparisonResult < 0) cout << "строка 2 больше строки 1" << endl;
+            else cout << "строки идентичны" << endl;
+            break;
+        }
+        case 3: {
+            int numbers[] = { 5, 2, 9, 1, 5 };
+            int count = 5;
+            customSort(numbers, count, sortAscending);
+            cout << "массив после сортировки по возрастанию: ";
+            for (int i = 0; i < count; i++) cout << numbers[i] << " ";
+            cout << endl;
+            break;
+        }
+        case 4: {
+            int numbers[] = { 5, 2, 9, 1, 5 };
+            int count = 5;
+            customSort(numbers, count, sortDescending);
+            cout << "массив после сортировки по убыванию: ";
+            for (int i = 0; i < count; i++) cout << numbers[i] << " ";
+            cout << endl;
+            break;
+        }
+        case 5: {
+            double integralResult = calculateIntegral(0, 3.14159, 1000, sin);
+            cout << "значение интеграла sin(x) от 0 до π: " << integralResult << endl;
+            break;
+        }
+        case 6: {
+            auto squareFunc = [](double x) { return x * x; };
+            double integralResult = calculateIntegral(0, 2, 1000, squareFunc);
+            cout << "значение интеграла x² от 0 до 2: " << integralResult << endl;
+            break;
+        }
+        case 7: {
+            void (*menuOperations[])() = { fileOpen, fileSave, programExit };
+            int menuChoice;
+            cout << "1. открыть файл\n2. сохранить файл\n3. выход\nвыбор: ";
+            cin >> menuChoice;
+            if (menuChoice >= 1 && menuChoice <= 3) menuOperations[menuChoice - 1]();
+            break;
+        }
+        case 8: {
+            vector<int> numbersVec = { 1, 2, 3, 4, 5 };
+            cout << "элементы контейнера: ";
+            for (auto iterator = numbersVec.begin(); iterator != numbersVec.end(); ++iterator)
+                cout << *iterator << " ";
+            cout << endl;
+            break;
+        }
+        case 9: {
+            int integerVal = 5;
+            double doubleVal = 3.14;
+            decltype(integerVal * doubleVal) result1 = integerVal * doubleVal;
+            auto result2 = integerVal * doubleVal;
+            cout << "результат decltype: " << result1 << ", результат auto: " << result2 << endl;
+            break;
+        }
+        case 10: {
+            cout << "combine(3, 4.2) = " << combine(3, 4.2) << endl;
+            break;
+        }
+        case 11: {
+            double (*funcPtr1)(int) = traditionalFuncReturn();
+            auto funcPtr2 = alternativeFuncReturn();
+            cout << "традиционный метод: " << funcPtr1(2) << ", альтернативный метод: " << funcPtr2(2) << endl;
+            break;
+        }
+        }
+    } while (selection != 0);
+
+    return 0;
+}
