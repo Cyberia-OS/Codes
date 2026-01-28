@@ -1,0 +1,246 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+//структура для хранения информации о фильме
+struct videostore {
+    char title[100];      //название фильма  
+    char director[100];   //режиссер
+    char genre[50];       //жанр
+    int popularity;       //рейтинг популярности
+    float cost;          //цена диска
+};
+
+//показать все записи
+void displayall(videostore films[], int count) {
+    if (count == 0) {
+        cout << "нет записей\n";
+        return;
+    }
+
+    cout << "\nсписок всех фильмов:\n";
+    for (int i = 0; i < count; i++) {
+        cout << i + 1 << ". " << films[i].title
+            << " | режиссер: " << films[i].director
+            << " | жанр: " << films[i].genre
+            << " | рейтинг: " << films[i].popularity
+            << " | цена: " << films[i].cost << endl;
+    }
+}
+
+//добавить запись
+void addrecord(videostore films[], int& count) {
+    if (count >= 100) {
+        cout << "максимальное количество записей достигнуто\n";
+        return;
+    }
+
+    cout << "\nдобавление нового фильма:\n";
+
+    cout << "введите название фильма: ";
+    cin >> films[count].title;
+
+    cout << "введите режиссера: ";
+    cin >> films[count].director;
+
+    cout << "введите жанр: ";
+    cin >> films[count].genre;
+
+    cout << "введите рейтинг популярности (1/10): ";
+    cin >> films[count].popularity;
+
+    cout << "введите цену диска: ";
+    cin >> films[count].cost;
+
+    count++;
+    cout << "фильм добавлен\n";
+}
+
+//поиск по названию
+void searchtitle(videostore films[], int count) {
+    char searchtitle[100];
+    bool found = false;
+
+    cout << "введите название для поиска: ";
+    cin >> searchtitle;
+
+    cout << "\nрезультаты поиска по названию \"" << searchtitle << "\":\n";
+    for (int i = 0; i < count; i++) {
+        if (strcmp(films[i].title, searchtitle) == 0) {
+            cout << films[i].title << " | " << films[i].director
+                << " | " << films[i].genre << " | рейтинг: "
+                << films[i].popularity << " | цена: " << films[i].cost << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "фильмы не найдены\n";
+    }
+}
+
+//поиск по жанру
+void searchgenre(videostore films[], int count) {
+    char searchgenre[50];
+    bool found = false;
+
+    cout << "введите жанр для поиска: ";
+    cin >> searchgenre;
+
+    cout << "\nрезультаты поиска по жанру \"" << searchgenre << "\":\n";
+    for (int i = 0; i < count; i++) {
+        if (strcmp(films[i].genre, searchgenre) == 0) {
+            cout << films[i].title << " | " << films[i].director
+                << " | " << films[i].genre << " | рейтинг: "
+                << films[i].popularity << " | цена: " << films[i].cost << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "фильмы не найдены\n";
+    }
+}
+
+//поиск по режиссеру
+void searchdirector(videostore films[], int count) {
+    char searchdirector[100];
+    bool found = false;
+
+    cout << "введите режиссера для поиска: ";
+    cin >> searchdirector;
+
+    cout << "\nрезультаты поиска по режиссеру \"" << searchdirector << "\":\n";
+    for (int i = 0; i < count; i++) {
+        if (strcmp(films[i].director, searchdirector) == 0) {
+            cout << films[i].title << " | " << films[i].director
+                << " | " << films[i].genre << " | рейтинг: "
+                << films[i].popularity << " | цена: " << films[i].cost << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "фильмы не найдены\n";
+    }
+}
+
+//самый популярный фильм в жанре
+void mostpopulargenre(videostore films[], int count) {
+    char searchgenre[50];
+
+    cout << "введите жанр для поиска самого популярного фильма: ";
+    cin >> searchgenre;
+
+    int maxpopularity = -1;
+    int index = -1;
+
+    for (int i = 0; i < count; i++) {
+        if (strcmp(films[i].genre, searchgenre) == 0) {
+            if (films[i].popularity > maxpopularity) {
+                maxpopularity = films[i].popularity;
+                index = i;
+            }
+        }
+    }
+
+    if (index != -1) {
+        cout << "\nсамый популярный фильм в жанре \"" << searchgenre << "\":\n";
+        cout << films[index].title << " | " << films[index].director
+            << " | рейтинг: " << films[index].popularity
+            << " | цена: " << films[index].cost << endl;
+    }
+    else {
+        cout << "фильмы в данном жанре не найдены\n";
+    }
+}
+
+//добавить начальные данные с другими фильмами
+void addsampledata(videostore films[], int& count) {
+    //безопасная версия strcpy_s
+    strcpy_s(films[count].title, sizeof(films[count].title), "форрестгамп");
+    strcpy_s(films[count].director, sizeof(films[count].director), "земекис");
+    strcpy_s(films[count].genre, sizeof(films[count].genre), "драма");
+    films[count].popularity = 9;
+    films[count].cost = 14.99;
+    count++;
+
+    strcpy_s(films[count].title, sizeof(films[count].title), "гаррипоттер");
+    strcpy_s(films[count].director, sizeof(films[count].director), "коламбус");
+    strcpy_s(films[count].genre, sizeof(films[count].genre), "фэнтези");
+    films[count].popularity = 8;
+    films[count].cost = 16.50;
+    count++;
+
+    strcpy_s(films[count].title, sizeof(films[count].title), "гладиатор");
+    strcpy_s(films[count].director, sizeof(films[count].director), "скотт");
+    strcpy_s(films[count].genre, sizeof(films[count].genre), "история");
+    films[count].popularity = 10;
+    films[count].cost = 18.75;
+    count++;
+
+    strcpy_s(films[count].title, sizeof(films[count].title), "индианаджонс");
+    strcpy_s(films[count].director, sizeof(films[count].director), "шпилберг");
+    strcpy_s(films[count].genre, sizeof(films[count].genre), "приключения");
+    films[count].popularity = 9;
+    films[count].cost = 15.25;
+    count++;
+
+    strcpy_s(films[count].title, sizeof(films[count].title), "одиндома");
+    strcpy_s(films[count].director, sizeof(films[count].director), "коламбус");
+    strcpy_s(films[count].genre, sizeof(films[count].genre), "комедия");
+    films[count].popularity = 7;
+    films[count].cost = 12.99;
+    count++;
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    videostore films[100];
+    int count = 0;
+    int choice;
+
+    addsampledata(films, count);
+
+    do {
+        cout << "\nвидеомагазин\n";
+        cout << "1 показать все фильмы\n";
+        cout << "2 добавить фильм\n";
+        cout << "3 поиск по названию\n";
+        cout << "4 поиск по жанру\n";
+        cout << "5 поиск по режиссеру\n";
+        cout << "6 самый популярный фильм в жанре\n";
+        cout << "0 выход\n";
+        cout << "выбор: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            displayall(films, count);
+            break;
+        case 2:
+            addrecord(films, count);
+            break;
+        case 3:
+            searchtitle(films, count);
+            break;
+        case 4:
+            searchgenre(films, count);
+            break;
+        case 5:
+            searchdirector(films, count);
+            break;
+        case 6:
+            mostpopulargenre(films, count);
+            break;
+        case 0:
+            cout << "программа завершена\n";
+            break;
+        default:
+            cout << "неверный выбор\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
