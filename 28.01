@@ -1,0 +1,93 @@
+#include <iostream>
+
+using namespace std;
+
+//макрос для нахождения меньшего из двух чисел
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+//макрос для нахождения большего из двух чисел
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+//макрос для возведения числа в квадрат
+#define SQUARE(x) ((x) * (x))
+//макрос для проверки числа на четность
+#define IS_EVEN(x) (((x) & 1) == 0)
+//макрос для проверки числа на нечетность
+#define IS_ODD(x) (((x) & 1) != 0)
+
+//вспомогательная функция для возведения в степень
+inline int power_helper(int base, int exp) {
+    int result = 1;
+    for (int i = 0; i < exp; ++i) result *= base;
+    return result;
+}
+//макрос для возведения числа в степень 
+#define POWER(base, exp) (power_helper(base, exp))
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice, num1, num2;
+
+    while (true) { 
+        cout << "1. Найти минимум" << endl;
+        cout << "2. Найти максимум" << endl;
+        cout << "3. Возвести в квадрат" << endl;
+        cout << "4. Возвести в степень" << endl;
+        cout << "5. Проверить на четность" << endl;
+        cout << "6. Проверить на нечетность" << endl;
+        cout << "0. Выход" << endl;
+        cout << "Выберите операцию: ";
+        cin >> choice;
+
+        if (choice == 0) { 
+            cout << "Выход из программы..." << endl;
+            break;
+        }
+
+        if (choice == 1) {
+            cout << "Введите два числа: ";
+            cin >> num1 >> num2; 
+            cout << "Минимум(" << num1 << ", " << num2 << ") = "
+                << MIN(num1, num2) << endl;
+        }
+        else if (choice == 2) { 
+            cout << "Введите два числа: ";
+            cin >> num1 >> num2; 
+            cout << "Максимум(" << num1 << ", " << num2 << ") = "
+                << MAX(num1, num2) << endl; 
+        }
+        else if (choice == 3) {
+            cout << "Введите число: ";
+            cin >> num1; 
+            cout << "Квадрат(" << num1 << ") = " << SQUARE(num1) << endl; 
+        }
+        else if (choice == 4) { 
+            cout << "Введите основание: ";
+            cin >> num1; 
+            cout << "Введите степень (целое неотрицательное число): ";
+            cin >> num2; 
+            if (num2 >= 0) { 
+                cout << num1 << " в степени " << num2 << " = "
+                    << POWER(num1, num2) << endl; 
+            }
+            else {
+                cout << "Ошибка: степень должна быть неотрицательной!" << endl; 
+            }
+        }
+        else if (choice == 5) { 
+            cout << "Введите число: ";
+            cin >> num1; 
+            cout << "Число " << num1 << " четное? "
+                << (IS_EVEN(num1) ? "Да" : "Нет") << endl; 
+        }
+        else if (choice == 6) { 
+            cout << "Введите число: ";
+            cin >> num1; 
+            cout << "Число " << num1 << " нечетное? "
+                << (IS_ODD(num1) ? "Да" : "Нет") << endl; 
+        }
+        else {
+            cout << "Неверный выбор! Введите число от 0 до 6." << endl; 
+        }
+    }
+
+    return 0; 
+}
