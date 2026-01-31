@@ -1,0 +1,87 @@
+class house:
+    def __init__(self, area, price):
+        self.area = area
+        self.price = price
+    
+  
+    def __str__(self):
+        return f"дом площадью {self.area}м^2, стоимостью {self.price}$"
+
+class smallhouse(house):
+    def __init__(self, price=50000):
+        #наследуем от house с фиксированной площадью
+        super().__init__(area=40, price=price)
+
+class human:
+    default_name = "неизвестно"
+    default_age = 0
+    
+    #классовый метод для информации по умолчанию
+    @classmethod
+    def default_info(cls):
+        print(f"дефолтное имя: {cls.default_name}, дефолтный возраст: {cls.default_age}")
+    
+    def __init__(self, name=default_name, age=default_age):
+        self.name = name
+        self.age = age
+        self.__money = 0  #приватное свойство - деньги
+        self.__house = None  #приватное свойство - дом
+    
+    #вывод информации о человеке
+    def info(self):
+        house_info = f"дом площадью {self.__house.area}м²" if self.__house else "нет дома"
+        print(f"имя: {self.name}")
+        print(f"возраст: {self.age}")
+        print(f"деньги: {self.__money}$")
+        print(f"дом: {house_info}")
+    
+    #метод для заработка денег
+    def earn_money(self, amount):
+        self.__money += amount
+        print(f"{self.name} заработал {amount}$. теперь у него {self.__money}$")
+    
+    #приватный метод для покупки дома
+    def __make_deal(self, house):
+        self.__money -= house.price
+        self.__house = house
+        print(f"{self.name} купил дом площадью {house.area}м² за {house.price}$")
+    
+    #публичный метод покупки дома с проверкой средств
+    def buy_house(self, house):
+        if self.__money >= house.price:
+            self.__make_deal(house)
+        else:
+            print(f"недостаточно денег! у {self.name} есть {self.__money}$, а дом стоит {house.price}$")
+
+print("1. справочная информация о классе human:")
+human.default_info()
+print()
+
+print("2. создаем объект класса human:")
+person = human("Алекс", 25)
+print(f"создан человек: {person.name}, {person.age} лет")
+print()
+
+print("3. информация о человеке:")
+person.info()
+print()
+
+print("4. создаем объект класса smallhouse:")
+small_house = smallhouse()
+print(small_house)
+print()
+
+print("5. пытаемся купить дом:")
+person.buy_house(small_house)
+print()
+
+print("6. зарабатываем деньги:")
+person.earn_money(60000)
+print()
+
+print("7. снова пытаемся купить дом:")
+person.buy_house(small_house)
+print()
+
+print("8. финальное состояние человека:")
+person.info()
