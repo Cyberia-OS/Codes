@@ -1,0 +1,93 @@
+class human:
+    default_name = "Алекс"
+    default_age = 25
+    
+    def __init__(self, name=default_name, age=default_age):
+      
+        self.name = name
+        self.age = age
+        
+        #приватные свойства - доступны только внутри класса
+        #два подчеркивания в начале делают свойство приватным
+        self.__money = 0
+        self.__house = None
+    
+    #метод для вывода информации об объекте
+    def info(self):
+        print(f"имя: {self.name}")
+        print(f"возраст: {self.age}")
+        print(f"дом: {self.__house}")
+        print(f"деньги: {self.__money}")
+    
+    @staticmethod
+    def default_info():
+        print(f"имя по умолчанию: {human.default_name}")
+        print(f"возраст по умолчанию: {human.default_age}")
+    
+    #приватный метод для совершения сделки
+    #используется только внутри класса
+    def __make_deal(self, house, price):
+        #уменьшаем количество денег
+        self.__money -= price
+        #присваиваем ссылку на дом
+        self.__house = house
+        print(f"сделка совершена! куплен дом за {price}")
+    
+    #метод для увеличения количества денег
+    def earn_money(self, amount):
+        self.__money += amount
+        print(f"заработано {amount}. текущий баланс: {self.__money}")
+    
+    #основной метод для покупки дома
+    def buy_house(self, house, discount):
+        #получаем окончательную цену со скидкой
+        #вызываем метод final_price объекта house
+        final_price = house.final_price(discount)
+        
+        #проверяем, хватает ли денег
+        if self.__money >= final_price:
+            #если хватает - совершаем сделку
+            #вызываем приватный метод __make_deal
+            self.__make_deal(house, final_price)
+        else:
+            #если не хватает - выводим сообщение
+            print(f"недостаточно денег! нужно {final_price}, а есть {self.__money}")
+          
+class house:
+    def __init__(self, area, price):
+        self._area = area
+        self._price = price
+
+    def final_price(self, discount):
+        return self._price * (100 - discount) / 100
+    
+    def info(self):
+        return f"дом площадью {self._area} м² по цене {self._price}"
+
+if __name__ == "__main__":
+    print("=== демонстрация работы классов ===")
+    
+    print("информация по умолчанию:")
+    human.default_info()
+    print()
+    
+    human1 = human()
+    print("человек 1 (по умолчанию):")
+    human1.info()
+    print()
+
+    human2 = human("алексей", 30)
+    print("человек 2 (с параметрами):")
+    human2.info()
+    print()
+    
+    human2.earn_money(50000)
+    print()
+    
+    house1 = house(100, 30000)
+    print(f"создан дом: {house1.info()}")
+    print(f"цена дома со скидкой 10%: {house1.final_price(10)}")
+    print()
+
+    print("попытка купить дом:")
+    human2.buy_house(house1, 10)
