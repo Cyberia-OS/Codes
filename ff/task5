@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cstdio>
+
+int main() {
+    FILE* input = nullptr;
+    
+    if (fopen_s(&input, "text.txt", "r") != 0) {
+        std::cout << "Файл не найден\n";
+        return 0;
+    }
+    
+    int total = 0;
+    int symbol;
+    
+    while ((symbol = fgetc(input)) != EOF) {
+        if (symbol == '\n') {
+            total++;
+        }
+    }
+    
+    fclose(input);
+    
+    std::cout << "Количество строк: " << total << std::endl;
+    return 0;
+}
