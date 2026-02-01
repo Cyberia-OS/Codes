@@ -1,0 +1,34 @@
+#include <iostream>
+#include <cstdio>
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    errno_t error;
+    FILE* input;
+
+    error = fopen_s(&input, "file.txt", "r");
+
+    if (error != 0 || input == nullptr) {
+        std::cout << "Файл не найден\n";
+        return 0;
+    }
+
+    char target;
+    std::cout << "Введите символ: ";
+    std::cin >> target;
+
+    char current, previous = ' ';
+    int result = 0;
+
+    while ((current = fgetc(input)) != EOF) {
+        if ((previous == ' ' || previous == '\n') && current == target) {
+            result++;
+        }
+        previous = current;
+    }
+
+    fclose(input);
+
+    std::cout << "Количество слов: " << result << std::endl;
+    return 0;
+}
