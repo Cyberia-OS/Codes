@@ -1,0 +1,109 @@
+class LibraryItem:
+    def __init__(self, name: str, creator: str, date: int):
+        self._name = name
+        self._creator = creator
+        self._date = date
+        self.__id = self.__create_id()
+        self.__borrowed = False
+
+    def __create_id(self):
+        import random
+        return f"{random.randint(100, 999)}"
+
+    def get_name(self):
+        return self._name
+
+    def get_creator(self):
+        return self._creator
+    
+    def get_date(self):
+        return self._date
+    
+    def get_borrowed(self):
+        return self.__borrowed
+    
+    def get_id(self):
+        return self.__id
+    
+    def set_borrowed(self, value):
+        if value in [True, False]:
+            self.__borrowed = value
+        else:
+            print("Недопустимое значение")
+
+
+class Book(LibraryItem):
+    def __init__(self, name: str, creator: str, date: int, category: str, pages: int):
+        super().__init__(name, creator, date)
+        
+        self.category = category
+        self.__pages = pages
+        
+        self.__check_pages()
+    
+    def __check_pages(self):
+        if self.__pages < 1:
+            print(f"Ошибка: минимальное количество страниц - 1. Установлено 1.")
+            self.__pages = 1
+    
+    def get_pages(self):
+        return self.__pages
+    
+    def get_category(self):
+        return self.category
+    
+    def set_pages(self, pages: int):
+        if pages < 1:
+            print(f"Ошибка!")
+            return 
+        self.__pages = pages
+        print(f"Количество страниц изменено на {pages}")
+
+
+class Magazine(LibraryItem):
+    def __init__(self, name: str, creator: str, date: int, issue: int):
+        super().__init__(name, creator, date)
+        self._issue = issue
+    
+    def get_issue(self):
+        return self._issue
+    
+    def get_info(self):
+        base = f"Журнал: {self.get_name()}, Выпуск №{self._issue}"
+        creator_info = f", Издатель: {self.get_creator()}"
+        date_info = f", Год выпуска: {self.get_date()}"
+        status = f", Статус: {'Выдан' if self.get_borrowed() else 'В наличии'}"
+        return base + creator_info + date_info + status
+
+
+class DVD(LibraryItem):
+    def __init__(self, name: str, creator: str, date: int, length: int, age_rating: str):
+        super().__init__(name, creator, date)
+        self.__length = 0
+        self.__age_rating = ""
+        self.set_length(length)
+        self.set_age_rating(age_rating)
+    
+    def get_length(self):
+        return self.__length
+    
+    def get_age_rating(self):
+        return self.__age_rating
+    
+    def set_length(self, length: int):
+        if length < 1:
+            print(f"Ошибка!")
+            self.__length = 1
+        elif length > 300:
+            print(f"Ошибка!")
+            self.__length = 300
+        else:
+            self.__length = length
+    
+    def set_age_rating(self, age_rating: str):
+        valid = ["G", "PG", "PG-13", "R", "NC-17"]
+        if age_rating.upper() in valid:
+            self.__age_rating = age_rating.upper()
+        else:
+            print(f"Ошибка!")
+            self.__age_rating = "PG"
