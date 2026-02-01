@@ -1,0 +1,23 @@
+#include <iostream>
+#include <cstdio>
+
+int main() {
+    FILE* input = nullptr;
+    
+    if (fopen_s(&input, "file.txt", "r") != 0) {
+        std::cout << "Файл не найден\n";
+        return 0;
+    }
+    
+    int counter = 0;
+    int symbol;
+    
+    while ((symbol = fgetc(input)) != EOF) {
+        counter++;
+    }
+    
+    fclose(input);
+    
+    std::cout << "Количество символов: " << counter << std::endl;
+    return 0;
+}
