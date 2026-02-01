@@ -1,0 +1,28 @@
+#include <iostream>
+#include <cstdio>
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    const int total = 3;
+    
+    char data[3][50] = {
+        "Провер ка",
+        "Задание задач",
+        "Третья строка"
+    };
+    
+    FILE* output = nullptr;
+    if (fopen_s(&output, "strings.txt", "w") != 0) {
+        std::cout << "Ошибка!\n";
+        return 0;
+    }
+    
+    for (int index = 0; index < total; index++) {
+        fprintf(output, "%s\n", data[index]);
+    }
+    
+    fclose(output);
+    
+    std::cout << "Строки записаны\n";
+    return 0;
+}
