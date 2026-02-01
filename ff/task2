@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cstdio>
+
+int main() {
+    FILE* source = nullptr;
+    FILE* destination = nullptr;
+    
+    fopen_s(&source, "input.txt", "r");
+    fopen_s(&destination, "output.txt", "w");
+    
+    if (source == nullptr || destination == nullptr) {
+        std::cout << "Ошибка!\n";
+        return 0;
+    }
+    
+    int symbol;
+    
+    while ((symbol = fgetc(source)) != EOF) {
+        if (symbol == '0') {
+            symbol = '1';
+        } else if (symbol == '1') {
+            symbol = '0';
+        }
+        
+        fputc(symbol, destination);
+    }
+    
+    fclose(source);
+    fclose(destination);
+    
+    std::cout << "Файл обработан\n";
+    return 0;
+}
