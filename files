@@ -1,0 +1,345 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <limits>
+
+using namespace std;
+
+const int MAX_EMPLOYEES = 100;
+const string RESULT_FILE = "search_results.txt";
+
+struct Employee {
+    string surname;
+    string name;
+    int age;
+    string position;
+};
+
+class EmployeeSystem {
+private:
+    vector<Employee> employees;
+    string dataFile;
+    ofstream resultFile;
+
+    void openResultFile() {
+        resultFile.open(RESULT_FILE, ios::app);
+    }
+
+    void closeResultFile() {
+        if (resultFile.is_open()) {
+            resultFile.close();
+        }
+    }
+
+    void saveToResultFile(const Employee& emp) {
+        if (!resultFile.is_open()) {
+            openResultFile();
+        }
+        resultFile << emp.surname << " " << emp.name << " "
+            << emp.age << " " << emp.position << "\n";
+    }
+
+    void clearInputBuffer() {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+public:
+    EmployeeSystem(const string& filename) : dataFile(filename) {
+        loadData();
+    }
+
+    ~EmployeeSystem() {
+        saveData();
+        closeResultFile();
+    }
+
+    void loadData() {
+        ifstream file(dataFile);
+        if (!file.is_open()) {
+            cout << "Файл не найден. Начинаем с пустой базы.\n";
+            return;
+        }
+
+        Employee emp;
+        while (file >> emp.surname >> emp.name >> emp.age >> emp.position) {
+            if (employees.size() < MAX_EMPLOYEES) {
+                employees.push_back(emp);
+            }
+        }
+
+        file.close();
+        cout << "Загружено " << employees.size() << " сотрудников.\n";
+    }
+
+    void saveData() {
+        ofstream file(dataFile);
+        if (!file.is_open()) {
+            cout << "Ошибка сохранения!\n";
+            return;
+        }
+
+        for (const auto& emp : employees) {
+            file << emp.surname << " " << emp.name << " "
+                << emp.age << " " << emp.position << "\n";
+        }
+
+        file.close();
+        cout << "Данные сохранены в " << dataFile << "\n";
+    }
+
+    void addEmployee() {
+        if (employees.size() >= MAX_EMPLOYEES) {
+            cout << "База данных заполнена!\n";
+            return;
+        }
+
+        Employee newEmp;
+        cout << "Фамилия: ";
+        cin >> newEmp.surname;
+        cout << "Имя: ";
+        cin >> newEmp.name;
+        cout << "Возраст: ";
+        cin >> newEmp.age;
+        clearInputBuffer();
+        cout << "Должность: ";
+        getline(cin, newEmp.position);
+
+        employees.push_back(newEmp);
+        cout << "Сотрудник добавлен.\n";
+    }
+
+    void modifyEmployee() {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        string targetSurname;
+        cout << "Введите фамилию для редактирования: ";
+        cin >> targetSurname;
+
+        for (auto& emp : employees) {
+            if (emp.surname == targetSurname) {
+                cout << "Новое имя: ";
+                cin >> emp.name;
+                cout << "Новый возраст: ";
+                cin >> emp.age;
+                clearInputBuffer();
+                cout << "Новая должность: ";
+                getline(cin, emp.position);
+                cout << "Данные обновлены.\n";
+                return;
+            }
+        }
+
+        cout << "Сотрудник не найден.\n";
+    }
+
+    void removeEmployee() {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        string targetSurname;
+        cout << "Введите фамилию для удаления: ";
+        cin >> targetSurname;
+
+        auto it = remove_if(employees.begin(), employees.end(),
+            [&targetSurname](const Employee& emp) {
+                return emp.surname == targetSurname;
+            });
+
+        if (it != employees.end()) {
+            employees.erase(it, employees.end());
+            cout << "Сотрудник удален.\n";
+        }
+        else {
+            cout << "Сотрудник не найден.\n";
+        }
+    }
+
+    void displayAll() const {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        cout << "\n=== Все сотрудники ===\n";
+        int index = 1;
+        for (const auto& emp : employees) {
+            cout << index++ << ". " << emp.surname << " "
+                << emp.name << ", " << emp.age
+                << " лет, " << emp.position << "\n";
+        }
+    }
+
+    void searchBySurname() {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        string targetSurname;
+        cout << "Введите фамилию для поиска: ";
+        cin >> targetSurname;
+
+        openResultFile();
+        bool found = false;
+
+        cout << "\n=== Результаты поиска ===\n";
+        for (const auto& emp : employees) {
+            if (emp.surname == targetSurname) {
+                cout << emp.surname << " " << emp.name
+                    << ", " << emp.age << " лет, "
+                    << emp.position << "\n";
+
+                saveToResultFile(emp);
+                found = true;
+            }
+        }
+
+        closeResultFile();
+
+        if (found) {
+            cout << "Результаты сохранены в " << RESULT_FILE << "\n";
+        }
+        else {
+            cout << "Сотрудники не найдены.\n";
+        }
+    }
+
+    void searchByAge() {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        int targetAge;
+        cout << "Введите возраст для поиска: ";
+        cin >> targetAge;
+
+        openResultFile();
+        bool found = false;
+
+        cout << "\n=== Результаты поиска ===\n";
+        for (const auto& emp : employees) {
+            if (emp.age == targetAge) {
+                cout << emp.surname << " " << emp.name
+                    << ", " << emp.age << " лет, "
+                    << emp.position << "\n";
+
+                saveToResultFile(emp);
+                found = true;
+            }
+        }
+
+        closeResultFile();
+
+        if (found) {
+            cout << "Результаты сохранены в " << RESULT_FILE << "\n";
+        }
+        else {
+            cout << "Сотрудники не найдены.\n";
+        }
+    }
+
+    void searchByFirstLetter() {
+        if (employees.empty()) {
+            cout << "База данных пуста.\n";
+            return;
+        }
+
+        char firstLetter;
+        cout << "Введите первую букву фамилии: ";
+        cin >> firstLetter;
+
+        openResultFile();
+        bool found = false;
+
+        cout << "\n=== Результаты поиска ===\n";
+        for (const auto& emp : employees) {
+            if (!emp.surname.empty() && emp.surname[0] == firstLetter) {
+                cout << emp.surname << " " << emp.name
+                    << ", " << emp.age << " лет, "
+                    << emp.position << "\n";
+
+                saveToResultFile(emp);
+                found = true;
+            }
+        }
+
+        closeResultFile();
+
+        if (found) {
+            cout << "Результаты сохранены в " << RESULT_FILE << "\n";
+        }
+        else {
+            cout << "Сотрудники не найдены.\n";
+        }
+    }
+
+    void clearSearchResults() {
+        ofstream file(RESULT_FILE, ios::trunc);
+        if (file.is_open()) {
+            file.close();
+            cout << "Файл результатов поиска очищен.\n";
+        }
+    }
+};
+
+void showMenu() {
+    cout << "\nсистема управления сотрудниками\n";
+    cout << "1. Добавить сотрудника\n";
+    cout << "2. Редактировать сотрудника\n";
+    cout << "3. Удалить сотрудника\n";
+    cout << "4. Показать всех сотрудников\n";
+    cout << "5. Поиск по фамилии\n";
+    cout << "6. Поиск по возрасту\n";
+    cout << "7. Поиск по первой букве фамилии\n";
+    cout << "8. Сохранить данные\n";
+    cout << "9. Очистить файл результатов\n";
+    cout << "0. Выход\n";
+    cout << "Выбор: ";
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    string filename;
+    cout << "Введите имя файла данных: ";
+    getline(cin, filename);
+
+    EmployeeSystem system(filename);
+
+    int choice;
+
+    do {
+        showMenu();
+        cin >> choice;
+
+        switch (choice) {
+        case 1: system.addEmployee(); break;
+        case 2: system.modifyEmployee(); break;
+        case 3: system.removeEmployee(); break;
+        case 4: system.displayAll(); break;
+        case 5: system.searchBySurname(); break;
+        case 6: system.searchByAge(); break;
+        case 7: system.searchByFirstLetter(); break;
+        case 8: system.saveData(); break;
+        case 9: system.clearSearchResults(); break;
+        case 0:
+            cout << "Выход из программы.\n";
+            break;
+        default:
+            cout << "Неверный выбор!\n";
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    } while (choice != 0);
+
+    return 0;
+}
