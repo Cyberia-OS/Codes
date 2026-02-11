@@ -1,0 +1,135 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+using namespace std;
+
+//функции системы оду
+double f1(double x, double y, double z) {
+    return z;  //первое уравнение системы: y = z
+}
+
+double f2(double x, double y, double z) {
+    return 1.75 * z / (x * x * x) - y / (2.0 * x * x * x * x);  //второе уравнение системы: z = формула
+}
+
+//метод эйлера
+void euler(double x0, double y0, double z0, double h, int n) {
+    cout << endl << "метод эйлера:" << endl;
+    cout << "x\ty\tz" << endl;
+
+    double x = x0, y = y0, z = z0; 
+
+    for (int i = 0; i < n; i++) {
+        cout << fixed << setprecision(4) << x << "\t" << y << "\t" << z << endl; 
+
+        double dy = f1(x, y, z);  
+        double dz = f2(x, y, z); 
+
+        y = y + h * dy;  //формула эйлера для y
+        z = z + h * dz;  //формула эйлера для z
+        x = x + h;       //увеличение x на шаг
+    }
+}
+
+//метод эйлера-коши
+void euler_cauchy(double x0, double y0, double z0, double h, int n) {
+    cout << endl << "метод эйлера-коши:" << endl;
+    cout << "x\ty\tz" << endl;
+
+    double x = x0, y = y0, z = z0;  //инициализация начальных значений
+
+    for (int i = 0; i < n; i++) {
+        cout << fixed << setprecision(4) << x << "\t" << y << "\t" << z << endl;  //вывод текущих значений
+
+        double dy1 = f1(x, y, z);  //производная в начальной точке
+        double dz1 = f2(x, y, z);
+
+        double y_temp = y + h * dy1;  //предсказание методом эйлера
+        double z_temp = z + h * dz1;
+        double x_temp = x + h;
+
+        double dy2 = f1(x_temp, y_temp, z_temp);  //производная в предсказанной точке
+        double dz2 = f2(x_temp, y_temp, z_temp);
+
+        y = y + h / 2.0 * (dy1 + dy2);  //коррекция по методу эйлера-коши
+        z = z + h / 2.0 * (dz1 + dz2);
+        x = x_temp;  //переход к следующей точке
+    }
+}
+
+//метод рунге-кутта
+void runge_kutta(double x0, double y0, double z0, double h, int n) {
+    cout << endl << "метод рунге-кутта:" << endl;
+    cout << "x\ty\tz" << endl;
+
+    double x = x0, y = y0, z = z0; 
+
+    for (int i = 0; i < n; i++) {
+        cout << fixed << setprecision(6) << x << "\t" << y << "\t" << z << endl; 
+
+        //коэффициенты k1 для y и z
+        double k1y = h * f1(x, y, z);
+        double k1z = h * f2(x, y, z);
+
+        //коэффициенты k2 для y и z
+        double k2y = h * f1(x + h / 2, y + k1y / 2, z + k1z / 2);
+        double k2z = h * f2(x + h / 2, y + k1y / 2, z + k1z / 2);
+
+        //коэффициенты k3 для y и z
+        double k3y = h * f1(x + h / 2, y + k2y / 2, z + k2z / 2);
+        double k3z = h * f2(x + h / 2, y + k2y / 2, z + k2z / 2);
+
+        //коэффициенты k4 для y и z
+        double k4y = h * f1(x + h, y + k3y, z + k3z);
+        double k4z = h * f2(x + h, y + k3y, z + k3z);
+
+        y = y + (k1y + 2 * k2y + 2 * k3y + k4y) / 6.0;
+        z = z + (k1z + 2 * k2z + 2 * k3z + k4z) / 6.0;
+        x = x + h;  //переход
+    }
+}
+
+void test() {
+    double x = 2.0, y = 4.5, z = 3.2, h = 0.1;  
+    int n = 5;  
+
+    cout << endl << "тест для примера:" << endl;
+    cout << "y(2)=4.5, y'(2)=3.2, h=0.1" << endl;
+
+    euler(x, y, z, h, n);       
+    euler_cauchy(x, y, z, h, n); 
+    runge_kutta(x, y, z, h, n);  
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");  
+
+    int choice;  
+    double x, y, z, h;  
+    int n;  
+
+    do {
+        cout << "меню:" << endl;
+        cout << "1. эйлер" << endl;
+        cout << "2. эйлер-коши" << endl;
+        cout << "3. рунге-кутта" << endl;
+        cout << "4. тест" << endl;
+        cout << "0. выход" << endl;
+        cout << "выбор: ";
+        cin >> choice; 
+
+        if (choice >= 1 && choice <= 3) {
+            cout << "x0 y0 z0 h n: ";  
+            cin >> x >> y >> z >> h >> n;  
+
+            if (choice == 1) euler(x, y, z, h, n);  
+            else if (choice == 2) euler_cauchy(x, y, z, h, n);  
+            else runge_kutta(x, y, z, h, n);  
+        }
+        else if (choice == 4) test();  
+
+    } while (choice != 0);  
+
+    return 0;  
+}

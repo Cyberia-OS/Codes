@@ -1,0 +1,109 @@
+import math
+
+#задание 1
+#1 ркурсивный алгоритм НОД
+def nodrecursive(a, b):
+    if b == 0:
+        return a
+    return nodrecursive(b, a % b)
+
+#вычисление числа Фибоначчи
+def fib_recursive(n):
+    if n <= 1:
+        return n
+    return fib_recursive(n - 1) + fib_recursive(n - 2)
+
+#рекурсивная функция для переворота числа
+def perevorot_number(n, reversed_num=0):
+    if n == 0:
+        return reversed_num
+    return perevorot_number(n // 10, reversed_num * 10 + n % 10)
+
+#задание 2
+#рекурсивная функция для представления числа n в виде суммы m слагаемых
+def number1(n, m, current=None, start=1):
+    if current is None:
+        current = []
+
+    if m == 1:
+        if n >= start:
+            print(current + [n])
+        return
+
+    for i in range(start, n - m + 2):
+        number1(n - i, m - 1, current + [i], i)
+
+#двойной факториал
+def double_factorial(n):
+    if n <= 1:
+        return 1
+    return n * double_factorial(n - 2)
+
+
+#кол-во единиц в двоичном представлении числа
+def kolvo(n):
+    if n == 0:
+        return 0
+    return (n % 2) + kolvo(n // 2)
+
+#сложение двух чисел с помощью прибавления единицы
+def add_recursive(a, b):
+    if b == 0:
+        return a
+    return add_recursive(a + 1, b - 1)
+
+#умножение двух чисел с помощью сложения
+def multiply_recursive(a, b):
+    if b == 0:
+        return 0
+    return a + multiply_recursive(a, b - 1)
+
+#проверка является ли фрагмент строки палиндромом
+def palindrome(s, i, j):
+    if i >= j:
+        return True
+    if s[i] != s[j]:
+        return False
+    return palindrome(s, i + 1, j - 1)
+
+#подсчет количества цифр в числе
+def count_digits(n):
+    if n < 10:
+        return 1
+    return 1 + count_digits(n // 10)
+
+def main():
+
+    print("задание 1")
+    print("1. НОД чисел 48 и 18:", nodrecursive(48, 18))
+    print("2. 10-е число Фибоначчи:", fib_recursive(10))
+    print("3. Перевернутое число 12345:", perevorot_number(12345))
+    print()
+
+    print("задание 2")
+    print("представления числа 5 в виде суммы 3 слагаемых:")
+    number1(5, 3)
+
+    print("\n1 двойной факториал 7:", double_factorial(7))
+    print("2 кол-во единиц в двоичном представлении 13:", kolvo(13))
+    print("3 сложение 5 + 3:", add_recursive(5, 3))
+    print("4 умножение 4 * 3:", multiply_recursive(4, 3))
+
+    str1 = "радар"
+    print(f"5 строка '{str1}' палиндром:", palindrome(str1, 0, len(str1) - 1))
+    print("6 кол-во цифр в числе 123456:", count_digits(123456))
+
+    print("анализ алгоритмов")
+    print("1 НОД: O(log(min(a,b))) - логарифмическая сложность")
+    print("2 фибоначчи: O(2^n) - экспоненциальная сложность")
+    print("3 Переворот числа: O(log10(n)) - логарифмическая сложность")
+    print("4 Представления суммы: O(n^m) - экспоненциальная сложность")
+    print("5 Двойной факториал: O(n) - линейная сложность")
+    print("6 Подсчет единиц: O(log2(n)) - логарифмическая сложность")
+    print("7 Сложение: O(b) - линейная сложность")
+    print("8 Умножение: O(b) - линейная сложность")
+    print("9 Палиндром: O(n) - линейная сложность")
+    print("10 Подсчет цифр: O(log10(n)) - логарифмическая сложность")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,191 @@
+import math
+
+class solve:
+    def __init__(self):
+        self.equations_task6 = {
+            'г': {
+                'name': '2^x - 2cos(x) = 0',
+                'func': lambda x: 2 ** x - 2 * math.cos(x), #функция уравнения
+                'phi': lambda x: x - 0.25 * (2 ** x - 2 * math.cos(x)), #преобразование для итераций
+                'interval': (0.6, 0.7), #интервал поиска
+                'x0': 0.65, #начальное приближение
+                'expected_root': 0.659957  #ожидаемый корень
+            },
+            'д': {
+                'name': 'lg(x+5) = cos(x)',
+                'func': lambda x: math.log10(x + 5) - math.cos(x),
+                'phi': lambda x: x - (math.log10(x + 5) - math.cos(x)),
+                'interval': (0.7, 0.8),
+                'x0': 0.75,
+                'expected_root': 0.712368
+            },
+            'ж': {
+                'name': '8cos(x) - x = 6',
+                'func': lambda x: 8 * math.cos(x) - x - 6,
+                'phi': lambda x: x - 0.1 * (8 * math.cos(x) - x - 6),
+                'interval': (0.6, 0.7),
+                'x0': 0.65,
+                'expected_root': 0.600486
+            },
+            'з': {
+                'name': 'sin(x) - 0,2x = 0',
+                'func': lambda x: math.sin(x) - 0.2 * x,
+                'phi': lambda x: math.pi - math.asin(0.2 * x),
+                'interval': (2.5, 2.6),
+                'x0': 2.55,
+                'expected_root': 2.595739
+            },
+            'и': {
+                'name': '10cos(x) - 0,1x^2 = 0',
+                'func': lambda x: 10 * math.cos(x) - 0.1 * x ** 2,
+                'phi': lambda x: math.acos(0.01 * x ** 2),
+                'interval': (1.5, 1.6),
+                'x0': 1.55,
+                'expected_root': 1.546866
+            },
+            'к': {
+                'name': '2lg(x+7) - 5sin(x) = 0',
+                'func': lambda x: 2 * math.log10(x + 7) - 5 * math.sin(x),
+                'phi': lambda x: x - 0.15 * (2 * math.log10(x + 7) - 5 * math.sin(x)),
+                'interval': (-3.4, -3.3),
+                'x0': -3.35,
+                'expected_root': -3.367590
+            }
+        }
+
+    def polovinoe(self, f, a, b, epsilon=1e-5, max_iterations=1000):
+        if f(a) * f(b) >= 0:
+            raise ValueError("Функция должна иметь разные знаки на концах интервала")
+        print(f"Метод половинного деления")
+        print(f"Интервал: [{a}, {b}], Точность: {epsilon}")
+        iteration = 0
+        while (b - a) >= epsilon and iteration < max_iterations:
+            iteration += 1
+            c = (a + b) / 2
+            if f(c) == 0:
+                break
+            elif f(c) * f(a) < 0:
+                b = c
+            else:
+                a = c
+            if iteration <= 5: #первые 5 итераций
+                print(f"Итерация {iteration}: x = {c:.6f}, f(x) = {f(c):.2e}")
+
+        root = (a + b) / 2
+        print(f"Найденный корень: {root:.8f}")
+        print(f"f(x) = {f(root):.2e}")
+        print(f"Количество итераций: {iteration}")
+        return root
+
+    def iteraciya(self, phi, x0, epsilon=1e-6, max_iterations=1000):
+        print(f"Метод простых итераций")
+        print(f"Начальное приближение: {x0}, Точность: {epsilon}")
+        iteration = 0
+        x_prev = x0
+        while iteration < max_iterations:
+            iteration += 1
+            x_next = phi(x_prev)
+
+            if abs(x_next - x_prev) < epsilon:
+                break
+            x_prev = x_next
+            if iteration <= 5:  # Показываем первые 5 итераций
+                print(f"Итерация {iteration}: x = {x_next:.6f}")
+        print(f"Найденный корень: {x_next:.8f}")
+        print(f"Количество итераций: {iteration}")
+        return x_next
+
+    def solve_equation_1(self):
+        print("решение уравнения: sin(x) - 1/x = 0")
+        print("\nЗАДАНИЕ 1: Метод половинного деления (точность 1e-4)")
+        print("Результат: корень = 1.11415")
+        print("\nЗАДАНИЕ 2: Программа метода половинного деления")
+        try:
+            root1 = self.polovinoe(
+                lambda x: math.sin(x) - 1 / x,
+                1.0, 1.2, 1e-4
+            )
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+        # Задание 3: Метод половинного деления с параметром
+        print("\nЗАДАНИЕ 3: Метод половинного деления с параметром")
+        try:
+            a, b, h = 1.0, 1.2, 1e-4 #вычисляем количество итераций по формуле n = log2((b-a)/h)
+            n = int(math.ceil(math.log2((b - a) / h)))
+            print(f"Расчетное количество итераций: {n}")
+
+            root2 = self.polovinoe(
+                lambda x: math.sin(x) - 1 / x,
+                1.0, 1.2, 1e-4
+            )
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+        # Задание 4: Метод простых итераций с точностью 1e-5 (вручную)
+        print("\nЗАДАНИЕ 4: Метод простых итераций (точность 1e-5)")
+        print("Результат: корень ≈ 1.11415")
+
+        # Задание 5: Программа для метода простых итераций
+        print("\nЗАДАНИЕ 5: Программа метода простых итераций")
+        try:
+            root3 = self.iteraciya(
+                lambda x: x - 0.4 * (math.sin(x) - 1 / x),
+                1.1, 1e-6
+            )
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+    def solve_task6(self):
+        print("ЗАДАНИЕ 6: РЕШЕНИЕ ВСЕХ УРАВНЕНИЙ")
+        print("Точность: метод половинного деления - 1e-5, метод простых итераций - 1e-6")
+
+        for key, eq in self.equations_task6.items():
+            print(f"\nУравнение {key}: {eq['name']}")
+            print(f"Ожидаемый корень: {eq['expected_root']}")
+            print("-" * 50)
+
+            try:
+                # Метод половинного деления с точностью 1e-5
+                a, b = eq['interval']
+                print("Метод половинного деления (точность 1e-5):")
+                root_bisection = self.polovinoe(eq['func'], a, b, 1e-5)
+
+                # Метод простых итераций с точностью 1e-6
+                print("\nМетод простых итераций (точность 1e-6):")
+                root_iteration = self.iteraciya(eq['phi'], eq['x0'], 1e-6)
+
+                # Сравнение с ожидаемым корнем
+                print(f"\nСравнение с ожидаемым корнем {eq['expected_root']}:")
+                print(f"Разница (бисекция): {abs(root_bisection - eq['expected_root']):.2e}")
+                print(f"Разница (итерации): {abs(root_iteration - eq['expected_root']):.2e}")
+
+            except Exception as e:
+                print(f"Ошибка при решении уравнения: {e}")
+                continue
+
+    def display_menu(self):
+        print("\nВыберите действие:")
+        print("1. Решить уравнение sin(x) - 1/x = 0 (задания 1-5)")
+        print("2. Решить все уравнения из задания 6")
+        print("0. Выход")
+
+    def run(self):
+        while True:
+            self.display_menu()
+            choice = input("\nВаш выбор: ").strip()
+            if choice == '0':
+                print("Выход из программы...")
+                break
+            elif choice == '1':
+                self.solve_equation_1()
+            elif choice == '2':
+                self.solve_task6()
+            else:
+                print("Ошибка: выберите действие 0, 1 или 2")
+            input("\nНажмите Enter для продолжения...")
+def main():
+    solver = solve()
+    solver.run()
+if __name__ == "__main__":
+    main()

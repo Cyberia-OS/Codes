@@ -1,0 +1,132 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+double f(double x) {
+    return sin(x); 
+}
+
+//метод трапеций
+double trapezoidal(double a, double b, int n) {
+    double sum = 0.0; 
+    double step = (b - a) / n; 
+    double x = a + step;       
+
+    //цикл суммы значений функции во внутренних точках
+    while (x < b) {
+        double val = f(x); //значение функции в точке x
+        sum = sum + val; //добавляем к сумме
+        x = x + step;   //переходим к следующей точке
+    }
+
+    double fa = f(a); //значение на левом краю
+    double fb = f(b); //значение на правом краю
+    //формула метода трапеций
+    sum = (step / 2.0) * (fa + fb + 2.0 * sum);
+
+    return sum;
+}
+
+//метод симпсона 
+double simpson(double a, double b, double eps) {
+    int n = 2;                 
+    double prev = 0;            
+    double curr = 0;           
+    double step, x, x1, x2, x3;
+    int half;
+
+    const int max_iter = 20;   
+    int iter = 0;
+
+    do {
+        step = (b - a) / n;    
+        curr = 0;              
+        x = a;                 
+        half = n / 2;          
+
+        //обработка каждой тройки точек
+        for (int k = 1; k <= half; k++) {
+            x1 = x;  //левая точка
+            x2 = x1 + step; //средняя точка
+            x3 = x2 + step; //правая точка
+
+            //формула симпсона для тройки
+            curr += f(x1) + 4.0 * f(x2) + f(x3);
+
+            x = x3;             
+        }
+
+        //умножение на коэффициент для получения интеграла
+        curr = (step / 3.0) * curr;
+
+        //проверка достижения требуемой точности
+        if (iter > 0 && fabs(curr - prev) <= eps) {
+            std::cout << "разбиений: " << n << endl;
+            return curr;
+        }
+
+        prev = curr; //сохраняем текущее значение
+        n *= 2; //удваиваем число разбиений
+
+        iter++;
+        if (iter > max_iter) {
+            std::cout << "достигнут предел итераций (" << max_iter << ")" << endl;
+            std::cout << "текущее значение: " << curr << endl;
+            return curr;
+        }
+
+    } while (true);
+}
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    int choice;
+    double a, b, res;
+    int n;
+    double eps;
+
+    std::cout << "выберите метод интегрирования:" << endl;
+    std::cout << "1. метод трапеций" << endl;
+    std::cout << "2. метод симпсона" << endl;
+    std::cout << "ваш выбор: ";
+    std::cin >> choice;
+
+    std::cout << "введите начало интервала a: ";
+    std::cin >> a;
+    std::cout << "введите конец интервала b: ";
+    std::cin >> b;
+
+    if (choice == 1) {
+        std::cout << "введите количество разбиений n: ";
+        std::cin >> n;
+
+        if (n <= 0) {
+            std::cout << "ошибка n должно быть положительным" << endl;
+            return 1;
+        }
+
+        res = trapezoidal(a, b, n);
+        std::cout << "результат: " << res << endl;
+
+    }
+    else if (choice == 2) {
+        std::cout << "введите точность e: ";
+        std::cin >> eps;
+
+        if (eps <= 0) {
+            std::cout << "ошибка e должно быть положительным" << endl;;
+            return 1;
+        }
+
+        res = simpson(a, b, eps);
+        std::cout << "результат: " << res << endl;
+
+    }
+    else {
+        std::cout << "неверный выбор" << endl;
+        return 1;
+    }
+
+    return 0;
+}

@@ -1,0 +1,87 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+using namespace std;
+
+double f1(double x, double y, double z) {
+    return z;  
+}
+
+double f2(double x, double y, double z) {
+    return 1.75 * z / (x * x * x) - y / (2.0 * x * x * x * x); 
+}
+
+//метод
+void kutta(double X0, double Y0, double Z0, double h, int n) {
+    cout << endl << "Метод Рунге-Кутта 4-го порядка для системы двух ОДУ:" << endl;
+    cout << "X\tY\tZ" << endl;
+
+    double X, Y, Z; 
+
+    for (int i = 1; i <= n; i++) {
+        //вычисление коэффициентов k1, L1
+        double k1 = h * f1(X0, Y0, Z0);
+        double L1 = h * f2(X0, Y0, Z0);
+
+        //вычисление коэффициентов k2, L2
+        double k2 = h * f1(X0 + h / 2, Y0 + k1 / 2, Z0 + L1 / 2);
+        double L2 = h * f2(X0 + h / 2, Y0 + k1 / 2, Z0 + L1 / 2);
+
+        //вычисление коэффициентов k3, L3
+        double k3 = h * f1(X0 + h / 2, Y0 + k2 / 2, Z0 + L2 / 2);
+        double L3 = h * f2(X0 + h / 2, Y0 + k2 / 2, Z0 + L2 / 2);
+
+        // Вычисление коэффициентов k4, L4
+        double k4 = h * f1(X0 + h, Y0 + k3, Z0 + L3);
+        double L4 = h * f2(X0 + h, Y0 + k3, Z0 + L3);
+
+        // Вычисление новых значений Y и Z
+        Y = Y0 + (k1 + 2 * k2 + 2 * k3 + k4) / 6.0;
+        Z = Z0 + (L1 + 2 * L2 + 2 * L3 + L4) / 6.0;
+
+        //вычисление нового значения X
+        X = X0 + h;
+
+        //вывод результатов (соответствует блоку 
+        cout << fixed << setprecision(6) << X << "\t" << Y << "\t" << Z << endl;
+
+        //обновление начальных значений для следующего шага
+        X0 = X;
+        Y0 = Y;
+        Z0 = Z;
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    double X0, Y0, Z0, h;
+    int n;
+
+    cout << "Система уравнений:" << endl;
+    cout << "  y' = z" << endl;
+    cout << "  z' = 1.75*z/x^3 - y/(2*x^4)" << endl << endl;
+
+    cout << "Введите начальные условия:" << endl;
+    cout << "X0 = ";
+    cin >> X0;
+    cout << "Y0 = ";
+    cin >> Y0;
+    cout << "Z0 = ";
+    cin >> Z0;
+    cout << "Введите шаг h = ";
+    cin >> h;
+    cout << "Введите количество шагов n = ";
+    cin >> n;
+
+   
+    if (X0 == 0) {
+        cout << "ошибка: X0 не может быть равно 0" << endl;
+        return 1;
+    }
+
+    kutta(X0, Y0, Z0, h, n);
+
+    return 0;
+}
