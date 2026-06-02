@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MatrixCols</class>
+ <widget class="QMainWindow" name="MatrixCols">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>420</width><height>420</height></rect>
+  </property>
+  <property name="minimumSize">
+   <size><width>420</width><height>420</height></size>
+  </property>
+  <property name="maximumSize">
+   <size><width>420</width><height>420</height></size>
+  </property>
+  <property name="windowTitle">
+   <string>Суммы столбцов матрицы</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="labelMatrix">
+      <property name="text">
+       <string>Матрица (4 строки × 5 столбцов):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="maximumHeight">
+       <number>130</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelCombo">
+      <property name="text">
+       <string>Выберите тип столбцов:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox">
+      <item>
+       <property name="text">
+        <string>Чётные столбцы (индексы 0, 2, 4)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Нечётные столбцы (индексы 1, 3)</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Вычислить суммы столбцов</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelResult">
+      <property name="text">
+       <string>← Нажмите кнопку для вычисления</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignTop|Qt::AlignLeft</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
