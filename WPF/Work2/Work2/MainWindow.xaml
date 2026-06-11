@@ -1,0 +1,19 @@
+﻿<Window x:Class="MonitorApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Height="500" Width="500">
+    <StackPanel Margin="15">
+
+        <TextBlock Text="Ширина экрана (мм):" Margin="0,0,0,3"/>
+        <TextBox x:Name="txtШирина" Margin="0,0,0,10"/>
+
+        <TextBlock Text="Высота экрана (мм):" Margin="0,0,0,3"/>
+        <TextBox x:Name="txtВысота" Margin="0,0,0,15"/>
+
+        <Button Content="Рассчитать диагональ" Click="Рассчитать_Click" Margin="0,0,0,10"/>
+
+        <TextBlock x:Name="txtРезультат" FontSize="16" 
+                   HorizontalAlignment="Center" Foreground="DarkBlue"/>
+
+    </StackPanel>
+</Window>
