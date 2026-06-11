@@ -1,0 +1,23 @@
+﻿<Window x:Class="XmlOrdersApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Заказы" Height="350" Width="400">
+	<StackPanel Margin="15">
+
+		<TextBlock Text="Номер заказа:"/>
+		<TextBox x:Name="txtId" Margin="0,0,0,8"/>
+
+		<TextBlock Text="Клиент:"/>
+		<TextBox x:Name="txtClient" Margin="0,0,0,8"/>
+
+		<TextBlock Text="Товар:"/>
+		<TextBox x:Name="txtProduct" Margin="0,0,0,15"/>
+
+		<Button Content="Сохранить в XML" Click="Сохранить_Click" Margin="0,0,0,5"/>
+		<Button Content="Загрузить из XML" Click="Загрузить_Click" Margin="0,0,0,10"/>
+
+		<TextBox x:Name="txtВывод" IsReadOnly="True" Height="100"
+                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+	</StackPanel>
+</Window>
