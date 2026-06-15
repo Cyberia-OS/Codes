@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>455</width>
+    <height>459</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_main">
+    <item>
+     <widget class="QStackedWidget" name="pages">
+      <widget class="QWidget" name="pageMain">
+       <layout class="QVBoxLayout" name="vl_main">
+        <item>
+         <spacer name="sp_main_top">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblMainTitle">
+          <property name="text">
+           <string>Интернет магазин &quot;ТехноМир&quot;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblMainSub">
+          <property name="text">
+           <string>Лучшие товары по лучшим ценам!</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblMainLine">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnCatalog">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Каталог товаров</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="sp_main_bot">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageCatalog">
+       <layout class="QVBoxLayout" name="vl_catalog">
+        <item>
+         <widget class="QLabel" name="lblCatalogTitle">
+          <property name="text">
+           <string>Каталог товаров</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbProduct">
+          <property name="title">
+           <string>Смартфон Samsung Galaxy A54</string>
+          </property>
+          <layout class="QVBoxLayout" name="vl_product">
+           <item>
+            <widget class="QLabel" name="lblProductDesc">
+             <property name="text">
+              <string>Описание: Смартфон с дисплеем 6.4&quot;,
+камерой 50 МП, аккумулятором 5000 мАч,
+оперативной памятью 6 ГБ.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblProductPrice">
+             <property name="text">
+              <string>Цена: 25 000 руб.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnOrder">
+          <property name="text">
+           <string>Заказать</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnCatalogBack">
+          <property name="text">
+           <string>Назад</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageOrder">
+       <layout class="QVBoxLayout" name="vl_order">
+        <item>
+         <widget class="QLabel" name="lblOrderTitle">
+          <property name="text">
+           <string>Оформление заказа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbOrder">
+          <property name="title">
+           <string>Ваш заказ</string>
+          </property>
+          <layout class="QVBoxLayout" name="vl_orderbox">
+           <item>
+            <widget class="QLabel" name="lblOrderItem">
+             <property name="text">
+              <string>Товар: Смартфон Samsung Galaxy A54</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblOrderDesc">
+             <property name="text">
+              <string>Описание: Смартфон с дисплеем 6.4&quot;,
+камерой 50 МП, аккумулятором 5000 мАч.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblOrderPrice">
+             <property name="text">
+              <string>Стоимость: 25 000 руб.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblConfirm">
+          <property name="text">
+           <string>Нажмите кнопку для подтверждения заказа.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnConfirm">
+          <property name="text">
+           <string>Оформить заказ</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
