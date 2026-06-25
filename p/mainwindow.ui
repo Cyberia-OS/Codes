@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>820</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Учёт заработной платы сотрудников университета</string>
+  </property>
+  <property name="styleSheet">
+   <string>
+QMainWindow, QWidget {
+    background-color: #F0F4F8;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13px;
+    color: #2D3748;
+}
+QTabWidget::pane {
+    border: 1px solid #CBD5E0;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+}
+QTabBar::tab {
+    background-color: #E2E8F0;
+    color: #4A5568;
+    padding: 7px 18px;
+    border: 1px solid #CBD5E0;
+    border-bottom: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-right: 2px;
+}
+QTabBar::tab:selected {
+    background-color: #FFFFFF;
+    color: #2B6CB0;
+    font-weight: bold;
+}
+QTabBar::tab:hover:!selected {
+    background-color: #BEE3F8;
+}
+QPushButton {
+    background-color: #3182CE;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #2B6CB0;
+}
+QPushButton:pressed {
+    background-color: #2C5282;
+}
+QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QComboBox {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    selection-background-color: #BEE3F8;
+}
+QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QComboBox:focus {
+    border: 1px solid #3182CE;
+}
+QTableWidget {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E0;
+    gridline-color: #E2E8F0;
+    border-radius: 4px;
+}
+QTableWidget::item:selected {
+    background-color: #BEE3F8;
+    color: #2D3748;
+}
+QHeaderView::section {
+    background-color: #EBF4FF;
+    color: #2B6CB0;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid #BEE3F8;
+    border-right: 1px solid #CBD5E0;
+    padding: 5px 8px;
+}
+QLabel {
+    color: #2D3748;
+}
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="centralLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="employeesTab">
+       <attribute name="title">
+        <string>Сотрудники</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="employeesLayout">
+        <item>
+         <widget class="QLineEdit" name="searchEdit">
+          <property name="placeholderText">
+           <string>Поиск по ФИО...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="employeeTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+          </property>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>ФИО</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Должность</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Кафедра/отдел</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Оклад</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="employeeButtonsLayout">
+          <item>
+           <widget class="QPushButton" name="addEmployeeButton">
+            <property name="text">
+             <string>Добавить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="editEmployeeButton">
+            <property name="text">
+             <string>Редактировать</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteEmployeeButton">
+            <property name="text">
+             <string>Удалить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="employeeButtonsSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="timesheetTab">
+       <attribute name="title">
+        <string>Табель</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="timesheetLayout">
+        <item>
+         <layout class="QFormLayout" name="timesheetFormLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_t1">
+            <property name="text">
+             <string>Сотрудник:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="timesheetEmployeeCombo"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_t2">
+            <property name="text">
+             <string>Месяц:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="timesheetPeriodEdit">
+            <property name="displayFormat">
+             <string>MM.yyyy</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_t3">
+            <property name="text">
+             <string>Отработано дней:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="workedDaysSpin">
+            <property name="maximum">
+             <number>31</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_t4">
+            <property name="text">
+             <string>Норма дней:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="normDaysSpin">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>31</number>
+            </property>
+            <property name="value">
+             <number>21</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveTimesheetButton">
+          <property name="text">
+           <string>Сохранить табель</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="timesheetSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="salaryTab">
+       <attribute name="title">
+        <string>Расчёт зарплаты</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="salaryLayout">
+        <item>
+         <layout class="QFormLayout" name="salaryFormLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_s1">
+            <property name="text">
+             <string>Сотрудник:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="salaryEmployeeCombo"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_s2">
+            <property name="text">
+             <string>Месяц:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="salaryPeriodEdit">
+            <property name="displayFormat">
+             <string>MM.yyyy</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_s3">
+            <property name="text">
+             <string>Премия:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="bonusSpin">
+            <property name="suffix">
+             <string> руб.</string>
+            </property>
+            <property name="maximum">
+             <double>10000000.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_s8">
+            <property name="text">
+             <string>Стимулирующая выплата:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QDoubleSpinBox" name="incentiveSpin">
+            <property name="suffix">
+             <string> руб.</string>
+            </property>
+            <property name="maximum">
+             <double>10000000.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="salaryButtonsLayout">
+          <item>
+           <widget class="QPushButton" name="calcSalaryButton">
+            <property name="text">
+             <string>Рассчитать</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveSalaryButton">
+            <property name="text">
+             <string>Сохранить начисление</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="salaryButtonsSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QFrame" name="payslipHeaderFrame">
+          <property name="styleSheet">
+           <string>QFrame { background-color: #FFFFFF; border: 1px solid #CBD5E0; border-radius: 6px; padding: 4px; }</string>
+          </property>
+          <layout class="QVBoxLayout" name="payslipHeaderLayout">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="leftMargin">
+            <number>12</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>12</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="payslipOrgLabel">
+             <property name="styleSheet">
+              <string>font-weight: bold; font-size: 14px; color: #2D3748; qproperty-alignment: AlignCenter;</string>
+             </property>
+             <property name="text">
+              <string>Колледж цифровых технологий IT TOP</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="payslipTitleLabel">
+             <property name="styleSheet">
+              <string>font-weight: bold; font-size: 13px; color: #2B6CB0; qproperty-alignment: AlignCenter;</string>
+             </property>
+             <property name="text">
+              <string>Расчётный листок за —</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="payslipDivider">
+             <property name="frameShape">
+              <enum>QFrame::Shape::HLine</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="styleSheet">
+              <string>color: #CBD5E0;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="payslipMetaRow1">
+             <item>
+              <widget class="QLabel" name="payslipDaysLabel">
+               <property name="styleSheet">
+                <string>color: #2D3748; font-size: 12px;</string>
+               </property>
+               <property name="text">
+                <string>Отработано: —</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="payslipMetaSpacer1">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="payslipDepartmentLabel">
+             <property name="styleSheet">
+              <string>color: #2D3748; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string>Подразделение/кафедра: —</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="payslipPositionLabel">
+             <property name="styleSheet">
+              <string>color: #2D3748; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string>Должность: —</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="payslipSalaryLabel">
+             <property name="styleSheet">
+              <string>color: #2D3748; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string>Ставка (оклад): —</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="payslipTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+          </property>
+          <property name="rowCount">
+           <number>3</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>Код</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Начисление / удержание</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Начислено</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Удержано</string>
+           </property>
+          </column>
+          <row/>
+          <row/>
+          <row/>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="payslipTotalLayout">
+          <item>
+           <widget class="QLabel" name="label_s7">
+            <property name="text">
+             <string>Итого к выплате:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="totalLabel">
+            <property name="styleSheet">
+             <string>font-weight: bold; font-size: 16px; color: #2B6CB0;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="payslipTotalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="salarySpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="reportTab">
+       <attribute name="title">
+        <string>Отчёт</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="reportLayout">
+        <item>
+         <layout class="QHBoxLayout" name="reportTopLayout">
+          <item>
+           <widget class="QLabel" name="label_r1">
+            <property name="text">
+             <string>Месяц:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="reportPeriodEdit">
+            <property name="displayFormat">
+             <string>MM.yyyy</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="generateReportButton">
+            <property name="text">
+             <string>Сформировать отчёт</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="reportTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="reportTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+          </property>
+          <column>
+           <property name="text">
+            <string>ФИО</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Начислено</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Премия</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Стимулирующая</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>НДФЛ</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Профвзнос</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>К выплате</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="reportBottomButtonsLayout">
+          <item>
+           <widget class="QPushButton" name="exportCsvButton">
+            <property name="text">
+             <string>Экспорт в CSV</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="reportBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="reportTotalLabel">
+          <property name="styleSheet">
+           <string>font-weight: bold; font-size: 14px;</string>
+          </property>
+          <property name="text">
+           <string>Итого по университету: —</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="historyTab">
+       <attribute name="title">
+        <string>История начислений</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="historyLayout">
+        <item>
+         <layout class="QHBoxLayout" name="historyTopLayout">
+          <item>
+           <widget class="QLabel" name="label_h1">
+            <property name="text">
+             <string>Сотрудник:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="historyEmployeeCombo"/>
+          </item>
+          <item>
+           <spacer name="historyTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="historyTable">
+          <property name="editTriggers">
+           <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+          </property>
+          <column>
+           <property name="text">
+            <string>Период</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Начислено</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Премия</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Стимулирующая</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>НДФЛ</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Профвзнос</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>К выплате</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <addaction name="actionDarkTheme"/>
+   </widget>
+   <addaction name="menuView"/>
+  </widget>
+  <action name="actionDarkTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Тёмная тема</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
