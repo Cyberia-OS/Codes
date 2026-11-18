@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="dll_practice/dll_practice.csproj" />
+  <Project Path="my_app/my_app.csproj" />
+</Solution>
